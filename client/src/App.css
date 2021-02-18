@@ -1,0 +1,33 @@
+.bookList {
+  display: flex;
+  overflow-x: scroll;
+}
+.bookCard {
+  display: inline;
+  margin: 15px;
+}
+
+.addButton {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  border-radius: 35px;
+  font-size: 20px;
+  text-align: center;
+  background-color: #007bff;
+  border-color: none !important;
+  border-width: 0px !important;
+  position: absolute;
+  z-index: 9999;
+  right: 50px;
+  bottom: 50px;
+  box-shadow: 1px 1px 11px 0px black;
+  color: white !important;
+}
+
+.successAlert {
+  top: 3px;
+  position: absolute !important ;
+  margin-left: 75vh;
+  width: 275px;
+}

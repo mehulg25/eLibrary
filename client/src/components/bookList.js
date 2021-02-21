@@ -6,7 +6,7 @@ class BookList extends Component {
   render() {
     return (
       <div>
-        <Nav.Link href="#home" style={{ color: "black" }}>
+        <Nav.Link href="#home" className="listTitle">
           Books Published
         </Nav.Link>
         <ul className="bookList">

@@ -6,7 +6,7 @@ import { Alert } from "react-bootstrap";
 class AuthorDashboard extends Component {
   state = {
     books: [],
-    showAlert: false,
+    showAlert: false
   };
   componentDidMount() {
     Axios.get("http://localhost:8080/eLibrary/server/allBooks.php").then(
@@ -23,8 +23,13 @@ class AuthorDashboard extends Component {
   handleAddBook = (book) => {
     this.setState({
       books: [book, ...this.state.books],
-      showAlert: true,
+      showAlert: true
     });
+    setTimeout(() => {
+      this.setState({
+          showAlert: false
+      })
+   }, 2000)
   };
 
   closeAlert = () => {

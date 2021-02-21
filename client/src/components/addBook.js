@@ -24,6 +24,7 @@ class AddBook extends Component {
     });
   };
   addBook = (e) => {
+    e.preventDefault();
     if (
       this.state.bookName == "" ||
       this.state.bookSynopsis == "" ||
@@ -32,6 +33,11 @@ class AddBook extends Component {
       this.setState({
         alert: true,
       });
+      setTimeout(() => {
+        this.setState({
+            alert: false
+        })
+     }, 2000)
       return;
     }
     console.log("add book called");
@@ -42,20 +48,26 @@ class AddBook extends Component {
       bookImage,
     };
 
-    Axios.post(
-      "http://localhost:8080/eLibrary/server/addBook.php",
-      addBookObj
-    ).then((response) => {
-      console.log(response);
-      var addedBookObj = {
-        name: bookName,
-        image_url: bookImage,
-        synopsis: bookSynopsis,
-      };
-      console.log(addBookObj);
-      this.props.handleAddBook(addedBookObj);
-      this.toggle();
-    });
+    Axios.post("http://localhost:8080/eLibrary/server/addBook.php", addBookObj)
+      .then((response) => {
+        console.log(response);
+        var addedBookObj = {
+          name: bookName,
+          image_url: bookImage,
+          synopsis: bookSynopsis,
+        };
+        console.log(addBookObj);
+        this.props.handleAddBook(addedBookObj);
+        this.setState({
+          bookName: "",
+          bookSynopsis: "",
+          bookImage: "",
+        });
+        this.toggle();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   render() {
     return (

@@ -6,7 +6,7 @@ import Axios from "axios";
 class AddBook extends Component {
   state = {
     modal: false,
-    bookName: "",
+    bookName: "", //emptty variables
     bookSynopsis: "",
     bookImage: "",
     alert: false,
@@ -15,17 +15,22 @@ class AddBook extends Component {
   toggle = () => {
     this.setState({ modal: !this.state.modal, alert: false });
   };
-  onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange = (e) => { // e is short for event. on___ are events. onchange pe event mil rha hai -> where change what change
+    this.setState({ [e.target.name]: e.target.value }); // e.target means which form tag. e.target.name here name is bookName. Similar to response.data.books.
+    //this.setState({bookName:e.target.value})    
+    //this.setState({bookSynopsis:e.target.value})
+    //e.target.value is anything that you type in input box
+    // two way binding 
   };
-  onDrop = (picture) => {
+
+  onDrop = (picture) => { // temporary variable to store image
     this.setState({
-      bookImage: picture[0].name,
+      bookImage: picture[0].name, // new variable for new book entry. picture[0].name came from console.
     });
   };
-  addBook = (e) => {
-    e.preventDefault();
-    if (
+  addBook = (e) => { // e coz event as form function
+    e.preventDefault(); //inbuilt function to prevent default submit for some time
+    if ( // client side validation
       this.state.bookName == "" ||
       this.state.bookSynopsis == "" ||
       this.state.bookImage == ""
@@ -38,26 +43,23 @@ class AddBook extends Component {
             alert: false
         })
      }, 2000)
-      return;
+      return; // do nothing and return to where you are called from if variables are empty
     }
-    console.log("add book called");
-    const { bookName, bookSynopsis, bookImage } = this.state;
-    var addBookObj = {
-      bookName,
+    const { bookName, bookSynopsis, bookImage } = this.state; // destructuring variables in state into new to use in function and save code this.state.blah || const is constant object 
+    var addBookObj = { // need object and not string as php is expecting 3 things at once as object.
+      bookName, //bookName: bookName || new var which we have to send : state se aya hua destructured. 
       bookSynopsis,
       bookImage,
     };
 
-    Axios.post("http://localhost:8080/eLibrary/server/addBook.php", addBookObj)
-      .then((response) => {
-        console.log(response);
-        var addedBookObj = {
-          name: bookName,
+    Axios.post("http://localhost:8080/eLibrary/server/addBook.php", addBookObj) //POST request passing object
+      .then((response) => { // book added in db here
+        var addedBookObj = { // this is for real time update in UI
+          name: bookName, // left wale variables are database variables and right are object passed.
           image_url: bookImage,
-          synopsis: bookSynopsis,
+          synopsis: bookSynopsis, // doubt : why these names for vars : Because addedBook ye render ho jae destructure jese booklist me map karaya hai vahi pe
         };
-        console.log(addBookObj);
-        this.props.handleAddBook(addedBookObj);
+        this.props.handleAddBook(addedBookObj); // props from dashboard as handleaddbook is function in parent || PtoC and back CtoP
         this.setState({
           bookName: "",
           bookSynopsis: "",
@@ -76,8 +78,8 @@ class AddBook extends Component {
           +
         </button>
         <Modal
-          show={this.state.modal}
-          onHide={this.toggle}
+          show={this.state.modal} //show when value true
+          onHide={this.toggle} //function call
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
@@ -87,20 +89,20 @@ class AddBook extends Component {
               Publish Book
             </Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            <Form onSubmit={this.addBook}>
+          <Modal.Body> {/* form inside modal body */}
+            <Form onSubmit={this.addBook}>  {/* onSubmit call function addBook instead of onClick */}
               <ImageUploader
                 withIcon={true}
                 buttonText="Choose images"
-                onChange={this.onDrop}
+                onChange={this.onDrop} //function call whenever image upload
                 imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
                 maxFileSize={5242880}
               />
               <Form.Group controlId="formBasicBookName">
                 <Form.Label>Enter Book Name</Form.Label>
-                <Form.Control
-                  name="bookName"
-                  onChange={this.onChange}
+                <Form.Control // form control is nothing but an input box
+                  name="bookName" // attribute for internal function denoting what the input box is for. same as state variables.
+                  onChange={this.onChange} // function call saves value at every key press.
                   type="bookName"
                   placeholder="Enter Book Name"
                 />
@@ -122,8 +124,8 @@ class AddBook extends Component {
               >
                 Please check Fields!
               </Alert>
-              <Button variant="primary" type="Publish">
-                Publish
+              <Button variant="primary" type="Publish"> {/* no need for onclick as button is inside form and there is a default behaviour on Submit */}
+                Publish 
               </Button>
             </Form>
           </Modal.Body>

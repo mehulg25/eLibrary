@@ -8,7 +8,7 @@ class AuthorDashboard extends Component {
     books: [],
     showAlert: false
   };
-  componentDidMount() {
+  componentDidMount() { //lifecycle method runs when copmponent is rendered once and again on every re render.
     Axios.get("http://localhost:8080/eLibrary/server/allBooks.php").then(
       (response) => {
         if (response.data.books != undefined) {
@@ -20,9 +20,9 @@ class AuthorDashboard extends Component {
     );
   }
 
-  handleAddBook = (book) => {
+  handleAddBook = (book) => { // book that is added just now taken from addedBook in addBook as CtoP
     this.setState({
-      books: [book, ...this.state.books],
+      books: [book, ...this.state.books], // ... is spread operator. Book fell jaengi yahi pe array me 
       showAlert: true
     });
     setTimeout(() => {

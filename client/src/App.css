@@ -37,5 +37,35 @@
   margin-top: 20px;
   margin-left: 38px;
   font-size: 25px;
+}
 
+.welcomeJumbotron {
+  text-align: center;
+  position: fixed;
+  top: 40vh;
+  width: 100%;
+  background-color: white !important;
+}
+
+.welcomeJumbotron h1 {
+  padding-bottom: 2%;
+}
+.welcomeJumbotron button {
+  width: 15%;
+}
+
+.loginForm {
+  border : 1px solid lightgray;
+  margin-top: 5%;
+  width: fit-content !important;
+
+  padding: 7%;
+
+}
+
+
+
+.loginFormContainer {
+  margin-left: auto !important;
+  margin-right: 0 !important;
 }

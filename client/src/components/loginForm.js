@@ -11,7 +11,7 @@ function LoginForm() {
     <Container className="loginFormContainer">
        
       <Form  className = "loginForm">
-      <h3 style={{float:"left"}}>Sign Up</h3>
+      <h3>Sign Up</h3>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" />

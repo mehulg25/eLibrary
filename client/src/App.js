@@ -1,9 +1,10 @@
 import "./App.css";
 import NavigationBar from "./components/navigationBar";
 import AuthorDashboard from "./components/authorDashboard";
-import LoginForm from "./components/loginForm";
+import SignUpForm from "./components/signUpForm";
 import HomePage from "./components/homePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import LogIn from "./components/logIn";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       <Router>
         <Route exact path="/" component={HomePage} />
         <Route path="/authorDashboard" component={AuthorDashboard} />
-        <Route path="/login" component={LoginForm} />
+        <Route path="/signUp" component={SignUpForm} />
+        <Route path="/logIn" component={LogIn} />
       </Router>
     </div>
   );

@@ -31,7 +31,7 @@ function SignUpForm() {
   };
   return (
     <Container>
-      <Form onSubmit={signUp}>
+      <Form onSubmit={signUp} className="signUp">
         <h3>Sign Up</h3>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>

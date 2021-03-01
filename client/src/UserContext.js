@@ -8,9 +8,11 @@ function UserReducer(state, action) {
   switch (action.type) {
     case "login": {
       const user = action.payload;
+      localStorage.setItem('token',user.jwt)
       return {
-        ...state,
+        
         isAuthenticated: true,
+        user: user
       };
     }
 
@@ -27,8 +29,8 @@ function UserReducer(state, action) {
 function UserProvider({ children }) {
   const [state, dispatch] = React.useReducer(UserReducer, {
     isAuthenticated: false,
-    role: "",
-    email: "",
+    user: null,
+    token: localStorage.getItem("token"),
   });
   return (
     <UserStateContext.Provider value={state}>
@@ -55,4 +57,4 @@ function useUserDispatch() {
   return context;
 }
 
-export {UserProvider, useUserState, useUserDispatch} ;
+export { UserProvider, useUserState, useUserDispatch };

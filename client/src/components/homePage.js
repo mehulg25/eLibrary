@@ -9,7 +9,7 @@ function HomePage() {
         <h1>One Place For All Your Books</h1>
         
         <p>
-          <Button variant="primary" onClick={()=>history.push('/login')}>Get Started</Button>
+          <Button variant="primary" onClick={()=>history.push('/signUp')}>Get Started</Button>
         </p>
       </Jumbotron>
     </div>

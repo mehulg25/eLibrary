@@ -3,7 +3,7 @@ import BookList from "./bookList";
 import AddBook from "./addBook";
 import Axios from "axios";
 import { Alert } from "react-bootstrap";
-class AuthorDashboard extends Component {
+class AdminDashboard extends Component {
   state = {
     books: [],
     showAlert: false
@@ -56,4 +56,4 @@ class AuthorDashboard extends Component {
   }
 }
 
-export default AuthorDashboard;
+export default AdminDashboard;

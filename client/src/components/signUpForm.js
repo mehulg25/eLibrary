@@ -1,12 +1,17 @@
 import React, { useState } from "react"; // useState is a hook of react where we can use state in functions so we dont need classes
 import { Container, Button, Form } from "react-bootstrap";
-import { useUserState } from "../UserContext.js";
+import { useUserState,logMeIn, useUserDispatch } from "../UserContext.js";
 import Axios from "axios";
+import { useHistory } from "react-router-dom";
+
 
 function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const { user, isAuthenticated } = useUserState();
+  const dispatch = useUserDispatch();
+  const history = useHistory();
   const signUp = (e) => {
     e.preventDefault();
     if (email == "" || password == "" || confirmPassword == "") {
@@ -21,12 +26,15 @@ function SignUpForm() {
     const userObj = {
       email,
       password,
+      role : "READER"
     };
     Axios.post(
       "http://localhost:8080/eLibrary/server/signUp.php",
       userObj
     ).then((response) => {
       console.log(response);
+      logMeIn(dispatch,response)
+      history.push("/readerDashboard")
     });
   };
   return (

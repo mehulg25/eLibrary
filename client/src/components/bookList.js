@@ -4,24 +4,45 @@ import BookCard from "./bookCard";
 
 class BookList extends Component {
   render() {
-    return (
-      <div>
-        <Nav.Link href="#home" className="listTitle">
-          Books Published
-        </Nav.Link>
-        <ul className="bookList">
-          {this.props.books.map(({ id, name, synopsis, image_url }) => ( //arguments from database.
-            <li key={id} className="bookCard">
-              <BookCard
-                bookName={name} //javascript variable after destructuring above as arguments.
-                bookImage={image_url} //passing props PtC
-                bookSynopsis={synopsis}
-              />
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
+    if (!this.props.default && this.props.books.length == 0) {
+      return null;
+    }
+    if (
+      this.props.books !== undefined &&
+      this.props.books.length === 0 &&
+      this.props.default
+    ) {
+      return (
+        <div>
+          <Nav.Link href="#home" className="listTitle">
+            {this.props.title}
+          </Nav.Link>
+          <p>You Do Not Have Any Books Yet</p>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Nav.Link href="#home" className="listTitle">
+            {this.props.title}
+          </Nav.Link>
+          <ul className="bookList">
+            {this.props.books !== undefined &&
+              this.props.books.map((
+                { id, name, synopsis, image_url } //arguments from database.
+              ) => (
+                <li key={id} className="bookCard">
+                  <BookCard
+                    bookName={name} //javascript variable after destructuring above as arguments.
+                    bookImage={image_url} //passing props PtC
+                    bookSynopsis={synopsis}
+                  />
+                </li>
+              ))}
+          </ul>
+        </div>
+      );
+    }
   }
 }
 

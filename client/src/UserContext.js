@@ -1,5 +1,5 @@
 import React from "react";
-
+import Axios from "axios";
 const UserStateContext = React.createContext();
 
 const UserDispatchContext = React.createContext();
@@ -8,22 +8,21 @@ function UserReducer(state, action) {
   switch (action.type) {
     case "login": {
       const user = action.payload;
-      localStorage.setItem('token',user.jwt)
+      localStorage.setItem("token", user.jwt);
       return {
-        
         isAuthenticated: true,
-        user: user
+        user: user,
       };
     }
 
     case "logout": {
-      const user = action.payload;
       return {
-        ...state,
+        user: null,
         isAuthenticated: false,
       };
     }
-  }
+
+     }
 }
 
 function UserProvider({ children }) {
@@ -57,4 +56,20 @@ function useUserDispatch() {
   return context;
 }
 
-export { UserProvider, useUserState, useUserDispatch };
+function logMeIn(dispatch, response) {
+  dispatch({ type: "login", payload: response.data });
+}
+
+function logMeOut(dispatch) {
+  dispatch({ type: "logout" });
+}
+
+
+export {
+  UserProvider,
+  useUserState,
+  useUserDispatch,
+  logMeIn,
+  logMeOut,
+  UserStateContext,
+};

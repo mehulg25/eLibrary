@@ -18,6 +18,15 @@ $role = '';
 
 $data = json_decode(file_get_contents("php://input"));
 
+if (
+    isset($data->email) //variables from frontend
+    && isset($data->password)
+    && isset($data->role)
+    && !empty(trim($data->email))
+    && !empty(trim($data->password))
+    && !empty(trim($data->role))
+
+) {
 
 $email = mysqli_real_escape_string($conn, trim($data->email));
 $password = mysqli_real_escape_string($conn, trim($data->password));
@@ -33,6 +42,7 @@ if($insertUser){
 }
 else{
     echo json_encode(["success"=>0,"msg"=>"User Not Created"]);
+}
 }
 
 ?>

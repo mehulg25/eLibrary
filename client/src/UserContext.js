@@ -15,14 +15,22 @@ function UserReducer(state, action) {
       };
     }
 
+    case "getuser": {
+      const user = action.payload;
+
+      return {
+        isAuthenticated: true,
+        user: user,
+      };
+    }
+
     case "logout": {
       return {
         user: null,
         isAuthenticated: false,
       };
     }
-
-     }
+  }
 }
 
 function UserProvider({ children }) {
@@ -64,6 +72,10 @@ function logMeOut(dispatch) {
   dispatch({ type: "logout" });
 }
 
+function getUser(dispatch,response) {
+  console.log("inside bucks ;;)");
+  dispatch({ type: "getuser", payload: response });
+}
 
 export {
   UserProvider,
@@ -72,4 +84,5 @@ export {
   logMeIn,
   logMeOut,
   UserStateContext,
+  getUser,
 };

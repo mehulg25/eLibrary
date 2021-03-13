@@ -14,14 +14,20 @@ echo json_encode(["success"=>$data]);
 if(isset($data->bookName) //variables from frontend
     && isset($data->bookSynopsis)
   && isset($data->bookImage)
-    && !empty(trim($data->bookImage))
+  && isset($data->bookAuthor)
+  && isset($data->totalCount)
+    && !empty(trim($data->bookImage)) 
     && !empty(trim($data->bookName))
   && !empty(trim($data->bookSynopsis))
+  && !empty(trim($data->bookAuthor))
+  && !empty(trim($data->totalCount))   
     ){
     $bookName = mysqli_real_escape_string($conn, trim($data->bookName));
     $bookSynopsis = mysqli_real_escape_string($conn, trim($data->bookSynopsis));
-    $bookImage = mysqli_real_escape_string($conn, trim($data->bookImage));
-        $insertBook = mysqli_query($conn,"INSERT INTO `books`(`name`,`image_url`,`synopsis`) VALUES('$bookName','$bookImage','$bookSynopsis')");
+    $bookImage = mysqli_real_escape_string($conn, trim($data->bookImage)); 
+    $bookAuthor = mysqli_real_escape_string($conn, trim($data->bookAuthor));
+    $totalCount = mysqli_real_escape_string($conn, trim($data->totalCount));
+        $insertBook = mysqli_query($conn,"INSERT INTO `books`(`name`,`image_url`,`synopsis`,`author_name`,`total_count`,`available_count`) VALUES('$bookName','$bookImage','$bookSynopsis','$bookAuthor','$totalCount','$totalCount')");
         if($insertBook){
             $last_id = mysqli_insert_id($conn);
             echo json_encode(["success"=>1,"msg"=>"Book Inserted.","id"=>$last_id]);
@@ -33,4 +39,3 @@ if(isset($data->bookName) //variables from frontend
 else{
     echo json_encode(["success"=>0,"msg"=>"Please fill all the required fields!"]);
 }
-?>

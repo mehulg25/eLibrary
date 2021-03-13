@@ -9,6 +9,8 @@ class AddBook extends Component {
     bookName: "", //emptty variables
     bookSynopsis: "",
     bookImage: "",
+    bookAuthor: "",
+    totalCount: 1 ,
     alert: false,
   };
 
@@ -33,7 +35,9 @@ class AddBook extends Component {
     if ( // client side validation
       this.state.bookName == "" ||
       this.state.bookSynopsis == "" ||
-      this.state.bookImage == ""
+      this.state.bookImage == "" ||
+      this.state.bookAuthor == "" ||
+      this.state.totalCount < 0 
     ) {
       this.setState({
         alert: true,
@@ -45,25 +49,32 @@ class AddBook extends Component {
      }, 2000)
       return; // do nothing and return to where you are called from if variables are empty
     }
-    const { bookName, bookSynopsis, bookImage } = this.state; // destructuring variables in state into new to use in function and save code this.state.blah || const is constant object 
+    const { bookName, bookSynopsis, bookImage, bookAuthor, totalCount } = this.state; // destructuring variables in state into new to use in function and save code this.state.blah || const is constant object 
     var addBookObj = { // need object and not string as php is expecting 3 things at once as object.
       bookName, //bookName: bookName || new var which we have to send : state se aya hua destructured. 
       bookSynopsis,
       bookImage,
+      bookAuthor,
+      totalCount
     };
 
     Axios.post("http://localhost:8080/eLibrary/server/addBook.php", addBookObj) //POST request passing object
-      .then((response) => { // book added in db here
+      .then((response) => {
+        console.log(response) // book added in db here
         var addedBookObj = { // this is for real time update in UI
           name: bookName, // left wale variables are database variables and right are object passed.
           image_url: bookImage,
           synopsis: bookSynopsis, // doubt : why these names for vars : Because addedBook ye render ho jae destructure jese booklist me map karaya hai vahi pe
+          author_name: bookAuthor,
+          total_count: totalCount
         };
         this.props.handleAddBook(addedBookObj); // props from dashboard as handleaddbook is function in parent || PtoC and back CtoP
         this.setState({
           bookName: "",
           bookSynopsis: "",
           bookImage: "",
+          bookAuthor: "",
+          totalCount: 1
         });
         this.toggle();
       })
@@ -115,6 +126,25 @@ class AddBook extends Component {
                   onChange={this.onChange}
                   type="bookSynopsis"
                   placeholder="Enter Synopsis"
+                />
+              </Form.Group>
+
+              <Form.Group controlId="bookAuthor">
+                <Form.Label>Author(s)</Form.Label>
+                <Form.Control
+                  name="bookAuthor"
+                  onChange={this.onChange}
+                  type="bookAuthor"
+                  placeholder="Enter Author name(s)"
+                />
+              </Form.Group>
+              <Form.Group controlId="totalCount">
+                <Form.Label>Count</Form.Label>
+                <Form.Control
+                  name="totalCount"
+                  onChange={this.onChange}
+                  type="totalCount"
+                  placeholder="Total Books"
                 />
               </Form.Group>
               <Alert

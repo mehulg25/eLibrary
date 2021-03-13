@@ -13,12 +13,14 @@ class Dashboard extends Component {
     isNewUser: true,
     bookMarkedBooks: [],
     readBooks: [],
+    currently_issued_bookid: "",
   };
   componentDidMount() {
-    //lifecycle method runs when copmponent is rendered once and again on every re render.
-    console.log(this.context.user);
+    let value = this.context;
+    console.log(value);
     Axios.get("http://localhost:8080/eLibrary/server/allBooks.php").then(
       (response) => {
+        //console.log(response);
         if (response.data.books != undefined) {
           this.setState({
             allBooks: response.data.books,
@@ -26,42 +28,53 @@ class Dashboard extends Component {
         }
       }
     );
-    const userObj = {
-      id: 11,
-    };
-    console.log(userObj);
-    Axios.post("http://localhost:8080/eLibrary/server/user-books.php", userObj)
-      .then((response) => {
-        let userBooks = response.data.books;
-        console.log(userBooks);
-        if (userBooks.length !== 0) {
-          this.setState({ isNewUser: false });
-        }
-        userBooks.map((book) => {
-          let foundBook = this.state.allBooks.find(function (b) {
-            return b.id == book.book_id;
-          });
+    console.log(this.context);
+    if (this.context.user != null) {
+      const userObj = {
+        id: this.context.user != null ? this.context.user.id : 0,
+      };
+      ////console.log(userObj);
+      Axios.post(
+        "http://localhost:8080/eLibrary/server/user-books.php",
+        userObj
+      ).then((response) => {
+        console.log(response);
+        // let userBooks = response.data.books;
 
-          book.image_url = foundBook.image_url;
-          book.name = foundBook.name;
-          book.synopsis = foundBook.synopsis;
-        });
-        var issuedBooks = userBooks.filter(function (b) {
-          return b.action_type === "ISSUED";
-        });
-        var bookMarkedBooks = userBooks.filter(function (b) {
-          return b.action_type === "BOOKMARKED";
-        });
-        var readBooks = userBooks.filter(function (b) {
-          return b.action_type === "READ";
-        });
-        this.setState({
-          shelf: issuedBooks,
-          bookMarkedBooks: bookMarkedBooks,
-          readBooks: readBooks,
-        });
-      })
-      .catch((err) => console.log(err));
+        if (
+          response.data.books != undefined &&
+          response.data.books.length !== 0
+        ) {
+          this.setState({ isNewUser: false });
+          response.data.books.map((book) => {
+            let foundBook = this.state.allBooks.find(function (b) {
+              return b.id == book.book_id;
+            });
+
+            if (foundBook !== undefined) {
+              book.image_url = foundBook.image_url;
+              book.name = foundBook.name;
+              book.synopsis = foundBook.synopsis;
+            }
+          });
+          var issuedBooks = response.data.books.filter(function (b) {
+            return b.action_type === "ISSUED";
+          });
+          var bookMarkedBooks = response.data.books.filter(function (b) {
+            return b.action_type === "BOOKMARKED";
+          });
+          var readBooks = response.data.books.filter(function (b) {
+            return b.action_type === "READ";
+          });
+          this.setState({
+            shelf: issuedBooks,
+            bookMarkedBooks: bookMarkedBooks,
+            readBooks: readBooks,
+          });
+        }
+      });
+      // .catch((err) => //console.log(err));
+    }
   }
 
   handleAddBook = (book) => {
@@ -84,16 +97,11 @@ class Dashboard extends Component {
   render() {
     return (
       <div>
-        <BookList books={this.state.shelf} title="My Shelf" default={true} />
-        {this.state.isNewUser && (
-          <BookList
-            books={this.state.allBooks}
-            title="All Books"
-            default={true}
-          />
-        )}
+        <BookList books={this.state.shelf} title="My Shelf" />
+
         <BookList books={this.state.readBooks} title="Books Read" />
         <BookList books={this.state.bookMarkedBooks} title="Saved For Later" />
+        <BookList books={this.state.allBooks} title="All Books" />
         {this.context.isAuthenticated && this.context.user.role === "ADMIN" ? (
           <AddBook handleAddBook={this.handleAddBook} />
         ) : null}
@@ -112,4 +120,5 @@ class Dashboard extends Component {
   }
 }
 
+Dashboard.contextType = UserStateContext;
 export default Dashboard;

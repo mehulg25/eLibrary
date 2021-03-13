@@ -12,7 +12,7 @@ function Profile() {
   const dispatch = useUserDispatch();
   if (isAuthenticated) {
     return (
-      <Container>
+      <Container className="profileContainer">
         <Row>
           <Icon path={mdiAccount} size={10} />
         </Row>

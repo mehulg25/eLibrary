@@ -7,7 +7,7 @@ import { mdiAccount } from "@mdi/js";
 function NavigationBar() {
   const history = useHistory();
   const { user, isAuthenticated } = useUserState();
-  console.log(user, isAuthenticated);
+
 
   return (
     <Navbar bg="dark" variant="dark">
@@ -24,6 +24,7 @@ function NavigationBar() {
           path={mdiAccount}
           size={1}
           onClick={() => history.push("/profile")}
+          className="avatar"
         />
       ) : (
         <Button variant="outline-info" onClick={() => history.push("/logIn")}>

@@ -30,6 +30,7 @@ function AddAdmin({ handleAddAdmin }) {
       console.log(response);
       userObj.id = response.data.id;
       userObj.currently_issued_bookid = null;
+      setModal(false);
       handleAddAdmin(userObj);
     });
   };

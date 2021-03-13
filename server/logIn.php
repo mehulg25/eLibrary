@@ -36,8 +36,8 @@ if(mysqli_num_rows($getUser) > 0){
             $issuer_claim = "THE_ISSUER"; // this can be the servername
             $audience_claim = "THE_AUDIENCE";
             $issuedat_claim = time(); // issued at
-            $notbefore_claim = $issuedat_claim + 10; //not before in seconds
-            $expire_claim = $issuedat_claim + 60; // expire time in seconds
+            $notbefore_claim = $issuedat_claim; //not before in seconds
+            $expire_claim = $issuedat_claim + 3600; // expire time in seconds
             $token = array(
                 "iss" => $issuer_claim,
                 "aud" => $audience_claim,
@@ -58,7 +58,8 @@ if(mysqli_num_rows($getUser) > 0){
                     "jwt" => $jwt,
                     "email" => $email,
                     "expireAt" => $expire_claim,
-                    "role" => $role
+                    "role" => $role,
+                    "id" => $id
                 ));
         }
         else{
@@ -72,3 +73,6 @@ else{
 }
 
 ?>
+
+
+

@@ -27,7 +27,7 @@ function AdminCard({ email, id, deleteAdmin }) {
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">{email}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="adminCard">
           <Container fluid>
             <Row>
               <Col>

@@ -18,5 +18,3 @@ else{
     echo json_encode(["success"=>0]);
 }
 }
-
-?>

@@ -42,7 +42,7 @@
 .welcomeJumbotron {
   text-align: center;
   position: fixed;
-  top: 40vh;
+  top: 30vh;
   width: 100%;
   background-color: white !important;
 }
@@ -56,7 +56,7 @@
 
 .logIn {
   border: lightgray 1px solid;
-  margin-top: 17%;
+  margin-top: 10%;
   width: 50%;
   margin-left: 25%;
 }
@@ -81,10 +81,9 @@
 
 .signUp {
   border: lightgray 1px solid;
-  margin-top: 12%;
+  margin-top: 6%;
   width: 50%;
   margin-left: 25%;
-
 }
 .signUp .form-group {
   width: 40%;
@@ -102,4 +101,34 @@
 .signUp button {
   margin-left: 42%;
   margin-bottom: 15%;
+}
+
+.profileContainer {
+  margin-left: 42% !important;
+  margin-top: 4%;
+}
+
+.profileContainer svg {
+  color: #343a40 !important;
+  margin-bottom: 2%;
+}
+
+.profileContainer Button {
+  margin-left: 5px;
+  margin-bottom: 3%;
+  width: 20%;
+}
+
+.avatar {
+  color: white;
+  margin-left: 1%;
+  width: 3.5rem !important ;
+  height: 2.5rem !important;
+}
+
+
+.adminCard Button {
+  width: 50%;
+  margin-top: 9%;
+  margin-left: 20%;
 }

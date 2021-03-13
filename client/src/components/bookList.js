@@ -4,14 +4,7 @@ import BookCard from "./bookCard";
 
 class BookList extends Component {
   render() {
-    if (!this.props.default && this.props.books.length == 0) {
-      return null;
-    }
-    if (
-      this.props.books !== undefined &&
-      this.props.books.length === 0 &&
-      this.props.default
-    ) {
+    if (this.props.books !== undefined && this.props.books.length === 0) {
       return (
         <div>
           <Nav.Link href="#home" className="listTitle">
@@ -29,13 +22,16 @@ class BookList extends Component {
           <ul className="bookList">
             {this.props.books !== undefined &&
               this.props.books.map((
-                { id, name, synopsis, image_url } //arguments from database.
+                { id, name, synopsis, image_url, author_name, total_count } //arguments from database.
               ) => (
                 <li key={id} className="bookCard">
                   <BookCard
                     bookName={name} //javascript variable after destructuring above as arguments.
                     bookImage={image_url} //passing props PtC
                     bookSynopsis={synopsis}
+                    bookAuthor={author_name}
+                    totalCount={total_count}
+                    bookId={id}
                   />
                 </li>
               ))}

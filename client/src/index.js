@@ -5,13 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { UserProvider } from './UserContext';
+import {ErrorProvider} from './ErrorContext'
 
 ReactDOM.render(
   
     <UserProvider>
-    <App />
+      <ErrorProvider>
+        <App />
+      </ErrorProvider>
     </UserProvider>
-
   ,
   document.getElementById('root')
 );

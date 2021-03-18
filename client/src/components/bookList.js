@@ -22,7 +22,7 @@ class BookList extends Component {
           <ul className="bookList">
             {this.props.books !== undefined &&
               this.props.books.map((
-                { id, name, synopsis, image_url, author_name, total_count } //arguments from database.
+                { id, name, synopsis, image_url, author_name, total_count,available_count,book_id } //arguments from database.
               ) => (
                 <li key={id} className="bookCard">
                   <BookCard
@@ -31,7 +31,11 @@ class BookList extends Component {
                     bookSynopsis={synopsis}
                     bookAuthor={author_name}
                     totalCount={total_count}
-                    bookId={id}
+                    bookId={book_id}
+                    availableCount = {available_count}
+                    handleIssueBook = {this.props.handleIssueBook}
+                    handleReturnBook = {this.props.handleReturnBook}
+                    title={this.props.title}
                   />
                 </li>
               ))}

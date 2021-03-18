@@ -17,7 +17,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.2",
     "web-vitals": "^1.1.0"
-  },
+  }, 
+  "proxy":"http://localhost:8080/eLibrary/server",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -28,13 +29,13 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ] 
   },
   "browserslist": {
     "production": [
       ">0.2%",
       "not dead",
-      "not op_mini all"
+      "not op_mini all" 
     ],
     "development": [
       "last 1 chrome version",

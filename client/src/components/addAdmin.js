@@ -24,7 +24,7 @@ function AddAdmin({ handleAddAdmin }) {
       role: "ADMIN",
     };
     Axios.post(
-      "http://localhost:8080/eLibrary/server/signUp.php",
+      "/signUp.php",
       userObj
     ).then((response) => {
       console.log(response);

@@ -1,79 +1,117 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import { Card, Button, Modal, Row, Col, Container } from "react-bootstrap";
 import Axios from "axios";
-import { UserStateContext } from "../UserContext";
+import { useUserState,useUserDispatch } from "../UserContext";
+import {displayError,displaySuccess,useErrorDispatch} from '../ErrorContext'
 
-class BookCard extends Component {
-  static contextType = UserStateContext;
-  state = {
-    modal: false,
+function BookCard ({bookName,bookImage,bookSynopsis,bookAuthor,totalCount,bookId,availableCount,handleIssueBook,handleReturnBook,title}){
+
+  const {isAuthenticated,user} = useUserState();
+  // const dispatch = useUserDispatch();
+  const errorDispatch = useErrorDispatch();
+  const [modal,setModal] = useState();
+  
+  const toggle = () => {
+    setModal(!modal);
   };
-  toggle = () => {
-    this.setState({ modal: !this.state.modal });
-  };
-  issueBook = () => {
+  const issueBook = () => {
+    console.log(user)
+    if(user.currently_issued_bookid !== null && user.currently_issued_bookid !== ''){
+      displayError(errorDispatch,'Can\'t Issue Book since you already have one');
+      return;
+    }
+
+    const config = {
+      headers:{
+        "Content-Type":"application/json",
+        "x-auth-token":localStorage.getItem("token")
+      }
+    };
     var bookObj = {
-      bookId: this.props.bookId,
-      userId: this.context.user.id,
-      action: "ISSUED",
+      bookId: bookId,
+      action: "ISSUED"
     };
     Axios.post(
-      "http://localhost:8080/eLibrary/server/bookAction.php",
-      JSON.stringify(bookObj)
-    )
-      .then((response) => {
+      "/bookAction.php",bookObj,config).then((response) => {
         console.log(response);
+        let obj = {
+          bookId :bookId,
+          updatedAvailableCount :availableCount-1
+        }
+        
+        if(response.status === 200){
+          displaySuccess(errorDispatch,'Book Successfully Issued!')
+          handleIssueBook(obj);
+          setModal(false);
+        }else if(response.status == 202){
+          displayError(errorDispatch,'Can\'t Issue Book  since you already have one')
+          
+       }
+      })
+      .catch((error) => {
+        console.log(error);
+        
+      });
+  };
+  const returnBook = () => {
+
+    if(user.currently_issued_bookid === ''){
+      displayError(errorDispatch,'You don\'t have any book issued');
+      return;
+    }
+    const config = {
+      headers:{
+        "Content-Type":"application/json",
+        "x-auth-token":localStorage.getItem("token")
+      }
+    };
+    var bookObj = {
+      bookId: bookId,
+      action: "RETURNED"
+    };
+    Axios.post(
+      "/bookAction.php",bookObj,config).then((response) => {
+        console.log(response);
+        let obj = {
+          bookId :bookId,
+          updatedAvailableCount :availableCount+1
+        }
+        displaySuccess(errorDispatch,'Book Successfully Returned!')
+        handleReturnBook(obj)
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  returnBook = () => {
-    var bookObj = {
-      bookId: this.props.bookId,
-      userId: this.context.user.id,
-      action: "RETURNED",
-    };
-    Axios.post(
-      "http://localhost:8080/eLibrary/server/bookAction.php",
-      JSON.stringify(bookObj)
-    )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  render() {
+
     return (
       <div>
         <Card style={{ width: "18rem" }}>
           <Card.Img
             variant="top"
-            src={`../${this.props.bookImage}`}
+            src={`../${bookImage}`}
             width="400"
             height="400"
           />
           <Card.Body>
             <Card.Title style={{ height: "7vh" }}>
-              {this.props.bookName}
+              {bookName}
             </Card.Title>
-            <Button variant="primary" onClick={this.toggle}>
+            <Button variant="primary" onClick={toggle}>
               View
             </Button>
           </Card.Body>
         </Card>
         <Modal
-          show={this.state.modal}
-          onHide={this.toggle}
+          show={modal}
+          onHide={toggle}
           size="lg"
           aria-labelledby="contained-modal-title-vcenter"
           centered
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              {this.props.bookName}
+              {bookName}
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -81,41 +119,41 @@ class BookCard extends Component {
               <Row>
                 <Col>
                   <Row>
-                    <p>{this.props.bookAuthor}</p>
+                    <p>{bookAuthor}</p>
                   </Row>
                   <Row>
-                    <p>{this.props.bookSynopsis}</p>
+                    <p>{bookSynopsis}</p>
                   </Row>
-                  <Button variant="primary" onClick={this.issueBook}>
+                  <Button variant="primary" onClick={issueBook}>
                     Issue
                   </Button>
-                  <Button variant="primary" onClick={this.returnBook}>
-                    Return
-                  </Button>
-                  <Button variant="primary" onClick={this.toggle}>
+                  {title === 'My Shelf' && bookId === user.currently_issued_bookid && (<Button variant="primary" onClick={returnBook} disabled={bookId !==user.currently_issued_bookid}>
+                    Return 
+                  </Button>)}
+                  <Button variant="primary" onClick={toggle}>
                     Save for later
                   </Button>
-                  <Button variant="primary" onClick={this.toggle}>
+                  <Button variant="primary" onClick={toggle}>
                     Mark as Read
                   </Button>
-                  <Button variant="primary" onClick={this.toggle}>
+                  <Button variant="primary" onClick={toggle}>
                     Edit
                   </Button>
-                  <Button variant="primary" onClick={this.toggle}>
+                  <Button variant="primary" onClick={toggle}>
                     Delete
                   </Button>
                 </Col>
                 <Col>
                   <Row>
                     <img
-                      src={`../${this.props.bookImage}`}
+                      src={`../${bookImage}`}
                       height="500"
                       width="350"
                     />
                   </Row>
-                  <Row>
-                    <p>{this.props.totalCount}</p>
-                  </Row>
+                  {title === 'All Books' && user.role === 'ADMIN' && (<Row>
+                    <p>{availableCount}/{totalCount}</p>
+                  </Row>)}
                 </Col>
               </Row>
             </Container>
@@ -123,7 +161,7 @@ class BookCard extends Component {
         </Modal>
       </div>
     );
-  }
+  
 }
 
 export default BookCard;

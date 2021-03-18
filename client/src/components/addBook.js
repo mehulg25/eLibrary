@@ -58,7 +58,7 @@ class AddBook extends Component {
       totalCount
     };
 
-    Axios.post("http://localhost:8080/eLibrary/server/addBook.php", addBookObj) //POST request passing object
+    Axios.post("/addBook.php", addBookObj) //POST request passing object
       .then((response) => {
         console.log(response) // book added in db here
         var addedBookObj = { // this is for real time update in UI

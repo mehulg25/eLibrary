@@ -1,14 +1,15 @@
 import React, { useState } from "react"; // useState is a hook of react where we can use state in functions so we dont need classes
 import { Container, Button, Form } from "react-bootstrap";
-import { useUserState, useUserDispatch, logMeIn } from "../UserContext.js";
+import { useUserDispatch, logMeIn } from "../UserContext.js";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
+import {displayError,displaySuccess,useErrorDispatch} from '../ErrorContext'
 
 function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { user, isAuthenticated } = useUserState();
-  const dispatch = useUserDispatch();
+  const dispatch = useUserDispatch(); //dispatcher
+  const errorDispatch = useErrorDispatch();
   const history = useHistory();
 
   const logIn = (e) => {
@@ -22,16 +23,24 @@ function LogIn() {
       email,
       password,
     };
-    Axios.post("http://localhost:8080/eLibrary/server/logIn.php", userObj).then(
+    Axios.post("/logIn.php", JSON.stringify(userObj)).then(
       (response) => {
         console.log(response);
         if (response.status === 200) {
-          logMeIn(dispatch, response);
-          console.log(user, isAuthenticated);
+          displaySuccess(errorDispatch,'Login Successful');
+          logMeIn(dispatch, response);//responsible for putting data in User context
           history.push("/dashboard")
         }
+        
       }
-    );
+    ).catch(err=>{
+      if(err.response.status === 401){
+        displayError(errorDispatch,err.response.data.msg)
+
+      }else if(err.response.status === 404){
+        displayError(errorDispatch,err.response.data.msg)
+      }
+    });
   };
   return (
     <Container>

@@ -1,124 +1,134 @@
-import React, { Component } from "react";
+import React, {useState, useEffect} from "react";
 import BookList from "./bookList";
 import AddBook from "./addBook";
 import Axios from "axios";
-import { Alert } from "react-bootstrap";
-import { useUserState, UserStateContext } from "../UserContext";
-class Dashboard extends Component {
-  static contextType = UserStateContext;
-  state = {
-    allBooks: [],
-    showAlert: false,
-    shelf: [],
-    isNewUser: true,
-    bookMarkedBooks: [],
-    readBooks: [],
-    currently_issued_bookid: "",
-  };
-  componentDidMount() {
-    let value = this.context;
-    console.log(value);
-    Axios.get("http://localhost:8080/eLibrary/server/allBooks.php").then(
-      (response) => {
-        //console.log(response);
-        if (response.data.books != undefined) {
-          this.setState({
-            allBooks: response.data.books,
-          });
-        }
-      }
-    );
-    console.log(this.context);
-    if (this.context.user != null) {
-      const userObj = {
-        id: this.context.user != null ? this.context.user.id : 0,
-      };
-      ////console.log(userObj);
-      Axios.post(
-        "http://localhost:8080/eLibrary/server/user-books.php",
-        userObj
-      ).then((response) => {
-        console.log(response);
-        // let userBooks = response.data.books;
+import {useUserState} from "../UserContext";
+function Dashboard() {
 
-        if (
-          response.data.books != undefined &&
-          response.data.books.length !== 0
-        ) {
-          this.setState({ isNewUser: false });
-          response.data.books.map((book) => {
-            let foundBook = this.state.allBooks.find(function (b) {
-              return b.id == book.book_id;
-            });
+    const {isAuthenticated, user} = useUserState();
 
-            if (foundBook !== undefined) {
-              book.image_url = foundBook.image_url;
-              book.name = foundBook.name;
-              book.synopsis = foundBook.synopsis;
-            }
-          });
-          var issuedBooks = response.data.books.filter(function (b) {
-            return b.action_type === "ISSUED";
-          });
-          var bookMarkedBooks = response.data.books.filter(function (b) {
-            return b.action_type === "BOOKMARKED";
-          });
-          var readBooks = response.data.books.filter(function (b) {
-            return b.action_type === "READ";
-          });
-          this.setState({
-            shelf: issuedBooks,
-            bookMarkedBooks: bookMarkedBooks,
-            readBooks: readBooks,
-          });
+    const [allBooks, setAllBooks] = useState([]);
+    const [shelf, setShelf] = useState([]);
+    const [bookMarkedBooks, setBookMarkedBooks] = useState([]);
+    const [readBooks, setReadBooks] = useState([]);
+    const [currentlyIssuedBookId,setCurrentlyIssuedBookId] = useState(0);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            Axios.get("/allBooks.php").then((response) => {
+                console.log(response);
+                if (response.data.books != undefined) {
+                    response.data.books.map(book => {
+                        book.book_id = book.id
+                    })
+                    setAllBooks(response.data.books)
+                }
+            }).catch(err => console.log(err));
+            setCurrentlyIssuedBookId(user.currently_issued_bookid);
         }
-      });
-      // .catch((err) => //console.log(err));
+    }, [isAuthenticated]);
+
+    useEffect(() => {
+
+        if (allBooks.length == 0) 
+            return;
+        
+
+        if (isAuthenticated && allBooks !== undefined) {
+
+            const config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-token": localStorage.getItem("token")
+                }
+            };
+
+            Axios.get("/user-books.php", config).then((response) => {
+
+                if (response.data.books != undefined && response.data.books.length !== 0) {
+                    response.data.books.map((book) => {
+                        let foundBook = allBooks.find(function (b) {
+                            return b.id == book.book_id;
+                        });
+
+                        if (foundBook !== undefined) {
+                            book.image_url = foundBook.image_url;
+                            book.name = foundBook.name;
+                            book.synopsis = foundBook.synopsis;
+                            book.book_id = foundBook.book_id
+                        }
+                    });
+                    var issuedBooks = response.data.books.filter(function (b) {
+                        return b.action_type === "ISSUED";
+                    });
+                    var bookMarkedBooks = response.data.books.filter(function (b) {
+                        return b.action_type === "BOOKMARKED";
+                    });
+                    var readBooks = response.data.books.filter(function (b) {
+                        return b.action_type === "READ";
+                    });
+
+                    setShelf(issuedBooks);
+                    setBookMarkedBooks(bookMarkedBooks);
+                    setReadBooks(readBooks);
+                }
+            }).catch((err) => console.log(err));
+        }
+    }, [allBooks]);
+
+    const handleAddBook = (book) => {
+
+        setAllBooks([
+            book,
+            ...allBooks
+        ]);
+
+    };
+
+    const handleIssueBook = (obj) => {
+        let foundBook = allBooks.find(book => {
+            return book.book_id === obj.bookId
+        });
+        foundBook.available_count = obj.updatedAvailableCount;
+        setCurrentlyIssuedBookId(obj.bookId)
+        setShelf([foundBook])
+
     }
-  }
 
-  handleAddBook = (book) => {
-    // book that is added just now taken from addedBook in addBook as CtoP
-    this.setState({
-      allBooks: [book, ...this.state.allBooks], // ... is spread operator. Book fell jaengi yahi pe array me
-      showAlert: true,
-    });
-    setTimeout(() => {
-      this.setState({
-        showAlert: false,
-      });
-    }, 2000);
-  };
+    const handleReturnBook = (obj) => {
+        console.log(obj)
+        let foundBook = allBooks.find(book => {
+            return book.book_id === obj.bookId
+        });
+        foundBook.available_count = obj.updatedAvailableCount;
+        setShelf([]);
+    }
 
-  closeAlert = () => {
-    this.setState({ showAlert: false });
-  };
+    if (!isAuthenticated) 
+        return (
+            <p>Please Login to Continue!</p>
+        )
 
-  render() {
     return (
-      <div>
-        <BookList books={this.state.shelf} title="My Shelf" />
 
-        <BookList books={this.state.readBooks} title="Books Read" />
-        <BookList books={this.state.bookMarkedBooks} title="Saved For Later" />
-        <BookList books={this.state.allBooks} title="All Books" />
-        {this.context.isAuthenticated && this.context.user.role === "ADMIN" ? (
-          <AddBook handleAddBook={this.handleAddBook} />
-        ) : null}
-        {/*passing Parent to child as a prop*/}
-        <Alert
-          className="successAlert"
-          onClose={this.closeAlert}
-          show={this.state.showAlert}
-          variant="success"
-          dismissible
-        >
-          Book Published
-        </Alert>
-      </div>
+        <div>
+            <BookList books={shelf}
+                title="My Shelf"
+                handleReturnBook={handleReturnBook}/>
+
+            <BookList books={readBooks}
+                title="Books Read"/>
+            <BookList books={bookMarkedBooks}
+                title="Saved For Later"/>
+            <BookList books={allBooks}
+                title="All Books"
+                handleIssueBook={handleIssueBook}/> {
+            isAuthenticated && user.role === "ADMIN" ? (
+                <AddBook handleAddBook={handleAddBook}/>
+            ) : null
+        } </div>
     );
-  }
+
 }
 
-Dashboard.contextType = UserStateContext;
 export default Dashboard;

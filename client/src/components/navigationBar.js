@@ -1,38 +1,70 @@
-import { Nav, Navbar, Form, FormControl, Button } from "react-bootstrap";
-import { useUserState } from "../UserContext.js";
-import { useHistory } from "react-router-dom"; //new hook
+import {
+  Nav,
+  Navbar,
+  Form,
+  FormControl,
+  Button,
+  NavDropdown
+} from "react-bootstrap";
+import {useUserState, useUserDispatch, logMeOut} from "../UserContext.js";
+import {useHistory} from "react-router-dom"; // new hook
 import Icon from "@mdi/react";
-import { mdiAccount } from "@mdi/js";
+import {mdiAccount} from "@mdi/js";
+import {displayError,displaySuccess,useErrorDispatch} from '../ErrorContext';
 
 function NavigationBar() {
   const history = useHistory();
-  const { user, isAuthenticated } = useUserState();
-
+  const {user, isAuthenticated} = useUserState();
+  const dispatch = useUserDispatch();
+  const errorDispatch = useErrorDispatch();
 
   return (
-    <Navbar bg="dark" variant="dark">
-      <Navbar.Brand>eLibrary</Navbar.Brand>
-      <Nav className="mr-auto"></Nav>
-      {isAuthenticated ? (
-        <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-          <Button variant="outline-info">Search</Button>
-        </Form>
-      ) : null}
-      {isAuthenticated ? (
-        <Icon
-          path={mdiAccount}
-          size={1}
-          onClick={() => history.push("/profile")}
-          className="avatar"
-        />
-      ) : (
-        <Button variant="outline-info" onClick={() => history.push("/logIn")}>
-          Log In
-        </Button>
-      )}
-    </Navbar>
+      <Navbar bg="dark" variant="dark">
+          <Navbar.Brand href={isAuthenticated?'/dashboard':'/'}>eLibrary</Navbar.Brand>
+          {
+          isAuthenticated && user.role === 'ADMIN' && <Nav className="mr-auto">
+              <Nav.Link href="#home">Reading History</Nav.Link>
+              <Nav.Link href="#features">Manage Readers</Nav.Link>
+              <Nav.Link href="/manageAdmins">Manage Admins</Nav.Link>
+          </Nav>
+      }
+          <Nav className="mr-auto"></Nav>
+          {
+          isAuthenticated ? (
+              <div>
+                  <Form inline>
+                      <FormControl type="text" placeholder="Search" className="mr-sm-2"/>
+                      <Button variant="outline-info">Search</Button>
+                      <NavDropdown title={<Icon path={mdiAccount}
+                          size={0.5}
+                          className=" avatar"/>}
+                          id="collasible-nav-dropdown">
+
+                          <NavDropdown.Item href="#action/3.1">Manage Passwords</NavDropdown.Item>
+                          <NavDropdown.Divider/>
+                          <NavDropdown.Item onClick={
+                              () => {
+                                  logMeOut(dispatch);
+                                  displaySuccess(errorDispatch,'Logged Out!');
+                                  history.push("/logIn")
+                              }
+                          }>
+                              Log Out
+                          </NavDropdown.Item>
+
+                      </NavDropdown>
+                  </Form>
+
+              </div>
+          ) : (
+              <Button variant="outline-info"
+                  onClick={
+                      () => history.push("/logIn")
+              }>
+                  Log In
+              </Button>
+          )
+      } </Navbar>
   );
 }
-
 export default NavigationBar;

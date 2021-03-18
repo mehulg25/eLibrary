@@ -17,7 +17,7 @@ function ManageAdmins() {
       id,
     };
     Axios.post(
-      "http://localhost:8080/eLibrary/server/deleteUser.php",
+      "/deleteUser.php",
       delObj
     ).then((response) => {
       console.log(response);
@@ -27,7 +27,7 @@ function ManageAdmins() {
     });
   };
   useEffect(() => {
-    Axios.get("http://localhost:8080/eLibrary/server/allAdmins.php").then(
+    Axios.get("/allAdmins.php").then(
       (response) => {
         console.log(response);
         setAdmins(response.data.admins);

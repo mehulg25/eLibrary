@@ -6,6 +6,9 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require 'db_connection.php'; 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {    
+    return 0;    
+} 
 
 $allAdmins = mysqli_query($conn,"SELECT * FROM users WHERE `role` = 'ADMIN'"); 
 if(mysqli_num_rows($allAdmins) > 0){

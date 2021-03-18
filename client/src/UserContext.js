@@ -1,6 +1,5 @@
 import React from "react";
-import Axios from "axios";
-const UserStateContext = React.createContext();
+const UserStateContext = React.createContext();//declaring context
 
 const UserDispatchContext = React.createContext();
 
@@ -25,11 +24,13 @@ function UserReducer(state, action) {
     }
 
     case "logout": {
+      localStorage.setItem("token", "");
       return {
         user: null,
         isAuthenticated: false,
       };
     }
+
   }
 }
 
@@ -37,7 +38,7 @@ function UserProvider({ children }) {
   const [state, dispatch] = React.useReducer(UserReducer, {
     isAuthenticated: false,
     user: null,
-    token: localStorage.getItem("token"),
+    token: localStorage.getItem("token")
   });
   return (
     <UserStateContext.Provider value={state}>
@@ -73,7 +74,6 @@ function logMeOut(dispatch) {
 }
 
 function getUser(dispatch,response) {
-  console.log("inside bucks ;;)");
   dispatch({ type: "getuser", payload: response });
 }
 
@@ -83,6 +83,5 @@ export {
   useUserDispatch,
   logMeIn,
   logMeOut,
-  UserStateContext,
-  getUser,
+  getUser
 };

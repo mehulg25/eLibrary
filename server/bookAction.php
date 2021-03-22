@@ -119,9 +119,13 @@ if (
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg" => "Book Returned."]);
     }else if ($action == "BOOKMARKED") {
-       
+        
         $bookAction = mysqli_query($conn, "INSERT INTO `users_bookdata` (`user_id`,`book_id`,`action_type`) VALUES('$userId','$bookId','$action')");
-       
+        if (!$bookAction) {
+            header("HTTP/1.1 401 Cannot Update");
+            echo json_encode(["msg" => "Book Already Saved."]);
+            return;
+        }
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg" => "Book Bookmarked."]);
     }

@@ -71,7 +71,8 @@ if($insertUser){
             "email" => $get_user[0]['email'],
             "expireAt" => $expire_claim, // can remove this line in future.
             "role" =>$get_user[0]['role'],
-            "id" => $last_id
+            "id" => $last_id,
+            "currently_issued_bookid" => null
         ));
         return;
 }

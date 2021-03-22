@@ -113,7 +113,7 @@ function Dashboard() {
     }
 
     const handleBookmarkBook = (obj) =>{
-        console.log(obj);
+        console.log(bookMarkedBooks);
         let foundBook = allBooks.find(book => {
             return book.book_id === obj.bookId
         });

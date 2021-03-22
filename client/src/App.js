@@ -7,10 +7,12 @@ import HomePage from "./components/homePage";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import LogIn from "./components/logIn";
 import ManageAdmins from "./components/manageAdmins";
+import ManageReaders from "./components/manageReaders";
 import { getUser, useUserDispatch,useUserState } from "./UserContext";
 import Axios from "axios";
 import LibraryAlerts from './components/general/libraryAlerts'
 import {useErrorState} from './ErrorContext'
+import ReadingHistory from './components/readingHistory'
 
 function App() {
   const dispatch = useUserDispatch();
@@ -49,6 +51,8 @@ function App() {
         <Route path="/signUp" component={SignUpForm} />
         <Route path="/logIn" component={LogIn} />
         <Route path="/manageAdmins" component={ManageAdmins} />
+        <Route path="/manageReaders" component={ManageReaders} />
+        <Route path="/readingHistory" component={ReadingHistory} />
       </Router>
     </div>
   );

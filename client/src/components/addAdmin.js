@@ -1,20 +1,27 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Alert } from "react-bootstrap";
 import Axios from "axios";
+import {
+  displayError,
+  displaySuccess,
+  useErrorDispatch,
+} from "../ErrorContext";
 
 function AddAdmin({ handleAddAdmin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [modal, setModal] = useState(false);
+  const errorDispatch = useErrorDispatch();
   const addAdmin = (e) => {
     e.preventDefault();
     if (email == "" || password == "" || confirmPassword == "") {
-      alert("wtf");
+      displayError(errorDispatch, "Please Fill All The Fields.");
+
       return;
     }
     if (password !== confirmPassword) {
-      alert("bruh can");
+      displayError(errorDispatch, "Please Check Password.");
       return;
     }
 
@@ -23,10 +30,7 @@ function AddAdmin({ handleAddAdmin }) {
       password,
       role: "ADMIN",
     };
-    Axios.post(
-      "/signUp.php",
-      userObj
-    ).then((response) => {
+    Axios.post("/signUp.php", userObj).then((response) => {
       console.log(response);
       userObj.id = response.data.id;
       userObj.currently_issued_bookid = null;
@@ -52,7 +56,7 @@ function AddAdmin({ handleAddAdmin }) {
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Form onSubmit={addAdmin} className="signUp">
+          <Form onSubmit={addAdmin} className="addAdmin">
             <Form.Group controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control

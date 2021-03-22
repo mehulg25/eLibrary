@@ -6,6 +6,7 @@ const UserDispatchContext = React.createContext();
 function UserReducer(state, action) {
   switch (action.type) {
     case "login": {
+      console.log(action.payload)
       const user = action.payload;
       localStorage.setItem("token", user.jwt);
       return {
@@ -30,7 +31,13 @@ function UserReducer(state, action) {
         isAuthenticated: false,
       };
     }
-
+    case "updateUserData": {
+      const user = action.payload
+      return {
+        ...state,
+        user: user
+      };
+    }
   }
 }
 
@@ -65,7 +72,7 @@ function useUserDispatch() {
   return context;
 }
 
-function logMeIn(dispatch, response) {
+function logMeIn(dispatch, response) { 
   dispatch({ type: "login", payload: response.data });
 }
 
@@ -77,11 +84,16 @@ function getUser(dispatch,response) {
   dispatch({ type: "getuser", payload: response });
 }
 
+function updateUserData(dispatch,response){
+  dispatch({ type: "updateUserData", payload: response });
+}
+
 export {
   UserProvider,
   useUserState,
   useUserDispatch,
   logMeIn,
   logMeOut,
-  getUser
+  getUser,
+  updateUserData
 };

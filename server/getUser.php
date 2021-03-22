@@ -1,6 +1,6 @@
 <?php
-error_reporting(-1); // reports all errors
-ini_set("display_errors", "1"); // shows all errors
+error_reporting(-1); 
+ini_set("display_errors", "1"); 
 ini_set("log_errors", 1);
 ini_set("error_log", "/tmp/php-error.log");
 require  "./vendor/autoload.php";
@@ -41,13 +41,13 @@ try{
 
 }
 
-$user = mysqli_query($conn, "SELECT * FROM users where `id` = '$userId'"); //performs a query against a database. $conn is acquired from line 8
+$user = mysqli_query($conn, "SELECT * FROM users where `id` = '$userId'"); 
 if (mysqli_num_rows($user) > 0) {
-    $users = mysqli_fetch_all($user, MYSQLI_ASSOC); //fetches all result rows and returns the result-set as an associative array(id=0,name=sherlockholmes//key value pair), a numeric array, or both.
+    $users = mysqli_fetch_all($user, MYSQLI_ASSOC); 
     header("HTTP/1.1 200 OK");
-    echo json_encode(["user" => $users]); //all_books json encode send via echo. Book is key and all_books is value(in the response which is being sent)
+    echo json_encode(["user" => $users]); 
 
-} //doubt
+} 
 else {
     header("HTTP/1.1 403 OK");
     echo json_encode(["msg" => "Access Denied!"]);

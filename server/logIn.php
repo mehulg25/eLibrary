@@ -21,13 +21,14 @@ $data = json_decode(file_get_contents("php://input"));
 $email = $data->email;
 $password = $data->password;
 
-$getUser = mysqli_query($conn,"SELECT `id`,`email`,`password`,`role` FROM `users` WHERE `email` = '$email'");
+$getUser = mysqli_query($conn,"SELECT `id`,`email`,`password`,`role`,`currently_issued_bookid` FROM `users` WHERE `email` = '$email'");
 
 if(mysqli_num_rows($getUser) > 0){
     $get_user = mysqli_fetch_all($getUser,MYSQLI_ASSOC); 
     $password_fromDB = $get_user[0]['password'];
     $id = $get_user[0]['id'];
     $role = $get_user[0]['role'];
+    $currently_issued_bookid = $get_user[0]['currently_issued_bookid'];
 
     if(password_verify($password, $password_fromDB)) //Inbuilt function to check password and hashed pwd equality!
         {
@@ -58,7 +59,8 @@ if(mysqli_num_rows($getUser) > 0){
                     "email" => $email,
                     "expireAt" => $expire_claim,
                     "role" => $role,
-                    "id" => $id
+                    "id" => $id,
+                    "currently_issued_bookid" => $currently_issued_bookid
                 ));
                 return;
         }
@@ -74,5 +76,3 @@ else{
 }
 
 ?>
-
-

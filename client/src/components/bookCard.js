@@ -4,7 +4,7 @@ import Axios from "axios";
 import { useUserState,useUserDispatch } from "../UserContext";
 import {displayError,displaySuccess,useErrorDispatch} from '../ErrorContext'
 
-function BookCard ({bookName,bookImage,bookSynopsis,bookAuthor,totalCount,bookId,availableCount,handleIssueBook,handleReturnBook,title}){
+function BookCard ({bookName,bookImage,bookSynopsis,bookAuthor,totalCount,bookId,availableCount,handleIssueBook,handleReturnBook,title,handleBookmarkBook,action_type}){
 
   const {isAuthenticated,user} = useUserState();
   // const dispatch = useUserDispatch();
@@ -14,8 +14,45 @@ function BookCard ({bookName,bookImage,bookSynopsis,bookAuthor,totalCount,bookId
   const toggle = () => {
     setModal(!modal);
   };
+
+  const saveBookForLater = () =>{
+
+    const config = {
+      headers:{
+        "Content-Type":"application/json",
+        "x-auth-token":localStorage.getItem("token")
+      }
+    };
+    var bookObj = {
+      bookId: bookId,
+      action: "BOOKMARKED"
+    };
+    Axios.post(
+      "/bookAction.php",JSON.stringify(bookObj),config).then((response) => {
+        console.log(response);
+        let obj = {
+          bookId :bookId
+        }
+        console.log(obj)
+        if(response.status === 200){
+          displaySuccess(errorDispatch,response.data.msg)
+          handleBookmarkBook(obj);
+          setModal(false);
+        }else if(response.status == 202){
+          displayError(errorDispatch,response.data.msg)
+          
+       }else if(response.status == 203){
+        displayError(errorDispatch,response.data.msg)
+        
+     }
+      })
+      .catch((error) => {
+        console.log(error);
+        
+      });
+  }
+
   const issueBook = () => {
-    console.log(user)
     if(user.currently_issued_bookid !== null && user.currently_issued_bookid !== ''){
       displayError(errorDispatch,'Can\'t Issue Book since you already have one');
       return;
@@ -32,21 +69,24 @@ function BookCard ({bookName,bookImage,bookSynopsis,bookAuthor,totalCount,bookId
       action: "ISSUED"
     };
     Axios.post(
-      "/bookAction.php",bookObj,config).then((response) => {
+      "/bookAction.php",JSON.stringify(bookObj),config).then((response) => {
         console.log(response);
         let obj = {
           bookId :bookId,
           updatedAvailableCount :availableCount-1
         }
-        
+        console.log(obj)
         if(response.status === 200){
           displaySuccess(errorDispatch,'Book Successfully Issued!')
           handleIssueBook(obj);
           setModal(false);
         }else if(response.status == 202){
-          displayError(errorDispatch,'Can\'t Issue Book  since you already have one')
+          displayError(errorDispatch,response.data.msg)
           
-       }
+       }else if(response.status == 203){
+        displayError(errorDispatch,response.data.msg)
+        
+     }
       })
       .catch((error) => {
         console.log(error);
@@ -72,12 +112,14 @@ function BookCard ({bookName,bookImage,bookSynopsis,bookAuthor,totalCount,bookId
     Axios.post(
       "/bookAction.php",bookObj,config).then((response) => {
         console.log(response);
+        console.log(availableCount)
         let obj = {
           bookId :bookId,
           updatedAvailableCount :availableCount+1
         }
         displaySuccess(errorDispatch,'Book Successfully Returned!')
-        handleReturnBook(obj)
+        handleReturnBook(obj);
+        // toggle()
       })
       .catch((error) => {
         console.log(error);
@@ -119,31 +161,37 @@ function BookCard ({bookName,bookImage,bookSynopsis,bookAuthor,totalCount,bookId
               <Row>
                 <Col>
                   <Row>
-                    <p>{bookAuthor}</p>
+                    <p> <b>Author : </b> {bookAuthor}</p>
                   </Row>
-                  <Row>
-                    <p>{bookSynopsis}</p>
+                  <Row className="synopsis">
+                    <p><b>Synopsis  </b> <br></br> {bookSynopsis}</p>
                   </Row>
-                  <Button variant="primary" onClick={issueBook}>
+                  <div className = "bookCardButtons">
+                  {bookId === user.currently_issued_bookid ? null : (<Button variant="primary" onClick={issueBook}>
                     Issue
-                  </Button>
-                  {title === 'My Shelf' && bookId === user.currently_issued_bookid && (<Button variant="primary" onClick={returnBook} disabled={bookId !==user.currently_issued_bookid}>
+                  </Button>)}
+                  { bookId === user.currently_issued_bookid && (<Button variant="primary" onClick={returnBook} disabled={bookId !==user.currently_issued_bookid}>
                     Return 
                   </Button>)}
+                  {action_type === 'BOOKMARKED'?(<Button variant="primary" onClick={saveBookForLater}>
+                    Save
+                  </Button>):(<Button variant="primary" onClick={saveBookForLater}>
+                    Unsave
+                  </Button>)}
                   <Button variant="primary" onClick={toggle}>
-                    Save for later
+                    {title !== 'readBooks' ? 'Read' :'Unread'}
                   </Button>
-                  <Button variant="primary" onClick={toggle}>
-                    Mark as Read
-                  </Button>
-                  <Button variant="primary" onClick={toggle}>
+                  <div className="adminButtons">
+                 {isAuthenticated && user.role === 'ADMIN' && ( <><Button variant="primary" onClick={toggle}>
                     Edit
                   </Button>
                   <Button variant="primary" onClick={toggle}>
                     Delete
-                  </Button>
+                  </Button></>) }
+                  </div>
+                  </div>
                 </Col>
-                <Col>
+                <Col className = "bookCardRight">
                   <Row>
                     <img
                       src={`../${bookImage}`}
@@ -151,9 +199,9 @@ function BookCard ({bookName,bookImage,bookSynopsis,bookAuthor,totalCount,bookId
                       width="350"
                     />
                   </Row>
-                  {title === 'All Books' && user.role === 'ADMIN' && (<Row>
-                    <p>{availableCount}/{totalCount}</p>
-                  </Row>)}
+                  <Row>
+                    <p><b>Available Count : </b>{availableCount}/{totalCount}</p>
+                  </Row>
                 </Col>
               </Row>
             </Container>

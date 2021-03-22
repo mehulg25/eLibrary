@@ -36,11 +36,11 @@ try{
     $userId = $decoded->data->id;
     
     if(!isset($userId) && empty(trim($userId))){
-        header("HTTP/1.1 200 OK");
+        header("HTTP/1.1 403 Forbidden");
         echo json_encode(["msg"=>"Unauthorised"]);
     }   
 }catch(\Exception $e){
-    header("HTTP/1.1 200 OK");
+    header("HTTP/1.1 403 Forbidden");
     echo json_encode(["msg"=>"Unauthorised"]);
 }
 
@@ -68,6 +68,12 @@ if (
         $temp2 = json_decode(json_encode($book_found));
         $currentlyIssuedBookId = $temp[0]->currently_issued_bookid;
         $availableCount = $temp2[0]->available_count;
+
+        if($availableCount <=0 ){
+            header("HTTP/1.1 203 Cannot Update");
+            echo json_encode(["msg" => "No Copies Available at the moment :("]);
+            return;
+        }
         $availableCount = $availableCount - 1;
 
 
@@ -76,13 +82,13 @@ if (
             echo json_encode(["msg" => "Book already issued"]);
             return;
         }
-
-        $bookAction = mysqli_query($conn, "INSERT INTO `users_bookdata`(`user_id`,`book_id`,`action_type`,`issue_timestamp`) VALUES('$userId','$bookId','$action','$currentTime')");
+       
+        $bookAction = mysqli_query($conn, "INSERT INTO `users_bookdata` (`user_id`,`book_id`,`action_type`,`issue_timestamp`) VALUES('$userId','$bookId','$action','$currentTime')");
         if ($bookAction) {
             $last_id = mysqli_insert_id($conn);
         } else {
-            header("HTTP/1.1 200 OK");
-            echo json_encode(["msg" => "Book Not Inserted!"]);
+            header("HTTP/1.1 500 Cannot Update");
+            echo json_encode(["msg" => "Book Not Issued!"]);
             return;
         }
         $user = mysqli_query($conn, "UPDATE users SET `currently_issued_bookid` = '$bookId' where `id` = '$userId'");
@@ -112,6 +118,12 @@ if (
         $updateUserCurrentBook = mysqli_query($conn, "UPDATE users SET `currently_issued_bookid` = NULL where `id` = '$userId'");
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg" => "Book Returned."]);
+    }else if ($action == "BOOKMARKED") {
+       
+        $bookAction = mysqli_query($conn, "INSERT INTO `users_bookdata` (`user_id`,`book_id`,`action_type`) VALUES('$userId','$bookId','$action')");
+       
+        header("HTTP/1.1 200 OK");
+        echo json_encode(["msg" => "Book Bookmarked."]);
     }
 } else {
     header("HTTP/1.1 200 Internal Server Error");

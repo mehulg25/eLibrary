@@ -10,7 +10,7 @@ class BookList extends Component {
           <Nav.Link href="#home" className="listTitle">
             {this.props.title}
           </Nav.Link>
-          <p>You Do Not Have Any Books Yet</p>
+          <p className="noBooks">You Do Not Have Any Books Yet</p>
         </div>
       );
     } else {
@@ -22,7 +22,7 @@ class BookList extends Component {
           <ul className="bookList">
             {this.props.books !== undefined &&
               this.props.books.map((
-                { id, name, synopsis, image_url, author_name, total_count,available_count,book_id } //arguments from database.
+                { id, name, synopsis, image_url, author_name, total_count,available_count,book_id,action_type } //arguments from database.
               ) => (
                 <li key={id} className="bookCard">
                   <BookCard
@@ -35,7 +35,9 @@ class BookList extends Component {
                     availableCount = {available_count}
                     handleIssueBook = {this.props.handleIssueBook}
                     handleReturnBook = {this.props.handleReturnBook}
+                    handleBookmarkBook = {this.props.handleBookmarkBook}
                     title={this.props.title}
+                    action_type={action_type}
                   />
                 </li>
               ))}

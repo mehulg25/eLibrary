@@ -3,7 +3,7 @@ import { Card, Button, Modal, Row, Col, Container } from "react-bootstrap";
 import { mdiAccount } from "@mdi/js";
 import Icon from "@mdi/react";
 
-function AdminCard({ email, id, deleteAdmin }) {
+function ReaderCard({ email, id, deleteReader }) {
   const [modal, setModal] = useState(false);
 
   return (
@@ -43,8 +43,8 @@ function AdminCard({ email, id, deleteAdmin }) {
                   <Button>Manage Password</Button>
                 </Row>
                 <Row>
-                  <Button onClick={() => deleteAdmin(id)}>
-                    Delete Admin
+                  <Button onClick={() => deleteReader(id)}>
+                    Delete Reader
                   </Button>
                 </Row>
               </Col>
@@ -56,4 +56,4 @@ function AdminCard({ email, id, deleteAdmin }) {
   );
 }
 
-export default AdminCard;
+export default ReaderCard;

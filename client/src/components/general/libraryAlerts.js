@@ -26,5 +26,4 @@ function LibraryAlerts({msg, variant, show}) {
 }
 
 
-export default LibraryAlerts; 
-
+export default LibraryAlerts;

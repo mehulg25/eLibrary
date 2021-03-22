@@ -16,10 +16,7 @@ function ManageAdmins() {
     const delObj = {
       id,
     };
-    Axios.post(
-      "/deleteUser.php",
-      delObj
-    ).then((response) => {
+    Axios.post("/deleteUser.php", delObj).then((response) => {
       console.log(response);
       let filteredAdmins = admins.filter((a) => a.id !== id);
 
@@ -27,12 +24,10 @@ function ManageAdmins() {
     });
   };
   useEffect(() => {
-    Axios.get("/allAdmins.php").then(
-      (response) => {
-        console.log(response);
-        setAdmins(response.data.admins);
-      }
-    );
+    Axios.get("/allAdmins.php").then((response) => {
+      console.log(response);
+      setAdmins(response.data.admins);
+    });
   }, []);
 
   if (isAuthenticated && user.role === "ADMIN") {
@@ -40,7 +35,7 @@ function ManageAdmins() {
       <div>
         <AddAdmin handleAddAdmin={handleAddAdmin} />
         {admins.map((admin) => (
-          <AdminCard
+          <AdminCard 
             key={admin.id}
             email={admin.email}
             id={admin.id}

@@ -2,11 +2,11 @@ import React, {useState, useEffect} from "react";
 import BookList from "./bookList";
 import AddBook from "./addBook";
 import Axios from "axios";
-import {useUserState} from "../UserContext";
+import {useUserState,useUserDispatch,updateUserData} from "../UserContext";
 function Dashboard() {
 
     const {isAuthenticated, user} = useUserState();
-
+    const dispatch = useUserDispatch();
     const [allBooks, setAllBooks] = useState([]);
     const [shelf, setShelf] = useState([]);
     const [bookMarkedBooks, setBookMarkedBooks] = useState([]);
@@ -44,7 +44,7 @@ function Dashboard() {
             };
 
             Axios.get("/user-books.php", config).then((response) => {
-
+                console.log(response);
                 if (response.data.books != undefined && response.data.books.length !== 0) {
                     response.data.books.map((book) => {
                         let foundBook = allBooks.find(function (b) {
@@ -55,7 +55,8 @@ function Dashboard() {
                             book.image_url = foundBook.image_url;
                             book.name = foundBook.name;
                             book.synopsis = foundBook.synopsis;
-                            book.book_id = foundBook.book_id
+                            book.book_id = foundBook.book_id;
+                            foundBook.action_type = book.action_type
                         }
                     });
                     var issuedBooks = response.data.books.filter(function (b) {
@@ -67,9 +68,12 @@ function Dashboard() {
                     var readBooks = response.data.books.filter(function (b) {
                         return b.action_type === "READ";
                     });
-
-                    setShelf(issuedBooks);
-                    setBookMarkedBooks(bookMarkedBooks);
+                    console.log(allBooks)
+                    if(issuedBooks.length>0)
+                        setShelf(issuedBooks);
+                    if(bookMarkedBooks.length>0)
+                        setBookMarkedBooks(bookMarkedBooks);
+                    if(readBooks.length>0)
                     setReadBooks(readBooks);
                 }
             }).catch((err) => console.log(err));
@@ -91,7 +95,9 @@ function Dashboard() {
         });
         foundBook.available_count = obj.updatedAvailableCount;
         setCurrentlyIssuedBookId(obj.bookId)
-        setShelf([foundBook])
+        setShelf([foundBook]);
+        user.currently_issued_bookid = foundBook.book_id;
+        updateUserData(dispatch,user);
 
     }
 
@@ -102,6 +108,16 @@ function Dashboard() {
         });
         foundBook.available_count = obj.updatedAvailableCount;
         setShelf([]);
+        user.currently_issued_bookid = null;
+        updateUserData(dispatch,user);
+    }
+
+    const handleBookmarkBook = (obj) =>{
+        console.log(obj);
+        let foundBook = allBooks.find(book => {
+            return book.book_id === obj.bookId
+        });
+        setBookMarkedBooks([...bookMarkedBooks,foundBook])
     }
 
     if (!isAuthenticated) 
@@ -122,9 +138,9 @@ function Dashboard() {
                 title="Saved For Later"/>
             <BookList books={allBooks}
                 title="All Books"
-                handleIssueBook={handleIssueBook}/> {
+                handleIssueBook={handleIssueBook} handleReturnBook={handleReturnBook} handleBookmarkBook={handleBookmarkBook}/> {
             isAuthenticated && user.role === "ADMIN" ? (
-                <AddBook handleAddBook={handleAddBook}/>
+                <AddBook handleAddBook={handleAddBook} />
             ) : null
         } </div>
     );

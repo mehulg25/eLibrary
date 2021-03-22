@@ -1,10 +1,13 @@
 import React, { useState } from "react"; // useState is a hook of react where we can use state in functional components so we dont need classes
 import { Container, Button, Form } from "react-bootstrap";
-import { useUserState,logMeIn, useUserDispatch } from "../UserContext.js";
+import { useUserState, logMeIn, useUserDispatch } from "../UserContext.js";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
-import {displayError,displaySuccess,useErrorDispatch} from '../ErrorContext';
-
+import {
+  displayError,
+  displaySuccess,
+  useErrorDispatch,
+} from "../ErrorContext";
 
 function SignUpForm() {
   const [email, setEmail] = useState("");
@@ -14,30 +17,31 @@ function SignUpForm() {
   const dispatch = useUserDispatch();
   const errorDispatch = useErrorDispatch();
   const history = useHistory();
-  
+
   const signUp = (e) => {
     e.preventDefault();
     if (email == "" || password == "" || confirmPassword == "") {
-      alert("wtf");
-      return;
+      displayError(errorDispatch, "Please Fill All The Fields."); //displayError is a function in libraryAlerts.
+      return; // to stop execution neeche ka
     }
     if (password !== confirmPassword) {
-      alert("bruh can");
+      displayError(errorDispatch, "Please Check Your Password.");
       return;
     }
-  
+    // it comes here if validation is successful
     const userObj = {
-      email,
+      // to send to API
+      email, //line 13 ki state se aa rha hai
       password,
-      role : "READER"
-    };
-    Axios.post(
-      "/signUp.php",JSON.stringify(userObj)
-    ).then((response) => {
-      console.log(response);
-      logMeIn(dispatch,response);
-      displaySuccess(errorDispatch,'Successfully Registered And Logged In!')
-      history.push("/dashboard")
+      role: "READER", // hardcode
+    }; //object is ready for API.
+    Axios.post("/signUp.php", JSON.stringify(userObj)).then((response) => {
+      // axios is library through which we call the API
+      //JSON.STRINGIFY to make object a JSON string. We decode it at php
+      //response is bhejne ke baad backend ne kya diya apne ko banta aye
+      logMeIn(dispatch, response); //function in context. Use dispatch to change the context and tell that user has been created. response is coming from backend with JWT 
+      displaySuccess(errorDispatch, "Successfully Registered And Logged In!"); //just like display success.
+      history.push("/dashboard");
     });
   };
   return (

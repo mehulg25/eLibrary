@@ -66,7 +66,9 @@ class AddBook extends Component {
           image_url: bookImage,
           synopsis: bookSynopsis, // doubt : why these names for vars : Because addedBook ye render ho jae destructure jese booklist me map karaya hai vahi pe
           author_name: bookAuthor,
-          total_count: totalCount
+          total_count: totalCount,
+          book_id: response.data.id,
+          available_count: totalCount
         };
         this.props.handleAddBook(addedBookObj); // props from dashboard as handleaddbook is function in parent || PtoC and back CtoP
         this.setState({
@@ -75,6 +77,7 @@ class AddBook extends Component {
           bookImage: "",
           bookAuthor: "",
           totalCount: 1
+
         });
         this.toggle();
       })
@@ -114,7 +117,7 @@ class AddBook extends Component {
                 <Form.Control // form control is nothing but an input box
                   name="bookName" // attribute for internal function denoting what the input box is for. same as state variables.
                   onChange={this.onChange} // function call saves value at every key press.
-                  type="bookName"
+                  type="text"
                   placeholder="Enter Book Name"
                 />
               </Form.Group>
@@ -124,7 +127,7 @@ class AddBook extends Component {
                 <Form.Control
                   name="bookSynopsis"
                   onChange={this.onChange}
-                  type="bookSynopsis"
+                  type="text"
                   placeholder="Enter Synopsis"
                 />
               </Form.Group>
@@ -134,7 +137,7 @@ class AddBook extends Component {
                 <Form.Control
                   name="bookAuthor"
                   onChange={this.onChange}
-                  type="bookAuthor"
+                  type="text"
                   placeholder="Enter Author name(s)"
                 />
               </Form.Group>
@@ -143,7 +146,7 @@ class AddBook extends Component {
                 <Form.Control
                   name="totalCount"
                   onChange={this.onChange}
-                  type="totalCount"
+                  type="number"
                   placeholder="Total Books"
                 />
               </Form.Group>

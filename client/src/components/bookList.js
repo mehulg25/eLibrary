@@ -38,6 +38,8 @@ class BookList extends Component {
                     handleBookmarkBook = {this.props.handleBookmarkBook}
                     title={this.props.title}
                     action_type={action_type}
+                    handleDeleteBook={this.props.handleDeleteBook}
+                    handleUnsaveBook={this.props.handleUnsaveBook}
                   />
                 </li>
               ))}

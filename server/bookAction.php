@@ -129,6 +129,16 @@ if (
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg" => "Book Bookmarked."]);
     }
+    else if ($action=="UNSAVE") {
+        $bookAction=mysqli_query($conn,"DELETE FROM `users_bookdata` WHERE `user_id` = '$userId' AND `book_id` = '$bookId' AND `action_type` = 'BOOKMARKED'");
+        if (!$bookAction) {
+            header("HTTP/1.1 401 Cannot Update");
+            echo json_encode(["msg" => "No Such Book Saved"]);
+            return;
+        }
+        header("HTTP/1.1 200 OK");
+        echo json_encode(["msg" => "Book Unsaved."]);
+    }
 } else {
     header("HTTP/1.1 200 Internal Server Error");
     echo json_encode(["msg" => "Some Error Occurred"]);

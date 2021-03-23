@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 // POST DATA
 $data = json_decode(file_get_contents("php://input")); //data is coming so we have to decode from json to normal object| f_g_c method to get content from client side
-echo json_encode(["success"=>$data]);
+
 
 if(isset($data->bookName) //variables from frontend
     && isset($data->bookSynopsis)
@@ -33,12 +33,15 @@ if(isset($data->bookName) //variables from frontend
         $insertBook = mysqli_query($conn,"INSERT INTO `books`(`name`,`image_url`,`synopsis`,`author_name`,`total_count`,`available_count`) VALUES('$bookName','$bookImage','$bookSynopsis','$bookAuthor','$totalCount','$totalCount')");
         if($insertBook){
             $last_id = mysqli_insert_id($conn);
-            echo json_encode(["success"=>1,"msg"=>"Book Inserted.","id"=>$last_id]);
+            header("HTTP/1.1 200 OK");
+            echo json_encode(["msg"=>"Book Inserted.","id"=>$last_id]);
         }
         else{
-            echo json_encode(["success"=>0,"msg"=>"Book Not Inserted!"]);
+          header("HTTP/1.1 401 CANNOT UPDATE");
+            echo json_encode(["msg"=>"Book Not Inserted!"]);
         }
 }
 else{
-    echo json_encode(["success"=>0,"msg"=>"Please fill all the required fields!"]);
+  header("HTTP/1.1 500 INSUFFICIENT FIELDS");
+    echo json_encode(["msg"=>"Please fill all the required fields!"]);
 }

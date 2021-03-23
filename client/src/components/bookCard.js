@@ -21,6 +21,8 @@ function BookCard({
   title,
   handleBookmarkBook,
   action_type,
+  handleDeleteBook,
+  handleUnsaveBook
 }) {
   const { isAuthenticated, user } = useUserState();
   // const dispatch = useUserDispatch();
@@ -30,7 +32,62 @@ function BookCard({
   const toggle = () => {
     setModal(!modal);
   };
-
+  const unsaveBook = () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    };
+    var bookObj = {
+      bookId: bookId,
+      action: "UNSAVE",
+    };
+    Axios.post("/bookAction.php", JSON.stringify(bookObj), config)
+      .then((response) => {
+        console.log(response);
+        let obj = {
+          id: bookId,
+        };
+        console.log(obj);
+        if (response.status === 200) {
+          displaySuccess(errorDispatch, response.data.msg);
+          handleUnsaveBook(obj);
+        } else if (response.status == 202) {
+          displayError(errorDispatch, response.data.msg);
+        } else if (response.status == 203) {
+          displayError(errorDispatch, response.data.msg);
+        } else if (response.status == 401) {
+          displayError(errorDispatch, response.data.msg);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  const deleteBook = () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    };
+    var bookObj = {
+      id: bookId
+    };
+    Axios.post('/deleteBook.php',JSON.stringify(bookObj,config)).then(response=>{
+      if(response.status===200){
+        handleDeleteBook(bookObj)
+        displaySuccess(errorDispatch,response.data.msg)
+      }
+      else if (response.status===403) {
+        displayError(errorDispatch,response.data.msg)
+      }
+      else {
+        displayError(errorDispatch,response.data.msg)
+      }
+    }).catch(err=>{console.log(err)})
+  }
   const saveBookForLater = () => {
     const config = {
       headers: {
@@ -201,7 +258,7 @@ function BookCard({
                     </Button>
                   )}
                   {action_type === "BOOKMARKED" ? (
-                    <Button variant="primary" onClick={saveBookForLater}>
+                    <Button variant="primary" onClick={unsaveBook}>
                       Unsave
                     </Button>
                   ) : (
@@ -218,7 +275,7 @@ function BookCard({
                         <Button variant="primary" onClick={toggle}>
                           Edit
                         </Button>
-                        <Button variant="primary" onClick={toggle}>
+                        <Button variant="primary" onClick={deleteBook}>
                           Delete
                         </Button>
                       </>

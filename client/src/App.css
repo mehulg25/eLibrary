@@ -50,9 +50,9 @@
 .welcomeJumbotron h1 {
   padding-bottom: 2%;
 }
-.welcomeJumbotron button {
+/* .welcomeJumbotron button {
   width: 15%;
-}
+} */
 
 .logIn {
   border: lightgray 1px solid;
@@ -188,3 +188,5 @@
   margin-left: 4%;
   margin-top: 5%;
 }
+
+

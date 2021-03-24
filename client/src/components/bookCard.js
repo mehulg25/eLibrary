@@ -209,7 +209,7 @@ function BookCard({
           height="400"
         />
         <Card.Body>
-          <Card.Title style={{ height: "7vh" }}>{bookName}</Card.Title>
+          <Card.Title style={{ height: "10vh" }}>{bookName}</Card.Title>
           <Button variant="primary" onClick={toggle}>
             View
           </Button>

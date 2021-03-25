@@ -39,7 +39,7 @@ function SignUpForm() {
       // axios is library through which we call the API
       //JSON.STRINGIFY to make object a JSON string. We decode it at php
       //response is bhejne ke baad backend ne kya diya apne ko banta aye
-      logMeIn(dispatch, response); //function in context. Use dispatch to change the context and tell that user has been created. response is coming from backend with JWT 
+      logMeIn(dispatch, response); //function in context. Use dispatch to change the context and tell that user has been created. response is coming from backend with JWT
       displaySuccess(errorDispatch, "Successfully Registered And Logged In!"); //just like display success.
       history.push("/dashboard");
     });

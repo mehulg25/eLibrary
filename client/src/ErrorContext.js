@@ -5,35 +5,34 @@ const ErrorDispatchContext = React.createContext();
 
 function ErrorReducer(state, action) {
   switch (action.type) {
-  
     case "error": {
       const msg = action.payload;
       return {
         showAlert: true,
         variant: "danger",
-        msg
+        msg,
       };
     }
     case "success": {
-        const msg = action.payload;
-        return {
-          showAlert: true,
-          variant: "success",
-          msg
-        };
-      }
+      const msg = action.payload;
+      return {
+        showAlert: true,
+        variant: "success",
+        msg,
+      };
+    }
     case "warning": {
-        const msg = action.payload;
-        return {
-            showAlert: true,
-            variant: "warning",
-            msg
-        };
+      const msg = action.payload;
+      return {
+        showAlert: true,
+        variant: "warning",
+        msg,
+      };
     }
     case "hide": {
-        return {
-            showAlert: false,
-        };
+      return {
+        showAlert: false,
+      };
     }
   }
 }
@@ -42,7 +41,7 @@ function ErrorProvider({ children }) {
   const [state, dispatch] = React.useReducer(ErrorReducer, {
     showAlert: false,
     variant: "danger",
-    msg:''
+    msg: "",
   });
   return (
     <ErrorStateContext.Provider value={state}>
@@ -69,20 +68,20 @@ function useErrorDispatch() {
   return context;
 }
 
-function displayError(dispatch,config){
-  dispatch({type:"error",payload:config})
+function displayError(dispatch, config) {
+  dispatch({ type: "error", payload: config });
 }
 
-function displaySuccess(dispatch,config){
-  dispatch({type:"success",payload:config})
+function displaySuccess(dispatch, config) {
+  dispatch({ type: "success", payload: config });
 }
 
-function displayWarning(dispatch,config){
-  dispatch({type:"warning",payload:config})
+function displayWarning(dispatch, config) {
+  dispatch({ type: "warning", payload: config });
 }
 
-function hideAlert(dispatch){
-    dispatch({type:"hide"})
+function hideAlert(dispatch) {
+  dispatch({ type: "hide" });
 }
 
 export {
@@ -92,5 +91,5 @@ export {
   displayError,
   displaySuccess,
   hideAlert,
-  displayWarning
+  displayWarning,
 };

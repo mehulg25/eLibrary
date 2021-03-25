@@ -3,7 +3,11 @@ import { Container, Button, Form } from "react-bootstrap";
 import { useUserDispatch, logMeIn } from "../UserContext.js";
 import Axios from "axios";
 import { useHistory } from "react-router-dom";
-import {displayError,displaySuccess,useErrorDispatch} from '../ErrorContext'
+import {
+  displayError,
+  displaySuccess,
+  useErrorDispatch,
+} from "../ErrorContext";
 
 function LogIn() {
   const [email, setEmail] = useState("");
@@ -15,36 +19,33 @@ function LogIn() {
   const logIn = (e) => {
     e.preventDefault();
     if (email == "" || password == "") {
-      alert("wtf");
-      return;
+      displayError(errorDispatch, "Please Fill All The Fields."); //displayError is a function in libraryAlerts.
+      return; // to stop execution neeche ka
     }
 
     const userObj = {
       email,
       password,
     };
-    Axios.post("/logIn.php", JSON.stringify(userObj)).then(
-      (response) => {
+    Axios.post("/logIn.php", JSON.stringify(userObj))
+      .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          displaySuccess(errorDispatch,'Login Successful');
-          logMeIn(dispatch, response);//responsible for putting data in User context
-          history.push("/dashboard")
+          displaySuccess(errorDispatch, "Login Successful");
+          logMeIn(dispatch, response); //responsible for putting data in User context
+          history.push("/dashboard");
         }
-        
-      }
-    ).catch(err=>{
-      if(err.response.status === 401){
-        displayError(errorDispatch,err.response.data.msg)
-
-      }else if(err.response.status === 404){
-        displayError(errorDispatch,err.response.data.msg)
-      }
-    });
+      })
+      .catch((err) => {
+        if (err.response.status === 401) {
+          displayError(errorDispatch, err.response.data.msg);
+        } else if (err.response.status === 404) {
+          displayError(errorDispatch, err.response.data.msg);
+        }
+      });
   };
   return (
     <Container>
-      
       <Form onSubmit={logIn} className="logIn">
         <h3>Log In</h3>
         <Form.Group controlId="formBasicEmail">

@@ -3,34 +3,42 @@ import BookList from "./bookList";
 import AddBook from "./addBook";
 import Axios from "axios";
 import { useUserState, useUserDispatch, updateUserData } from "../UserContext";
+import {
+  loadAllBooks,
+  updateAllBooks,
+  useBooksDispatch,
+  useBooksState,
+} from "../BooksContext";
 function Dashboard() {
+  const { allBooks } = useBooksState();
+  const booksDispatch = useBooksDispatch();
+
   const { isAuthenticated, user } = useUserState();
   const dispatch = useUserDispatch();
-  const [allBooks, setAllBooks] = useState([]);
-  const [shelf, setShelf] = useState([]);
-  const [bookMarkedBooks, setBookMarkedBooks] = useState([]);
-  const [readBooks, setReadBooks] = useState([]);
-  const [currentlyIssuedBookId, setCurrentlyIssuedBookId] = useState(0);
+  const [allBooksSet, setAllBooksSet] = useState(false);
 
   useEffect(() => {
     if (isAuthenticated) {
       Axios.get("/allBooks.php")
         .then((response) => {
-          console.log(response);
           if (response.data.books != undefined) {
             response.data.books.map((book) => {
               book.book_id = book.id;
+              book.isBookIssued = false;
+              book.isBookBookmarked = false;
+              book.isBookRead = false;
             });
-            setAllBooks(response.data.books);
+            loadAllBooks(booksDispatch, response);
+            setAllBooksSet(true);
           }
         })
         .catch((err) => console.log(err));
-      setCurrentlyIssuedBookId(user.currently_issued_bookid);
+      // setCurrentlyIssuedBookId(user.currently_issued_bookid);
     }
-  }, [isAuthenticated]);
+  }, [user]);
 
   useEffect(() => {
-    if (allBooks.length == 0) return;
+    if (!allBooksSet || allBooks.length == 0) return;
 
     if (isAuthenticated && allBooks !== undefined) {
       const config = {
@@ -42,134 +50,53 @@ function Dashboard() {
 
       Axios.get("/user-books.php", config)
         .then((response) => {
-          console.log(response);
           if (
             response.data.books != undefined &&
             response.data.books.length !== 0
           ) {
             response.data.books.map((book) => {
               let foundBook = allBooks.find(function (b) {
-                return b.id == book.book_id;
+                return b.book_id == book.book_id;
               });
-
-              if (foundBook !== undefined) {
-                book.image_url = foundBook.image_url;
-                book.name = foundBook.name;
-                book.synopsis = foundBook.synopsis;
-                book.book_id = foundBook.book_id;
-                foundBook.action_type = book.action_type;
+              if (book.action_type === "ISSUED") {
+                foundBook.isBookIssued = true;
+              }
+              if (book.action_type === "BOOKMARKED") {
+                foundBook.isBookBookmarked = true;
+              }
+              if (book.action_type === "READ") {
+                foundBook.isBookRead = true;
               }
             });
-            var issuedBooks = response.data.books.filter(function (b) {
-              return b.action_type === "ISSUED";
-            });
-            var bookMarkedBooks = response.data.books.filter(function (b) {
-              return b.action_type === "BOOKMARKED";
-            });
-            var readBooks = response.data.books.filter(function (b) {
-              return b.action_type === "READ";
-            });
-            console.log(allBooks);
-            if (issuedBooks.length > 0) setShelf(issuedBooks);
-            if (bookMarkedBooks.length > 0) setBookMarkedBooks(bookMarkedBooks);
-            if (readBooks.length > 0) setReadBooks(readBooks);
+            updateAllBooks(booksDispatch, allBooks);
           }
         })
         .catch((err) => console.log(err));
     }
-  }, [allBooks]);
+  }, [allBooksSet]);
 
   const handleAddBook = (book) => {
-    console.log(book);
-    setAllBooks([book, ...allBooks]);
-  };
-
-  const handleIssueBook = (obj) => {
-    let foundBook = allBooks.find((book) => {
-      return book.book_id === obj.bookId;
-    });
-    foundBook.available_count = obj.updatedAvailableCount;
-    setCurrentlyIssuedBookId(obj.bookId);
-    setShelf([foundBook]);
-    user.currently_issued_bookid = foundBook.book_id;
-    updateUserData(dispatch, user);
-  };
-
-  const handleReturnBook = (obj) => {
-    console.log(obj);
-    let foundBook = allBooks.find((book) => {
-      return book.book_id === obj.bookId;
-    });
-    foundBook.available_count = obj.updatedAvailableCount;
-    setShelf([]);
-    user.currently_issued_bookid = null;
-    updateUserData(dispatch, user);
-  };
-
-  const handleBookmarkBook = (obj) => {
-    console.log(bookMarkedBooks);
-    let foundBook = allBooks.find((book) => {
-      return book.book_id === obj.bookId;
-    });
-    foundBook.action_type = "BOOKMARKED";
-    setAllBooks(allBooks);
-    console.log(shelf,allBooks)
-    setShelf(shelf)
-    setBookMarkedBooks([...bookMarkedBooks, foundBook]);
-  };
-
-  const handleDeleteBook = (obj) => {
-    let updatedBooks = allBooks.filter((book) => book.book_id !== obj.id);
-    setAllBooks(updatedBooks);
-  };
-
-  const handleUnsaveBook = (obj) => {
-    let foundBook = allBooks.find((book) => {
-      return book.book_id === obj.id;
-    });
-    foundBook.action_type = "";
-    setAllBooks(allBooks);
-    let updatedBooks = bookMarkedBooks.filter(
-      (book) => book.book_id !== obj.id
-    );
-    setBookMarkedBooks(updatedBooks);
+    updateAllBooks(booksDispatch, [book, ...allBooks]);
   };
 
   if (!isAuthenticated) return <p>Please Login to Continue!</p>;
 
   return (
     <div>
+      {console.log(allBooks)}
       <BookList
-        books={shelf}
+        books={allBooks.filter((b) => b.isBookIssued)}
         title="My Shelf"
-        handleReturnBook={handleReturnBook}
-        handleDeleteBook={handleDeleteBook}
-        handleUnsaveBook={handleUnsaveBook}
-        handleBookmarkBook={handleBookmarkBook}
       />
       <BookList
-        books={readBooks}
-        handleDeleteBook={handleDeleteBook}
-        handleUnsaveBook={handleUnsaveBook}
-        handleBookmarkBook={handleBookmarkBook}
+        books={allBooks.filter((b) => b.isBookRead)}
         title="Books Read"
       />
       <BookList
-        books={bookMarkedBooks}
-        handleDeleteBook={handleDeleteBook}
-        handleUnsaveBook={handleUnsaveBook}
-        
+        books={allBooks.filter((b) => b.isBookBookmarked)}
         title="Saved For Later"
       />
-      <BookList
-        books={allBooks}
-        handleDeleteBook={handleDeleteBook}
-        title="All Books"
-        handleIssueBook={handleIssueBook}
-        handleReturnBook={handleReturnBook}
-        handleBookmarkBook={handleBookmarkBook}
-        handleUnsaveBook={handleUnsaveBook}
-      />{" "}
+      <BookList books={allBooks} title="All Books" />{" "}
       {isAuthenticated && user.role === "ADMIN" ? (
         <AddBook handleAddBook={handleAddBook} />
       ) : null}{" "}

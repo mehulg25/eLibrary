@@ -22,9 +22,20 @@ class BookList extends Component {
           <ul className="bookList">
             {this.props.books !== undefined &&
               this.props.books.map((
-                { id, name, synopsis, image_url, author_name, total_count,available_count,book_id,action_type } //arguments from database.
+                {
+                  name,
+                  synopsis,
+                  image_url,
+                  author_name,
+                  total_count,
+                  available_count,
+                  book_id,
+                  isBookIssued,
+                  isBookBookmarked,
+                  isBookRead,
+                } //arguments from database.
               ) => (
-                <li key={id} className="bookCard">
+                <li key={book_id} className="bookCard">
                   <BookCard
                     bookName={name} //javascript variable after destructuring above as arguments.
                     bookImage={image_url} //passing props PtC
@@ -32,14 +43,10 @@ class BookList extends Component {
                     bookAuthor={author_name}
                     totalCount={total_count}
                     bookId={book_id}
-                    availableCount = {available_count}
-                    handleIssueBook = {this.props.handleIssueBook}
-                    handleReturnBook = {this.props.handleReturnBook}
-                    handleBookmarkBook = {this.props.handleBookmarkBook}
-                    title={this.props.title}
-                    action_type={action_type}
-                    handleDeleteBook={this.props.handleDeleteBook}
-                    handleUnsaveBook={this.props.handleUnsaveBook}
+                    availableCount={available_count}
+                    isIssued={isBookIssued}
+                    isRead={isBookRead}
+                    isBookmarked={isBookBookmarked}
                   />
                 </li>
               ))}

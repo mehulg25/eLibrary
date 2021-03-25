@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import { Card, Button, Modal, Row, Col, Container } from "react-bootstrap";
 import Axios from "axios";
-import { useUserState, useUserDispatch } from "../UserContext";
+import { useUserState, useUserDispatch, updateUserData } from "../UserContext";
 import {
   displayError,
   displaySuccess,
   useErrorDispatch,
 } from "../ErrorContext";
+import {
+  useBooksDispatch,
+  useBooksState,
+  updateAllBooks,
+} from "../BooksContext";
 
 function BookCard({
   bookName,
@@ -16,16 +21,14 @@ function BookCard({
   totalCount,
   bookId,
   availableCount,
-  handleIssueBook,
-  handleReturnBook,
-  title,
-  handleBookmarkBook,
-  action_type,
-  handleDeleteBook,
-  handleUnsaveBook
+  isIssued,
+  isRead,
+  isBookmarked,
 }) {
   const { isAuthenticated, user } = useUserState();
-  // const dispatch = useUserDispatch();
+  const dispatch = useUserDispatch();
+  const { allBooks } = useBooksState();
+  const booksDispatch = useBooksDispatch();
   const errorDispatch = useErrorDispatch();
   const [modal, setModal] = useState();
 
@@ -46,13 +49,12 @@ function BookCard({
     Axios.post("/bookAction.php", JSON.stringify(bookObj), config)
       .then((response) => {
         console.log(response);
-        let obj = {
-          id: bookId,
-        };
-        console.log(obj);
         if (response.status === 200) {
           displaySuccess(errorDispatch, response.data.msg);
-          handleUnsaveBook(obj);
+
+          let thisBook = allBooks.find((b) => b.book_id === bookId);
+          thisBook.isBookBookmarked = false;
+          updateAllBooks(booksDispatch, allBooks);
         } else if (response.status == 202) {
           displayError(errorDispatch, response.data.msg);
         } else if (response.status == 203) {
@@ -64,7 +66,7 @@ function BookCard({
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
   const deleteBook = () => {
     const config = {
       headers: {
@@ -73,21 +75,24 @@ function BookCard({
       },
     };
     var bookObj = {
-      id: bookId
+      id: bookId,
     };
-    Axios.post('/deleteBook.php',JSON.stringify(bookObj,config)).then(response=>{
-      if(response.status===200){
-        handleDeleteBook(bookObj)
-        displaySuccess(errorDispatch,response.data.msg)
-      }
-      else if (response.status===403) {
-        displayError(errorDispatch,response.data.msg)
-      }
-      else {
-        displayError(errorDispatch,response.data.msg)
-      }
-    }).catch(err=>{console.log(err)})
-  }
+    Axios.post("/deleteBook.php", JSON.stringify(bookObj, config))
+      .then((response) => {
+        if (response.status === 200) {
+          let updatedBooks = allBooks.filter((book) => book.book_id !== bookId);
+          updateAllBooks(booksDispatch, updatedBooks);
+          displaySuccess(errorDispatch, response.data.msg);
+        } else if (response.status === 403) {
+          displayError(errorDispatch, response.data.msg);
+        } else {
+          displayError(errorDispatch, response.data.msg);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   const saveBookForLater = () => {
     const config = {
       headers: {
@@ -102,14 +107,13 @@ function BookCard({
     Axios.post("/bookAction.php", JSON.stringify(bookObj), config)
       .then((response) => {
         console.log(response);
-        let obj = {
-          bookId: bookId,
-        };
-        console.log(obj);
+
         if (response.status === 200) {
           displaySuccess(errorDispatch, response.data.msg);
-          handleBookmarkBook(obj);
-          setModal(false);
+
+          let thisBook = allBooks.find((b) => b.book_id === bookId);
+          thisBook.isBookBookmarked = true;
+          updateAllBooks(booksDispatch, allBooks);
         } else if (response.status == 202) {
           displayError(errorDispatch, response.data.msg);
         } else if (response.status == 203) {
@@ -148,14 +152,16 @@ function BookCard({
     Axios.post("/bookAction.php", JSON.stringify(bookObj), config)
       .then((response) => {
         console.log(response);
-        let obj = {
-          bookId: bookId,
-          updatedAvailableCount: availableCount - 1,
-        };
-        console.log(obj);
+
         if (response.status === 200) {
           displaySuccess(errorDispatch, "Book Successfully Issued!");
-          handleIssueBook(obj);
+
+          let thisBook = allBooks.find((b) => b.book_id === bookId);
+          thisBook.isBookIssued = true;
+          thisBook.available_count = availableCount - 1;
+          updateAllBooks(booksDispatch, allBooks);
+          user.currently_issued_bookid = thisBook.book_id;
+          updateUserData(dispatch, user);
           setModal(false);
         } else if (response.status == 202) {
           displayError(errorDispatch, response.data.msg);
@@ -184,15 +190,71 @@ function BookCard({
     };
     Axios.post("/bookAction.php", bookObj, config)
       .then((response) => {
-        console.log(response);
-        console.log(availableCount);
-        let obj = {
-          bookId: bookId,
-          updatedAvailableCount: parseInt(availableCount) + 1,
-        };
-        displaySuccess(errorDispatch, "Book Successfully Returned!");
-        handleReturnBook(obj);
-        // toggle()
+        if (response.status === 200) {
+          displaySuccess(errorDispatch, "Book Successfully Returned!");
+
+          let thisBook = allBooks.find((b) => b.book_id === bookId);
+          thisBook.isBookIssued = false;
+          thisBook.available_count = parseInt(availableCount) + 1;
+          updateAllBooks(booksDispatch, allBooks);
+          user.currently_issued_bookid = null;
+          updateUserData(dispatch, user);
+          setModal(false);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const markBookAsRead = () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    };
+    var bookObj = {
+      bookId: bookId,
+      action: "READ",
+    };
+
+    Axios.post("/bookAction.php", bookObj, config)
+      .then((response) => {
+        if (response.status === 200) {
+          displaySuccess(errorDispatch, "Book Successfully Marked As Read!");
+
+          let thisBook = allBooks.find((b) => b.book_id === bookId);
+          thisBook.isBookRead = true;
+          updateAllBooks(booksDispatch, allBooks);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const markBookAsUnRead = () => {
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    };
+    var bookObj = {
+      bookId: bookId,
+      action: "UNREAD",
+    };
+
+    Axios.post("/bookAction.php", bookObj, config)
+      .then((response) => {
+        if (response.status === 200) {
+          displaySuccess(errorDispatch, "Book Successfully Marked As Un-Read!");
+
+          let thisBook = allBooks.find((b) => b.book_id === bookId);
+          thisBook.isBookRead = false;
+          updateAllBooks(booksDispatch, allBooks);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -243,21 +305,17 @@ function BookCard({
                   </p>
                 </Row>
                 <div className="bookCardButtons">
-                  {bookId === user.currently_issued_bookid ? null : (
+                  {isIssued ? null : (
                     <Button variant="primary" onClick={issueBook}>
                       Issue
                     </Button>
                   )}
-                  {bookId === user.currently_issued_bookid && (
-                    <Button
-                      variant="primary"
-                      onClick={returnBook}
-                      disabled={bookId !== user.currently_issued_bookid}
-                    >
+                  {isIssued && (
+                    <Button variant="primary" onClick={returnBook}>
                       Return
                     </Button>
                   )}
-                  {action_type === "BOOKMARKED" ? (
+                  {isBookmarked ? (
                     <Button variant="primary" onClick={unsaveBook}>
                       Unsave
                     </Button>
@@ -266,9 +324,16 @@ function BookCard({
                       Save
                     </Button>
                   )}
-                  <Button variant="primary" onClick={toggle}>
-                    {title !== "readBooks" ? "Read" : "Unread"}
-                  </Button>
+
+                  {isRead ? (
+                    <Button variant="primary" onClick={markBookAsUnRead}>
+                      Unread
+                    </Button>
+                  ) : (
+                    <Button variant="primary" onClick={markBookAsRead}>
+                      Read
+                    </Button>
+                  )}
                   <div className="adminButtons">
                     {isAuthenticated && user.role === "ADMIN" && (
                       <>
@@ -289,7 +354,7 @@ function BookCard({
                 </Row>
                 <Row>
                   <p>
-                    <b>Available Count : </b>
+                    <b>Available Copies : </b>
                     {availableCount}/{totalCount}
                   </p>
                 </Row>

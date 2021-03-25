@@ -34,9 +34,8 @@ function ManageReaders() {
   if (isAuthenticated && user.role === "ADMIN") {
     return (
       <div>
-        
         {readers.map((reader) => (
-          <ReaderCard 
+          <ReaderCard
             key={reader.id}
             email={reader.email}
             id={reader.id}

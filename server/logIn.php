@@ -2,6 +2,7 @@
 
 require  "./vendor/autoload.php";
 use \Firebase\JWT\JWT;
+
 require 'db_connection.php';
 
 error_reporting(-1); // reports all errors
@@ -21,21 +22,20 @@ $data = json_decode(file_get_contents("php://input"));
 $email = $data->email;
 $password = $data->password;
 
-$getUser = mysqli_query($conn,"SELECT `id`,`email`,`password`,`role`,`currently_issued_bookid` FROM `users` WHERE `email` = '$email'");
+$getUser = mysqli_query($conn, "SELECT `id`,`email`,`password`,`role`,`currently_issued_bookid` FROM `users` WHERE `email` = '$email'");
 
-if(mysqli_num_rows($getUser) > 0){
-    $get_user = mysqli_fetch_all($getUser,MYSQLI_ASSOC); 
+if (mysqli_num_rows($getUser) > 0) {
+    $get_user = mysqli_fetch_all($getUser, MYSQLI_ASSOC);
     $password_fromDB = $get_user[0]['password'];
     $id = $get_user[0]['id'];
     $role = $get_user[0]['role'];
     $currently_issued_bookid = $get_user[0]['currently_issued_bookid'];
 
-    if(password_verify($password, $password_fromDB)) //Inbuilt function to check password and hashed pwd equality!
-        {
-            $secret_key = "YOUR_SECRET_KEY";
-            $issuer_claim = "THE_ISSUER"; // this can be the servername
-            $audience_claim = "THE_AUDIENCE";
-            $issuedat_claim = time(); // issued at system current time
+    if (password_verify($password, $password_fromDB)) { //Inbuilt function to check password and hashed pwd equality!
+        $secret_key = "YOUR_SECRET_KEY";
+        $issuer_claim = "THE_ISSUER"; // this can be the servername
+        $audience_claim = "THE_AUDIENCE";
+        $issuedat_claim = time(); // issued at system current time
             $notbefore_claim = $issuedat_claim; //not before in seconds
             $expire_claim = $issuedat_claim + 3600; // expire time in seconds
             $token = array(
@@ -49,11 +49,11 @@ if(mysqli_num_rows($getUser) > 0){
                     "email" => $email
             ));
     
-            http_response_code(200);
+        http_response_code(200);
     
-            $jwt = JWT::encode($token, $secret_key);
-            echo json_encode(
-                array(
+        $jwt = JWT::encode($token, $secret_key);
+        echo json_encode(
+            array(
                     "msg" => "Successful login.",
                     "jwt" => $jwt,
                     "email" => $email,
@@ -61,18 +61,14 @@ if(mysqli_num_rows($getUser) > 0){
                     "role" => $role,
                     "id" => $id,
                     "currently_issued_bookid" => $currently_issued_bookid
-                ));
-                return;
-        }
-        else{
-    
-            http_response_code(401);
-            echo json_encode(["msg" => "Invalid Credentials!"]);
-        }
+                )
+        );
+        return;
+    } else {
+        http_response_code(401);
+        echo json_encode(["msg" => "Invalid Credentials!"]);
     }
-else{
+} else {
     http_response_code(404);
     echo json_encode(["msg"=>"No User Found"]);
 }
-
-?>

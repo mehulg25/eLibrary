@@ -1,4 +1,3 @@
-
 <?php
 //we are getting email,pass and role from client
 error_reporting(-1); // reports all errors
@@ -17,6 +16,7 @@ require 'db_connection.php';
 require  "./vendor/autoload.php";
 
 use \Firebase\JWT\JWT;
+
 //autoload is to use external libraries like JWT. Composer is php ka npm i ek tareeke se. line 19and17 tells that we are using and allowing third party libraries.
 //JWT=JSON Web Token -> using as this can act as a single data entity. Authentication and everything about user is here. One single token and is secure too.Sort of Encapsulation of data
 // We are using JWT for Sessions.
@@ -31,24 +31,23 @@ if (
     && !empty(trim($data->role))
     //this is backend validation
 ) {
-
-$email = mysqli_real_escape_string($conn, trim($data->email));
-$password = mysqli_real_escape_string($conn, trim($data->password));
-$password_hash = password_hash($password, PASSWORD_BCRYPT);
-$role = mysqli_real_escape_string($conn, trim($data->role));
-//data object se humne php me variables me shift karlia hai and checking if there are any special or encoded characters or not.
-$insertUser = mysqli_query($conn,"INSERT INTO `users`(`email`,`password`,`role`) VALUES('$email','$password_hash','$role')");
-// query ke baad true false value milegi
-if($insertUser){
-    $last_id = mysqli_insert_id($conn); // primary auto gen id will get
-    $getInsertedUser = mysqli_query($conn,"SELECT `id`,`email`,`password`,`role` FROM `users` WHERE `id` = '$last_id'");
-    $get_user = mysqli_fetch_all($getInsertedUser,MYSQLI_ASSOC); // assoc array bana diya using inbuilt function
-    // ab front end pe JWT token bhejna hai to start the session. So now we will fetch the recently inserted data and generate a new JWT
-    // all below fields are required for JWT and we just dont care
-    $secret_key = "YOUR_SECRET_KEY"; 
-    $issuer_claim = "THE_ISSUER"; // this can be the servername
-    $audience_claim = "THE_AUDIENCE";
-    $issuedat_claim = time(); // issued at
+    $email = mysqli_real_escape_string($conn, trim($data->email));
+    $password = mysqli_real_escape_string($conn, trim($data->password));
+    $password_hash = password_hash($password, PASSWORD_BCRYPT);
+    $role = mysqli_real_escape_string($conn, trim($data->role));
+    //data object se humne php me variables me shift karlia hai and checking if there are any special or encoded characters or not.
+    $insertUser = mysqli_query($conn, "INSERT INTO `users`(`email`,`password`,`role`) VALUES('$email','$password_hash','$role')");
+    // query ke baad true false value milegi
+    if ($insertUser) {
+        $last_id = mysqli_insert_id($conn); // primary auto gen id will get
+        $getInsertedUser = mysqli_query($conn, "SELECT `id`,`email`,`password`,`role` FROM `users` WHERE `id` = '$last_id'");
+        $get_user = mysqli_fetch_all($getInsertedUser, MYSQLI_ASSOC); // assoc array bana diya using inbuilt function
+        // ab front end pe JWT token bhejna hai to start the session. So now we will fetch the recently inserted data and generate a new JWT
+        // all below fields are required for JWT and we just dont care
+        $secret_key = "YOUR_SECRET_KEY";
+        $issuer_claim = "THE_ISSUER"; // this can be the servername
+        $audience_claim = "THE_AUDIENCE";
+        $issuedat_claim = time(); // issued at
     $notbefore_claim = $issuedat_claim; //not before in seconds
     $expire_claim = $issuedat_claim + 3600; // expire time in seconds
     $token = array( // boilerplate code for jwt
@@ -62,24 +61,20 @@ if($insertUser){
             "email" => $get_user[0]['email'] // assoc array [0] index is needed. first object will be the result we want as unique id and we will get last created user that we want. here email is database ka email name
     ));
 
-    $jwt = JWT::encode($token, $secret_key); // token ban gaya and now this is an inbuilt function
-    header("HTTP/1.1 200 OK");
-    echo json_encode( // sending data to front end that client will receieve in the response section.
+        $jwt = JWT::encode($token, $secret_key); // token ban gaya and now this is an inbuilt function
+        header("HTTP/1.1 200 OK");
+        echo json_encode( // sending data to front end that client will receieve in the response section.
         array(
             "msg" => "User Logged In",
             "jwt" => $jwt,
             "email" => $get_user[0]['email'],
             "expireAt" => $expire_claim, // can remove this line in future.
             "role" =>$get_user[0]['role'],
-            "id" => $last_id,
-            "currently_issued_bookid" => null
+            "id" => $last_id
         ));
         return;
+    } else {
+        header("HTTP/1.1 500 Some Error Occured");
+        echo json_encode(["msg"=>"User Not Created"]); // will go on response
+    }
 }
-else{
-    header("HTTP/1.1 500 Some Error Occured"); 
-    echo json_encode(["msg"=>"User Not Created"]); // will go on response
-}
-}
-
-?>

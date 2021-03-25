@@ -35,7 +35,7 @@ function ManageAdmins() {
       <div>
         <AddAdmin handleAddAdmin={handleAddAdmin} />
         {admins.map((admin) => (
-          <AdminCard 
+          <AdminCard
             key={admin.id}
             email={admin.email}
             id={admin.id}

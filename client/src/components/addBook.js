@@ -33,7 +33,7 @@ class AddBook extends Component {
     });
   };
   addBook = (e) => {
-    // e coz event as form function
+    console.log("here"); // e coz event as form function
     e.preventDefault(); //inbuilt function to prevent default submit for some time
     if (
       // client side validation
@@ -81,6 +81,9 @@ class AddBook extends Component {
           total_count: totalCount,
           book_id: response.data.id,
           available_count: totalCount,
+          isBookIssued: false,
+          isBookBookmarked: false,
+          isBookRead: false,
         };
         this.props.handleAddBook(addedBookObj); // props from dashboard as handleaddbook is function in parent || PtoC and back CtoP
         this.setState({
@@ -111,7 +114,7 @@ class AddBook extends Component {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Add New Book
+              Publish Book
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -120,13 +123,21 @@ class AddBook extends Component {
             <Form onSubmit={this.addBook}>
               {" "}
               {/* onSubmit call function addBook instead of onClick */}
-              <ImageUploader
-                withIcon={true}
-                buttonText="Choose Cover Image"
-                onChange={this.onDrop} //function call whenever image upload
-                imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
-                maxFileSize={5242880}
-              />
+              {this.state.bookImage !== "" ? (
+                <img
+                  width="400"
+                  height="400"
+                  src={`../${this.state.bookImage}`}
+                />
+              ) : (
+                <ImageUploader
+                  withIcon={true}
+                  buttonText="Choose Cover Image"
+                  onChange={this.onDrop} //function call whenever image upload
+                  imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
+                  maxFileSize={5242880}
+                />
+              )}
               <Form.Group controlId="formBasicBookName">
                 <Form.Label>Enter Book Name</Form.Label>
                 <Form.Control // form control is nothing but an input box
@@ -134,15 +145,6 @@ class AddBook extends Component {
                   onChange={this.onChange} // function call saves value at every key press.
                   type="text"
                   placeholder="Enter Book Name"
-                />
-              </Form.Group>
-              <Form.Group controlId="bookAuthor">
-                <Form.Label>Author(s)</Form.Label>
-                <Form.Control
-                  name="bookAuthor"
-                  onChange={this.onChange}
-                  type="text"
-                  placeholder="Enter Author name(s)"
                 />
               </Form.Group>
               <Form.Group controlId="formBasicSynopsis">
@@ -154,13 +156,24 @@ class AddBook extends Component {
                   placeholder="Enter Synopsis"
                 />
               </Form.Group>
+              <Form.Group controlId="bookAuthor">
+                <Form.Label>Author(s)</Form.Label>
+                <Form.Control
+                  name="bookAuthor"
+                  onChange={this.onChange}
+                  type="text"
+                  placeholder="Enter Author name(s)"
+                />
+              </Form.Group>
               <Form.Group controlId="totalCount">
                 <Form.Label>Count</Form.Label>
                 <Form.Control
                   name="totalCount"
                   onChange={this.onChange}
                   type="number"
-                  placeholder="Total Books"
+                  placeholder="Number Of Copies"
+                  value={this.state.totalCount}
+                  min={1}
                 />
               </Form.Group>
               <Alert
@@ -170,7 +183,7 @@ class AddBook extends Component {
               >
                 Please check Fields!
               </Alert>
-              <Button variant="primary" type="Publish">
+              <Button variant="primary" type="submit">
                 {" "}
                 {/* no need for onclick as button is inside form and there is a default behaviour on Submit */}
                 Add Book

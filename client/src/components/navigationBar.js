@@ -31,9 +31,7 @@ function NavigationBar() {
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
       <Navbar.Collapse id="responsive-navbar-nav">
-          
         {isAuthenticated && (
-            
           <Nav>
             <Nav.Link href="/readingHistory">Reading History</Nav.Link>
           </Nav>

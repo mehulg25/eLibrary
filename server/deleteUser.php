@@ -6,21 +6,22 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 require 'db_connection.php';
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {    
-    return 0;    
-} 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    return 0;
+}
 
 $data = json_decode(file_get_contents("php://input"));
-if(isset($data->id) && is_numeric($data->id)){
+if (isset($data->id) && is_numeric($data->id)) {
     $delID = $data->id;
-    $deleteUser = mysqli_query($conn,"DELETE FROM `users` WHERE `id`='$delID'");
-    if($deleteUser){
-        echo json_encode(["success"=>1,"msg"=>"User Deleted"]);
+    $deleteUser = mysqli_query($conn, "DELETE FROM `users` WHERE `id`='$delID'");
+    if ($deleteUser) {
+        header("HTTP/1.1 200 OK");
+        echo json_encode(["msg"=>"User Deleted"]);
+    } else {
+        header("HTTP/1.1 500 NOT DELETED");
+        echo json_encode(["msg"=>"User Not Deleted!"]);
     }
-    else{
-        echo json_encode(["success"=>0,"msg"=>"User Not Found!"]);
-    }
-}
-else{
-    echo json_encode(["success"=>0,"msg"=>"User Not Found!"]);
+} else {
+    header("HTTP/1.1 403 RESOURCE NOT FOUND");
+    echo json_encode(["msg"=>"User Not Found!"]);
 }

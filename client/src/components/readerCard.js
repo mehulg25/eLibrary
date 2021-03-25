@@ -7,7 +7,7 @@ function ReaderCard({ email, id, deleteReader }) {
   const [modal, setModal] = useState(false);
 
   return (
-    <div className = "adminList">
+    <div className="adminList">
       <Card style={{ width: "18rem" }}>
         <Icon path={mdiAccount} size={10} />
         <Card.Body>

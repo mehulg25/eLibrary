@@ -18,28 +18,29 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 require 'db_connection.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {    
-    return 0;    
-} 
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    return 0;
+}
 
 
 $jwt = '';
 $userId = '';
-foreach(getallheaders() as $name=>$value){
-    if($name == 'x-auth-token')
+foreach (getallheaders() as $name=>$value) {
+    if ($name == 'x-auth-token') {
         $jwt = $value;
+    }
 }
 
-try{
+try {
     $secret_key = "YOUR_SECRET_KEY";
     $decoded = JWT::decode($jwt, $secret_key, array('HS256'));
     $userId = $decoded->data->id;
     
-    if(!isset($userId) && empty(trim($userId))){
+    if (!isset($userId) && empty(trim($userId))) {
         header("HTTP/1.1 403 Forbidden");
         echo json_encode(["msg"=>"Unauthorised"]);
-    }   
-}catch(\Exception $e){
+    }
+} catch (\Exception $e) {
     header("HTTP/1.1 403 Forbidden");
     echo json_encode(["msg"=>"Unauthorised"]);
 }
@@ -69,16 +70,16 @@ if (
         $currentlyIssuedBookId = $temp[0]->currently_issued_bookid;
         $availableCount = $temp2[0]->available_count;
 
-        if($availableCount <=0 ){
-            header("HTTP/1.1 203 Cannot Update");
-            echo json_encode(["msg" => "No Copies Available at the moment :("]);
+        if ($availableCount <=0) {
+            header("HTTP/1.1 401 Cannot Update"); //**************** 
+            echo json_encode(["msg" => "No Copies Available at the moment"]);
             return;
         }
         $availableCount = $availableCount - 1;
 
 
         if ($currentlyIssuedBookId != null || $currentlyIssuedBookId != "") {
-            header("HTTP/1.1 202 Cannot Update");
+            header("HTTP/1.1 401 Cannot Update");
             echo json_encode(["msg" => "Book already issued"]);
             return;
         }
@@ -87,7 +88,7 @@ if (
         if ($bookAction) {
             $last_id = mysqli_insert_id($conn);
         } else {
-            header("HTTP/1.1 500 Cannot Update");
+            header("HTTP/1.1 401 Cannot Update");
             echo json_encode(["msg" => "Book Not Issued!"]);
             return;
         }
@@ -95,7 +96,7 @@ if (
         $bookCountUpdate = mysqli_query($conn, "UPDATE books SET `available_count` = '$availableCount' where `id` = '$bookId'");
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg" => "Book Successfully Issued"]);
-    } else if ($action == "RETURNED") {
+    } elseif ($action == "RETURNED") {
         $user = mysqli_query($conn, "SELECT * FROM users where `id` = '$userId'");
         $user_found = mysqli_fetch_all($user, MYSQLI_ASSOC);
 
@@ -118,8 +119,7 @@ if (
         $updateUserCurrentBook = mysqli_query($conn, "UPDATE users SET `currently_issued_bookid` = NULL where `id` = '$userId'");
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg" => "Book Returned."]);
-    }else if ($action == "BOOKMARKED") {
-        
+    } elseif ($action == "BOOKMARKED") {
         $bookAction = mysqli_query($conn, "INSERT INTO `users_bookdata` (`user_id`,`book_id`,`action_type`) VALUES('$userId','$bookId','$action')");
         if (!$bookAction) {
             header("HTTP/1.1 401 Cannot Update");
@@ -128,9 +128,8 @@ if (
         }
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg" => "Book Bookmarked."]);
-    }
-    else if ($action=="UNSAVE") {
-        $bookAction=mysqli_query($conn,"DELETE FROM `users_bookdata` WHERE `user_id` = '$userId' AND `book_id` = '$bookId' AND `action_type` = 'BOOKMARKED'");
+    } elseif ($action=="UNSAVE") {
+        $bookAction=mysqli_query($conn, "DELETE FROM `users_bookdata` WHERE `user_id` = '$userId' AND `book_id` = '$bookId' AND `action_type` = 'BOOKMARKED'");
         if (!$bookAction) {
             header("HTTP/1.1 401 Cannot Update");
             echo json_encode(["msg" => "No Such Book Saved"]);
@@ -138,8 +137,26 @@ if (
         }
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg" => "Book Unsaved."]);
+    } elseif ($action=="READ") {
+        $bookAction=mysqli_query($conn, "INSERT INTO `users_bookdata` (`user_id`,`book_id`,`action_type`,`book_read_timestamp`) VALUES('$userId','$bookId','$action','$currentTime')");
+        if (!$bookAction) {
+            header("HTTP/1.1 401 Cannot Update");
+            echo json_encode(["msg" => "No Such Book Marked As Saved"]);
+            return;
+        }
+        header("HTTP/1.1 200 OK");
+        echo json_encode(["msg" => "Book Marked As Read."]);
+    } elseif ($action=="UNREAD") {
+        $bookAction=mysqli_query($conn, "DELETE FROM `users_bookdata` WHERE `user_id` = '$userId' AND `book_id` = '$bookId' AND `action_type` = 'READ'");
+        if (!$bookAction) {
+            header("HTTP/1.1 401 Cannot Update");
+            echo json_encode(["msg" => "No Such Book Marked As Read"]);
+            return;
+        }
+        header("HTTP/1.1 200 OK");
+        echo json_encode(["msg" => "Book Marked As Unread."]);
     }
 } else {
-    header("HTTP/1.1 200 Internal Server Error");
+    header("HTTP/1.1 500 Internal Server Error");
     echo json_encode(["msg" => "Some Error Occurred"]);
 }

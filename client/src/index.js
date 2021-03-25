@@ -1,21 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { UserProvider } from './UserContext';
-import {ErrorProvider} from './ErrorContext'
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { UserProvider } from "./UserContext";
+import { ErrorProvider } from "./ErrorContext";
+import { BooksProvider } from "./BooksContext";
 
 ReactDOM.render(
-  
-    <UserProvider>
-      <ErrorProvider>
+  <UserProvider>
+    <ErrorProvider>
+      <BooksProvider>
         <App />
-      </ErrorProvider>
-    </UserProvider>
-  ,
-  document.getElementById('root')
+      </BooksProvider>
+    </ErrorProvider>
+  </UserProvider>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

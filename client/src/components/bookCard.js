@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Button, Modal, Row, Col, Container } from "react-bootstrap";
+import { Card, Button, Modal, Row, Col, Container, Form } from "react-bootstrap";
 import Axios from "axios";
 import { useUserState, useUserDispatch, updateUserData } from "../UserContext";
 import {
@@ -12,6 +12,7 @@ import {
   useBooksState,
   updateAllBooks,
 } from "../BooksContext";
+import ImageUploader from "react-images-upload";
 
 function BookCard({
   bookName,
@@ -31,10 +32,63 @@ function BookCard({
   const booksDispatch = useBooksDispatch();
   const errorDispatch = useErrorDispatch();
   const [modal, setModal] = useState();
+  const [edit,setEdit] = useState(false);
+  const [editBookName,setBookName] = useState(bookName);
+  const [editBookSynopsis,setBookSynopsis] = useState(bookSynopsis);
+  const [editBookAuthor,setBookAuthor] = useState(bookAuthor);
+  const [editBookImage,setBookImage] = useState(bookImage);
 
   const toggle = () => {
     setModal(!modal);
   };
+
+  const onDrop = (picture) => {
+    console.log((picture));
+  
+    setBookImage(picture[0].name)
+    picture.splice(0,1);
+
+  };
+
+  const editBook = () =>{
+    if(editBookName === '' || editBookAuthor === '' ||editBookSynopsis === ''){
+      displayError(errorDispatch,'Fields cannot be empty');
+      return;
+    }
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": localStorage.getItem("token"),
+      },
+    };
+    const obj = {
+      bookId,
+      bookName:editBookName,
+      bookSynopsis:editBookSynopsis,
+      bookImage:editBookImage,
+      bookAuthor:editBookAuthor,
+      totalCount
+    }
+    Axios.post('/addBook.php',obj).then(response=>{
+      console.log(response);
+      if(response.status == 200){
+        displaySuccess(errorDispatch,response.data.msg);
+        let foundBook = allBooks.find(b=>b.book_id === bookId)
+        console.log(foundBook);
+        foundBook.name=editBookName
+        foundBook.synopsis=editBookSynopsis
+        foundBook.author_name=editBookAuthor
+        foundBook.image_url=editBookImage
+        updateAllBooks(booksDispatch,allBooks);
+      }else{
+        displayError(errorDispatch,response.data.msg)
+      }
+      
+      setEdit(false)
+    })
+  }
+  
   const unsaveBook = () => {
     const config = {
       headers: {
@@ -263,16 +317,17 @@ function BookCard({
 
   return (
     <div>
-      <Card style={{ width: "18rem" }}>
+      <Card style={{ width: "18rem" }} className="bookCardFrame">
         <Card.Img
           variant="top"
-          src={`../${bookImage}`}
+          src={`../${editBookImage}`}
           width="400"
           height="400"
+          className="bookCardImg"
         />
         <Card.Body>
-          <Card.Title style={{ height: "10vh" }}>{bookName}</Card.Title>
-          <Button variant="primary" onClick={toggle}>
+          <Card.Title style={{ height: "10vh" }} className="bookName">{bookName}</Card.Title>
+          <Button variant="primary" onClick={toggle} className="bookCardButton">
             View
           </Button>
         </Card.Body>
@@ -286,7 +341,14 @@ function BookCard({
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            {bookName}
+            {edit?(<><Form.Label>Enter Book Name</Form.Label>
+            <Form.Control 
+                  name="bookName" 
+                  onChange={(e)=>setBookName(e.target.value)} 
+                  type="text"
+                  value={editBookName}
+                  placeholder="Enter Book Name"
+                /></>):(bookName)}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -294,15 +356,25 @@ function BookCard({
             <Row>
               <Col>
                 <Row>
-                  <p>
-                    {" "}
-                    <b>Author : </b> {bookAuthor}
-                  </p>
+                  {edit?(<><Form.Label>Author(s)</Form.Label><Form.Control
+                  name="bookAuthor"
+                  onChange={(e)=>setBookAuthor(e.target.value)} 
+                  type="text"
+                  value={editBookAuthor}
+                  placeholder="Enter Author name(s)"
+                /></>):(<p> <b>Author : </b> {bookAuthor}</p>)}
                 </Row>
                 <Row className="synopsis">
-                  <p>
+                  {edit?(<><Form.Label>Synopsis</Form.Label><Form.Control
+                  name="bookSynopsis"
+                  onChange={(e)=>setBookSynopsis(e.target.value)} 
+                  type="text"
+                  as="textarea" rows={10}
+                  value={editBookSynopsis}
+                  placeholder="Enter Synopsis"
+                /></>):(<p>
                     <b>Synopsis </b> <br></br> {bookSynopsis}
-                  </p>
+                  </p>)}
                 </Row>
                 <div className="bookCardButtons">
                   {isIssued ? null : (
@@ -337,9 +409,7 @@ function BookCard({
                   <div className="adminButtons">
                     {isAuthenticated && user.role === "ADMIN" && (
                       <>
-                        <Button variant="primary" onClick={toggle}>
-                          Edit
-                        </Button>
+                        {edit?(<Button onClick={editBook}>Done</Button>):(<Button variant="primary" onClick={()=>setEdit(!edit)}>Edit</Button>)}
                         <Button variant="primary" onClick={deleteBook}>
                           Delete
                         </Button>
@@ -350,10 +420,17 @@ function BookCard({
               </Col>
               <Col className="bookCardRight">
                 <Row>
-                  <img src={`../${bookImage}`} height="500" width="350" />
+                  <img src={`../${editBookImage}`} height="500" width="350" />
+                  {edit?<ImageUploader
+                  withIcon={false}
+                  buttonText="Change Cover Image"
+                  onChange={onDrop} //function call whenever image upload
+                  imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
+                  maxFileSize={5242880}
+                />:null}
                 </Row>
                 <Row>
-                  <p>
+                <p>
                     <b>Available Copies : </b>
                     {availableCount}/{totalCount}
                   </p>

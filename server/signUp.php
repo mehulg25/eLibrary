@@ -17,7 +17,7 @@ require  "./vendor/autoload.php";
 
 use \Firebase\JWT\JWT;
 
-//autoload is to use external libraries like JWT. Composer is php ka npm i ek tareeke se. line 19and17 tells that we are using and allowing third party libraries.
+//autoload is to use external libraries like JWT. Composer is php ka npm i ek tareeke se. line 16and18 tells that we are using and allowing third party libraries.
 //JWT=JSON Web Token -> using as this can act as a single data entity. Authentication and everything about user is here. One single token and is secure too.Sort of Encapsulation of data
 // We are using JWT for Sessions.
 $data = json_decode(file_get_contents("php://input"));//Converting JSON string to object that we get from client. $data contains everything that we are sending from client with post request.
@@ -70,7 +70,8 @@ if (
             "email" => $get_user[0]['email'],
             "expireAt" => $expire_claim, // can remove this line in future.
             "role" =>$get_user[0]['role'],
-            "id" => $last_id
+            "id" => $last_id,
+            "currently_issued_bookid" => NULL
         ));
         return;
     } else {

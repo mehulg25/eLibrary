@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Container, Dropdown, Form, Nav } from "react-bootstrap";
 import Axios from "axios";
 import BookCard from "./bookCard";
+import { useParams, useHistory } from "react-router";
 
-const fetchUserReadBooks = () => {
+const fetchUserReadBooks = (id) => {
+    console.log(id)
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -11,7 +13,7 @@ const fetchUserReadBooks = () => {
     },
   };
 
-  return Axios.get("/user-books.php?action=READ", config)
+  return Axios.get("/readingHistory.php?userId="+id, config)
     .then((response) => {
       console.log(response);
       if (response != null) {
@@ -42,21 +44,17 @@ const monthNameMap = {
   12: "December",
 };
 
-function ReadingHistory() {
-  const config = {
-    headers: {
-      "Content-Type": "application/json",
-      "x-auth-token": localStorage.getItem("token"),
-    }
-  };
-  Axios.get("/readingHistory.php").then(response => console.log(response))
+function ViewUserReadingHistory() {
+  const { userId } = useParams();
+  console.log(userId)
+
   const [readBooks, setReadBooks] = useState([]);
   const [byMonthMap, setByMonthMap] = useState({});
   const [byWeekMap, setByWeekMap] = useState({});
   const [sortBy, setSortBy] = useState("MONTH");
 
   useEffect(() => {
-    fetchUserReadBooks().then((userReadBooks) => {
+    fetchUserReadBooks(userId).then((userReadBooks) => {
       setReadBooks(userReadBooks);
 
       const byMonth = {
@@ -166,23 +164,23 @@ function ReadingHistory() {
 
   return (
     <div>
-        <Nav className="readingHistoryTitle">
-            Reading History
-          </Nav>
-          <div className="sortBy">
-      <Form.Label>Sort By</Form.Label>
-      <Dropdown>
-        <Dropdown.Toggle variant="primary" id="dropdown-basic">
-          {sortBy}{" "}
-        </Dropdown.Toggle>
+      <Nav className="readingHistoryTitle">Reading History</Nav>
+      <div className="sortBy">
+        <Form.Label>Sort By</Form.Label>
+        <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            {sortBy}{" "}
+          </Dropdown.Toggle>
 
-        <Dropdown.Menu >
-          <Dropdown.Item  onClick={() => setSortBy("MONTH")}>
-            Month
-          </Dropdown.Item>
-          <Dropdown.Item onClick={() => setSortBy("WEEK")}>Week</Dropdown.Item>
-        </Dropdown.Menu>
-      </Dropdown>
+          <Dropdown.Menu>
+            <Dropdown.Item onClick={() => setSortBy("MONTH")}>
+              Month
+            </Dropdown.Item>
+            <Dropdown.Item onClick={() => setSortBy("WEEK")}>
+              Week
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </div>
       {sortBy === "MONTH" && (
         <div className="month">
@@ -285,4 +283,4 @@ function ReadingHistory() {
   );
 }
 
-export default ReadingHistory;
+export default ViewUserReadingHistory;

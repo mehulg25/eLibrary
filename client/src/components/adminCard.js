@@ -2,10 +2,16 @@ import React, { useState } from "react";
 import { Card, Button, Modal, Row, Col, Container } from "react-bootstrap";
 import { mdiAccount } from "@mdi/js";
 import Icon from "@mdi/react";
+import { useParams, useHistory } from "react-router";
 
 function AdminCard({ email, id, deleteAdmin }) {
   const [modal, setModal] = useState(false);
-
+  const history = useHistory();
+  const viewReadingHistory = (userId) => {
+    console.log(userId)
+    history.push("/readingHistory/"+userId)
+    
+  }
   return (
     <div className="adminList">
       <Card style={{ width: "18rem" }}>
@@ -37,7 +43,7 @@ function AdminCard({ email, id, deleteAdmin }) {
               </Col>
               <Col>
                 <Row>
-                  <Button>View Reading History</Button>
+                  <Button onClick={()=> viewReadingHistory(id)}>View Reading History</Button>
                 </Row>
                 <Row>
                   <Button>Manage Password</Button>

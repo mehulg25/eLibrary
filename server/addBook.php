@@ -30,7 +30,19 @@ if (isset($data->bookName) //variables from frontend
     $bookImage = mysqli_real_escape_string($conn, trim($data->bookImage));
     $bookAuthor = mysqli_real_escape_string($conn, trim($data->bookAuthor));
     $totalCount = mysqli_real_escape_string($conn, trim($data->totalCount));
-    $insertBook = mysqli_query($conn, "INSERT INTO `books`(`name`,`image_url`,`synopsis`,`author_name`,`total_count`,`available_count`) VALUES('$bookName','$bookImage','$bookSynopsis','$bookAuthor','$totalCount','$totalCount')");
+    $bookId = mysqli_real_escape_string($conn, trim($data->bookId));
+
+    if($bookId != 0){
+        $updateBook = mysqli_query($conn,"UPDATE `books` SET `name` = '$bookName',`author_name` = '$bookAuthor',`synopsis`='$bookSynopsis',`total_count`='$totalCount',`image_url`='$bookImage' where `id`='$bookId'");
+        if($updateBook){
+            header("HTTP/1.1 200 OK");
+            echo json_encode(["msg"=>"Book Updated."]);
+        } else {
+            header("HTTP/1.1 401 CANNOT UPDATE");
+            echo json_encode(["msg"=>"Book Not Updated!"]);
+        }
+    }else{
+        $insertBook = mysqli_query($conn, "INSERT INTO `books`(`name`,`image_url`,`synopsis`,`author_name`,`total_count`,`available_count`) VALUES('$bookName','$bookImage','$bookSynopsis','$bookAuthor','$totalCount','$totalCount')");
     if ($insertBook) {
         $last_id = mysqli_insert_id($conn);
         header("HTTP/1.1 200 OK");
@@ -39,6 +51,8 @@ if (isset($data->bookName) //variables from frontend
         header("HTTP/1.1 401 CANNOT UPDATE");
         echo json_encode(["msg"=>"Book Not Inserted!"]);
     }
+    }
+    
 } else {
     header("HTTP/1.1 500 INSUFFICIENT FIELDS");
     echo json_encode(["msg"=>"Please fill all the required fields!"]);

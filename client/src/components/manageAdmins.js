@@ -3,9 +3,15 @@ import AdminCard from "./adminCard";
 import Axios from "axios";
 import { useUserState } from "../UserContext";
 import AddAdmin from "./addAdmin";
+import {
+  displayError,
+  displaySuccess,
+  useErrorDispatch,
+} from "../ErrorContext"; 
 
 function ManageAdmins() {
   const [admins, setAdmins] = useState([]);
+  const errorDispatch = useErrorDispatch();
   const { isAuthenticated, user } = useUserState();
   const handleAddAdmin = (admin) => {
     console.log(admin, admins);
@@ -19,7 +25,12 @@ function ManageAdmins() {
     Axios.post("/deleteUser.php", delObj).then((response) => {
       console.log(response);
       let filteredAdmins = admins.filter((a) => a.id !== id);
-
+      if(response.status === 200) {
+        displaySuccess(errorDispatch,response.data.msg)
+      }
+      else {
+        displayError(errorDispatch,response.data.msg)
+      }
       setAdmins(filteredAdmins);
     });
   };

@@ -4,10 +4,16 @@ import Axios from "axios";
 import { useUserState } from "../UserContext";
 import ReaderCard from "./readerCard";
 // import AddAdmin from "./addAdmin";
+import {
+  displayError,
+  displaySuccess,
+  useErrorDispatch,
+} from "../ErrorContext"; 
 
 function ManageReaders() {
   const [readers, setReaders] = useState([]);
   const { isAuthenticated, user } = useUserState();
+  const errorDispatch = useErrorDispatch();
   const handleReader = (reader) => {
     console.log(reader, readers);
     setReaders([...readers, reader]);
@@ -20,7 +26,12 @@ function ManageReaders() {
     Axios.post("/deleteUser.php", delObj).then((response) => {
       console.log(response);
       let filterReaders = readers.filter((a) => a.id !== id);
-
+      if(response.status === 200) {
+        displaySuccess(errorDispatch,response.data.msg)
+      }
+      else {
+        displayError(errorDispatch,response.data.msg)
+      }
       setReaders(filterReaders);
     });
   };

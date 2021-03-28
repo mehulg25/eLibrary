@@ -1,44 +1,8 @@
-.bookList {
-  display: flex;
-  overflow-x: scroll;
-}
-.bookCard {
-  display: inline;
-  margin: 15px;
-}
+/*DEFAULT*/
 
-.addButton {
-  width: 50px;
-  height: 50px;
-  padding: 10px 16px;
-  border-radius: 35px;
-  font-size: 20px;
-  text-align: center;
-  background-color: #007bff;
-  border-color: none !important;
-  border-width: 0px !important;
-  position: fixed;
-  z-index: 9999;
-  right: 50px;
-  bottom: 50px;
-  box-shadow: 1px 1px 11px 0px black;
-  color: white !important;
-}
+/*MOBILE*/
 
-.successAlert {
-  top: 3px;
-  position: absolute !important ;
-  margin-left: 75vh;
-  width: 275px;
-}
-
-.listTitle {
-  color: black;
-  margin-top: 20px;
-  margin-left: 38px;
-  font-size: 25px;
-}
-
+/* @media only screen and (min-width: 320px) { */
 .welcomeJumbotron {
   text-align: center;
   position: fixed;
@@ -48,61 +12,57 @@
 }
 
 .welcomeJumbotron h1 {
-  padding-bottom: 2%;
-}
-/* .welcomeJumbotron button {
-  width: 15%;
-} */
-
-.logIn {
-  border: lightgray 1px solid;
-  margin-top: 10%;
-  width: 50%;
-  margin-left: 25%;
-}
-
-.logIn .form-group {
-  width: 40%;
-  margin-left: 30%;
-  padding-bottom: 7%;
-}
-
-.logIn h3 {
-  margin-bottom: 15%;
-  margin-left: 5%;
-  margin-top: 7%;
-  color: lightslategray;
-}
-
-.logIn button {
-  margin-left: 43%;
-  margin-bottom: 15%;
+  padding-bottom: 10%;
 }
 
 .signUp {
   border: lightgray 1px solid;
-  margin-top: 6%;
-  width: 50%;
-  margin-left: 25%;
+  margin-top: 15%;
+  width: 100%;
+  margin-left: 0%;
+  height: 80vh;
 }
 .signUp .form-group {
-  width: 40%;
-  margin-left: 30%;
-  padding-bottom: 7%;
+  width: 66%;
+  margin-left: 17%;
+  padding-bottom: 0%;
 }
 
 .signUp h3 {
-  margin-bottom: 15%;
-  margin-left: 5%;
-  margin-top: 7%;
+  margin-bottom: 30%;
+  margin-left: 10%;
+  margin-top: 20%;
   color: lightslategray;
 }
 
 .signUp button {
-  margin-left: 42%;
-  margin-bottom: 15%;
+  margin-left: 35%;
+  margin-top: 7%;
+  width: 30%;
 }
-
+.logIn {
+  margin-top: 12%;
+  width: 100%;
+  margin-left: 0%;
+  height: 80vh;
+  border: lightgray 1px solid;
+}
+.logIn .form-group {
+  width: 66%;
+  margin-left: 17%;
+  padding-bottom: 0%;
+}
+.logIn button {
+  margin-left: 35%;
+  margin-top: 7%;
+  width: 30%;
+}
+.logIn h3 {
+  margin-bottom: 30%;
+  margin-left: 10%;
+  margin-top: 20%;
+  color: lightslategray;
+}
 .profileContainer {
   margin-left: 42% !important;
   margin-top: 4%;
@@ -126,12 +86,6 @@
   height: 2.5rem !important;
 }
 
-.adminCard Button {
-  width: 50%;
-  margin-top: 9%;
-  margin-left: 20%;
-}
-
 .dropdown-toggle::after {
   content: none !important;
 }
@@ -139,52 +93,543 @@
   left: auto !important;
   right: 0;
 }
+
+.listTitle {
+  color: black;
+  margin-top: 10px;
+  margin-left: -4px;
+  font-size: 22px;
+  padding-bottom: 0% !important;
+}
+
+.noBooks {
+  margin-left: 22%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  font-size: 12px;
+}
+
+.bookCardImg {
+  height: 400px !important;
+  width: 300px !important;
+}
+
+.bookCardFrame {
+  width: 301px !important;
+}
+
+.bookName {
+  font-size: 20px !important;
+  height: 7vh !important;
+}
+
+.bookCardButton {
+  height: 35% !important;
+  width: 34%;
+}
+.bookList {
+  display: flex;
+  overflow-x: scroll;
+  margin-left: -14%;
+  list-style-type: none !important;
+  display: flex;
+  overflow-x: scroll;
+}
+.bookCard {
+  display: inline;
+  margin: 15px;
+}
+
+.addButton {
+  width: 40px;
+  height: 40px;
+  padding: 5px 10px;
+  border-radius: 35px;
+  font-size: 20px;
+  text-align: center;
+  background-color: #007bff;
+  border-color: none !important;
+  border-width: 0px !important;
+  position: fixed;
+  z-index: 9999;
+  right: 15px;
+  bottom: 15px;
+  box-shadow: 1px 1px 11px 0px black;
+  color: white !important;
+}
+
+.adminList {
+  float: left;
+  margin-left: 5%;
+  margin-top: 7%;
+  margin-bottom: 7%;
+}
+
+.adminList svg {
+  margin-left: 7%;
+}
+
+.adminList .h5 {
+  margin-left: 10%;
+}
+
+.adminList .btn {
+  margin-left: 33%;
+  width: 30%;
+  margin-bottom: 5%;
+}
+
+.adminCard svg {
+  margin-left: 5%;
+}
+
+.adminCard .btn {
+  width: 100%;
+  margin-bottom: 5%;
+}
+.addAdminFormButton {
+  width: 100% !important;
+  margin-top: 5% !important;
+}
+
+.addBookFormButton {
+  width: 100% !important;
+  margin-top: 5% !important;
+}
+
+.sortBy {
+  float: right;
+  margin-top: -16%;
+  margin-right: 4%;
+}
+
+.readingHistoryTitle {
+  color: black;
+  margin-top: 10px;
+  margin-left: 7px;
+  font-size: 22px;
+  padding-bottom: 0% !important;
+  margin-bottom: 7% !important;
+}
+
+.month p {
+  margin-top: 25%;
+  font-size: 100%;
+  color: black;
+  margin-left: 5%;
+}
+
+.week p {
+  margin-top: 25%;
+  font-size: 100%;
+  color: black;
+  margin-left: 5%;
+}
+
+.readingHistoryBooks {
+  display: flex !important;
+  overflow-x: scroll !important;
+  margin-left: -14%;
+  list-style-type: none !important;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.successAlert {
+  top: 3px;
+  position: absolute !important ;
+  margin-left: 75vh;
+  width: 275px;
+}
+
 .alert {
-  width: 20vw;
+  width: 40vw;
   margin: auto;
   z-index: 999999;
   position: fixed !important;
   text-align: center;
   bottom: 5vh;
-  left: 40%;
+  left: 30%;
+}
+/* MOBILE M */
+
+@media only screen and (min-width: 375px) {
+  .logIn {
+    margin-top: 14%;
+    width: 100%;
+    margin-left: 0%;
+    height: 80vh;
+    border: lightgray 1px solid;
+  }
+
+  .signUp {
+    border: lightgray 1px solid;
+    margin-top: 14%;
+    width: 100%;
+    margin-left: 0%;
+    height: 80vh;
+  }
+
+  .bookList {
+    display: flex;
+    overflow-x: scroll;
+    margin-left: -6%;
+    list-style-type: none !important;
+    display: flex;
+    overflow-x: scroll;
+  }
+  .listTitle {
+    color: black;
+    margin-top: 10px;
+    margin-left: 1px;
+    font-size: 22px;
+    padding-bottom: 0% !important;
+  }
+  .noBooks {
+    margin-left: 22%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-size: 14px;
+  }
+  .adminCard svg {
+    margin-left: 13%;
+  }
+
+  .adminList {
+    float: left;
+    margin-left: 11%;
+    margin-top: 7%;
+    margin-bottom: 7%;
+  }
 }
 
-.synopsis {
-  height: 65%;
-  /* width: 100%; */
+/* MOBILE L */
+
+@media only screen and (min-width: 425px) {
+  .signUp {
+    border: lightgray 1px solid;
+    margin-top: 11%;
+    width: 100%;
+    margin-left: 0%;
+    height: 80vh;
+  }
+
+  .signUp h3 {
+    margin-bottom: 23%;
+    margin-left: 10%;
+    margin-top: 14%;
+    color: lightslategray;
+  }
+
+  .logIn {
+    margin-top: 8%;
+    width: 100%;
+    margin-left: 0%;
+    height: 80vh;
+    border: lightgray 1px solid;
+  }
+
+  .logIn h3 {
+    margin-bottom: 28%;
+    margin-left: 10%;
+    margin-top: 15%;
+    color: lightslategray;
+  }
+
+  .noBooks {
+    margin-left: 23%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-size: 17px;
+  }
+
+  .adminList {
+    float: left;
+    margin-left: 16%;
+    margin-top: 7%;
+    margin-bottom: 7%;
+  }
+
+  .adminCard .btn {
+    width: 100%;
+    margin-bottom: 5%;
+    margin-top: 11%;
+  }
+
+  .adminCard svg {
+    margin-left: -8%;
+    margin-top: -2%;
+  }
 }
 
-.synopsis p {
-  width: 100%;
+/* TABLET */
+
+@media only screen and (min-width: 768px) {
+  .welcomeJumbotron h1 {
+    padding-bottom: 5%;
+    margin-left: 3%;
+  }
+  .signUp {
+    border: lightgray 1px solid;
+    margin-top: 2%;
+    width: 100%;
+    margin-left: 0%;
+    height: 89vh;
+  }
+  .signUp h3 {
+    margin-bottom: 13%;
+    margin-left: 10%;
+    margin-top: 12%;
+    color: lightslategray;
+  }
+  .logIn {
+    margin-top: 2%;
+    width: 100%;
+    margin-left: 0%;
+    height: 83vh;
+    border: lightgray 1px solid;
+  }
+  .logIn h3 {
+    margin-bottom: 17%;
+    margin-left: 10%;
+    margin-top: 8%;
+    color: lightslategray;
+  }
+  .addButton {
+    width: 50px;
+    height: 50px;
+    padding: 5px 10px;
+    border-radius: 35px;
+    font-size: 20px;
+    text-align: center;
+    background-color: #007bff;
+    border-color: none !important;
+    border-width: 0px !important;
+    position: fixed;
+    z-index: 9999;
+    right: 25px;
+    bottom: 25px;
+    box-shadow: 1px 1px 11px 0px black;
+    color: white !important;
+  }
+  .listTitle {
+    color: black;
+    margin-top: 20px;
+    margin-left: 20px;
+    font-size: 25px;
+  }
+
+  .bookList {
+    display: flex;
+    overflow-x: scroll;
+    margin-left: -3%;
+    list-style-type: none !important;
+    display: flex;
+    overflow-x: scroll;
+  }
+
+  .noBooks {
+    margin-left: 32%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-size: 20px;
+  }
 }
 
-.bookCardButtons .btn {
-  width: 25%;
-  margin-top: 4%;
-  margin-left: 8%;
-}
+/* LAPTOP */
 
-.adminButtons {
-  margin-left: 18% !important;
-  margin-top: 3%;
-}
+@media only screen and (min-width: 992px) {
+  .bookList {
+    display: flex;
+    overflow-x: scroll;
+  }
+  .bookCard {
+    display: inline;
+    margin: 15px;
+  }
 
-.adminButtons .btn {
-  width: 30%;
-}
+  .addButton {
+    width: 50px;
+    height: 50px;
+    padding: 10px 16px;
+    border-radius: 35px;
+    font-size: 20px;
+    text-align: center;
+    background-color: #007bff;
+    border-color: none !important;
+    border-width: 0px !important;
+    position: fixed;
+    z-index: 9999;
+    right: 50px;
+    bottom: 50px;
+    box-shadow: 1px 1px 11px 0px black;
+    color: white !important;
+  }
 
-.bookCardRight {
-  margin-left: 10%;
-}
+  .successAlert {
+    top: 3px;
+    position: absolute !important ;
+    margin-left: 75vh;
+    width: 275px;
+  }
 
-.noBooks {
-  margin-left: 42%;
-  margin-top: 5%;
-  margin-bottom: 5%;
-}
+  .listTitle {
+    color: black;
+    margin-top: 20px;
+    margin-left: 38px;
+    font-size: 25px;
+  }
 
-.adminList {
-  float: left;
-  margin-left: 4%;
-  margin-top: 5%;
+  .welcomeJumbotron {
+    text-align: center;
+    position: fixed;
+    top: 30vh;
+    width: 100%;
+    background-color: white !important;
+  }
+
+  .welcomeJumbotron h1 {
+    padding-bottom: 2%;
+  }
+
+  .logIn {
+    border: lightgray 1px solid;
+    margin-top: 10%;
+    width: 50%;
+    margin-left: 25%;
+  }
+
+  .logIn .form-group {
+    width: 40%;
+    margin-left: 30%;
+    padding-bottom: 7%;
+  }
+
+  .logIn h3 {
+    margin-bottom: 15%;
+    margin-left: 5%;
+    margin-top: 7%;
+    color: lightslategray;
+  }
+
+  .logIn button {
+    margin-left: 43%;
+    margin-bottom: 15%;
+  }
+
+  .signUp {
+    border: lightgray 1px solid;
+    margin-top: 6%;
+    width: 50%;
+    margin-left: 25%;
+  }
+  .signUp .form-group {
+    width: 40%;
+    margin-left: 30%;
+    padding-bottom: 7%;
+  }
+
+  .signUp h3 {
+    margin-bottom: 15%;
+    margin-left: 5%;
+    margin-top: 7%;
+    color: lightslategray;
+  }
+
+  .signUp button {
+    margin-left: 42%;
+    margin-bottom: 15%;
+  }
+
+  .profileContainer {
+    margin-left: 42% !important;
+    margin-top: 4%;
+  }
+
+  .profileContainer svg {
+    color: #343a40 !important;
+    margin-bottom: 2%;
+  }
+
+  .profileContainer Button {
+    margin-left: 5px;
+    margin-bottom: 3%;
+    width: 20%;
+  }
+
+  .avatar {
+    color: white;
+    margin-left: 1%;
+    width: 3.5rem !important ;
+    height: 2.5rem !important;
+  }
+
+  .adminCard Button {
+    width: 50%;
+    margin-top: 9%;
+    margin-left: 20%;
+  }
+
+  .dropdown-toggle::after {
+    content: none !important;
+  }
+  .dropdown-menu {
+    left: auto !important;
+    right: 0;
+  }
+  .alert {
+    width: 20vw;
+    margin: auto;
+    z-index: 999999;
+    position: fixed !important;
+    text-align: center;
+    bottom: 5vh;
+    left: 40%;
+  }
+
+  .synopsis {
+    height: 65%;
+    /* width: 100%; */
+  }
+
+  .synopsis p {
+    width: 100%;
+  }
+
+  .bookCardButtons .btn {
+    width: 25%;
+    margin-top: 4%;
+    margin-left: 8%;
+  }
+
+  .adminButtons {
+    margin-left: 18% !important;
+    margin-top: 3%;
+  }
+
+  .adminButtons .btn {
+    width: 30%;
+  }
+
+  .bookCardRight {
+    margin-left: 10%;
+  }
+
+  .noBooks {
+    margin-left: 42%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+
+  .adminList {
+    float: left;
+    margin-left: 4%;
+    margin-top: 5%;
+  }
+
+  .sortBy {
+    float: right;
+    margin-top: -3%;
+    margin-right: 5%;
+  }
 }

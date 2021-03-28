@@ -13,6 +13,7 @@ import Axios from "axios";
 import LibraryAlerts from "./components/general/libraryAlerts";
 import { useErrorState } from "./ErrorContext";
 import ReadingHistory from "./components/readingHistory";
+import ViewUserReadingHistory from "./components/viewUserReadingHistory";
 
 function App() {
   const dispatch = useUserDispatch();
@@ -53,7 +54,8 @@ function App() {
         <Route path="/logIn" component={LogIn} />
         <Route path="/manageAdmins" component={ManageAdmins} />
         <Route path="/manageReaders" component={ManageReaders} />
-        <Route path="/readingHistory" component={ReadingHistory} />
+        <Route exact path="/readingHistory" component={ReadingHistory} />
+        <Route path="/readingHistory/:userId" component={ViewUserReadingHistory} />
       </Router>
     </div>
   );

@@ -14,6 +14,7 @@ $data = json_decode(file_get_contents("php://input"));
 if (isset($data->id) && is_numeric($data->id)) {
     $delID = $data->id;
     $deleteBook = mysqli_query($conn, "DELETE FROM `books` WHERE `id`='$delID'");
+    $updateUserCurrentBook = mysqli_query($conn, "UPDATE users SET `currently_issued_bookid` = NULL where `currently_issued_bookid` = '$delID'");
     if ($deleteBook) {
         header("HTTP/1.1 200 OK");
         echo json_encode(["msg"=>"Book Deleted"]);

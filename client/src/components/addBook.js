@@ -33,7 +33,6 @@ class AddBook extends Component {
     });
   };
   addBook = (e) => {
-    console.log("here"); // e coz event as form function
     e.preventDefault(); //inbuilt function to prevent default submit for some time
     if (
       // client side validation
@@ -67,6 +66,7 @@ class AddBook extends Component {
       bookImage,
       bookAuthor,
       totalCount,
+      bookId:0
     };
 
     Axios.post("/addBook.php", addBookObj) //POST request passing object
@@ -114,7 +114,7 @@ class AddBook extends Component {
         >
           <Modal.Header closeButton>
             <Modal.Title id="contained-modal-title-vcenter">
-              Publish Book
+              Add Book
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -147,6 +147,14 @@ class AddBook extends Component {
                   placeholder="Enter Book Name"
                 />
               </Form.Group>
+              <Form.Group controlId="bookAuthor">
+                <Form.Label>Author(s)</Form.Label>
+                <Form.Control
+                  name="bookAuthor"
+                  onChange={this.onChange}
+                  type="text"
+                  placeholder="Enter Author name(s)"
+                />
               <Form.Group controlId="formBasicSynopsis">
                 <Form.Label>Synopsis</Form.Label>
                 <Form.Control
@@ -156,14 +164,7 @@ class AddBook extends Component {
                   placeholder="Enter Synopsis"
                 />
               </Form.Group>
-              <Form.Group controlId="bookAuthor">
-                <Form.Label>Author(s)</Form.Label>
-                <Form.Control
-                  name="bookAuthor"
-                  onChange={this.onChange}
-                  type="text"
-                  placeholder="Enter Author name(s)"
-                />
+
               </Form.Group>
               <Form.Group controlId="totalCount">
                 <Form.Label>Count</Form.Label>
@@ -183,7 +184,7 @@ class AddBook extends Component {
               >
                 Please check Fields!
               </Alert>
-              <Button variant="primary" type="submit">
+              <Button variant="primary" type="submit" className="addBookFormButton">
                 {" "}
                 {/* no need for onclick as button is inside form and there is a default behaviour on Submit */}
                 Add Book

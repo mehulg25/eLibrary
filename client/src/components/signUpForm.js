@@ -13,7 +13,6 @@ function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  // const { user, isAuthenticated } = useUserState();
   const dispatch = useUserDispatch();
   const errorDispatch = useErrorDispatch();
   const history = useHistory();
@@ -29,7 +28,7 @@ function SignUpForm() {
       return;
     }
     // it comes here if validation is successful
-    const userObj = {
+    const userObj = { 
       // to send to API
       email, //line 13 ki state se aa rha hai
       password,

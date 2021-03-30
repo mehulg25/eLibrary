@@ -29,7 +29,8 @@ function NavigationBar() {
       <Navbar.Brand href={isAuthenticated ? "/dashboard" : "/"}>
         eLibrary
       </Navbar.Brand>
-      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      {isAuthenticated && <Navbar.Toggle aria-controls="responsive-navbar-nav" />}
+      
       <Navbar.Collapse id="responsive-navbar-nav">
         {isAuthenticated && (
           <Nav>
@@ -48,14 +49,14 @@ function NavigationBar() {
             <Form inline>
               <div className="row">
                 <div className="col">
-                  <FormControl
+                  {/* <FormControl
                     type="text"
                     placeholder="Search"
                     className="sm-1"
-                  />
+                  /> */}
                 </div>
               </div>
-              <Button variant="outline-info">Search</Button>
+              {/* <Button variant="outline-info">Search</Button> */}
               <NavDropdown
                 title={
                   <Icon path={mdiAccount} size={0.5} className=" avatar" />
@@ -78,12 +79,12 @@ function NavigationBar() {
               </NavDropdown>
             </Form>
           </div>
-        ) : (
-          <Button variant="outline-info" onClick={() => history.push("/logIn")}>
-            Log In
-          </Button>
-        )}
+        ) : null }
       </Navbar.Collapse>
+      { !isAuthenticated && (      <Button variant="outline-info" onClick={() => history.push("/logIn")}>
+            Log In
+          </Button>) }
+
     </Navbar>
   );
 }

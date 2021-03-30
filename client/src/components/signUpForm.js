@@ -10,16 +10,18 @@ import {
 } from "../ErrorContext";
 
 function SignUpForm() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(""); // this is also array destructuring
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const dispatch = useUserDispatch();
-  const errorDispatch = useErrorDispatch();
+  const errorDispatch = useErrorDispatch(); // useErrorDispatch is a functioon in ErrorContext.js that is returning a value
   const history = useHistory();
 
   const signUp = (e) => {
     e.preventDefault();
     if (email == "" || password == "" || confirmPassword == "") {
+      //display error is a function in errorcontext.js
+      // we are passing errorDispatch as parameters here
       displayError(errorDispatch, "Please Fill All The Fields."); //displayError is a function in libraryAlerts.
       return; // to stop execution neeche ka
     }

@@ -17,7 +17,7 @@
 
 .signUp {
   border: lightgray 1px solid;
-  margin-top: 15%;
+  margin-top: 12%;
   width: 100%;
   margin-left: 0%;
   height: 80vh;
@@ -41,7 +41,7 @@
   width: 30%;
 }
 .logIn {
-  margin-top: 12%;
+  margin-top: 13%;
   width: 100%;
   margin-left: 0%;
   height: 80vh;
@@ -110,7 +110,7 @@
 }
 
 .bookCardImg {
-  height: 400px !important;
+  height: 370px !important;
   width: 300px !important;
 }
 
@@ -158,6 +158,10 @@
   color: white !important;
 }
 
+.synopsisField {
+  margin-top: 5%;
+}
+
 .adminList {
   float: left;
   margin-left: 5%;
@@ -195,6 +199,22 @@
 .addBookFormButton {
   width: 100% !important;
   margin-top: 5% !important;
+}
+
+.dropdown-menu {
+  right: -105%;
+}
+
+.bookCardButtons .btn {
+  width: 31%;
+  margin-right: 2%;
+  margin-bottom: 2%;
+  font-size: 15px;
+}
+
+.adminButtons {
+  margin-left: 17%;
+  width: 100%;
 }
 
 .sortBy {
@@ -251,23 +271,59 @@
   bottom: 5vh;
   left: 30%;
 }
+.modal-header .close {
+  margin-top: -4% !important;
+}
+.expandedList{
+  display: flex;
+  flex-wrap: wrap;
+}
 /* MOBILE M */
 
 @media only screen and (min-width: 375px) {
   .logIn {
-    margin-top: 14%;
+    margin-top: 10%;
     width: 100%;
     margin-left: 0%;
     height: 80vh;
     border: lightgray 1px solid;
   }
 
+  .logIn h3 {
+    margin-bottom: 23%;
+    margin-left: 10%;
+    margin-top: 13%;
+    color: lightslategray;
+  }
+
   .signUp {
     border: lightgray 1px solid;
-    margin-top: 14%;
+    margin-top: 5%;
     width: 100%;
     margin-left: 0%;
-    height: 80vh;
+    height: 86vh;
+  }
+
+  .signUp h3 {
+    margin-bottom: 23%;
+    margin-left: 10%;
+    margin-top: 13%;
+    color: lightslategray;
+  }
+
+  .signUp button {
+    margin-left: 33%;
+    margin-top: 7%;
+    width: 30%;
+  }
+
+  .bookModalBody {
+    margin-left: 8%;
+  }
+
+  .bookCardButtons {
+    margin-left: -10%;
+    margin-right: -2%;
   }
 
   .bookList {
@@ -281,9 +337,13 @@
   .listTitle {
     color: black;
     margin-top: 10px;
-    margin-left: 1px;
+    margin-left: 5px;
     font-size: 22px;
     padding-bottom: 0% !important;
+  }
+
+  .addBookImage {
+    margin-left: 9%;
   }
   .noBooks {
     margin-left: 22%;
@@ -308,16 +368,16 @@
 @media only screen and (min-width: 425px) {
   .signUp {
     border: lightgray 1px solid;
-    margin-top: 11%;
+    margin-top: 6%;
     width: 100%;
     margin-left: 0%;
-    height: 80vh;
+    height: 84vh;
   }
 
   .signUp h3 {
-    margin-bottom: 23%;
+    margin-bottom: 18%;
     margin-left: 10%;
-    margin-top: 14%;
+    margin-top: 13%;
     color: lightslategray;
   }
 
@@ -330,10 +390,19 @@
   }
 
   .logIn h3 {
-    margin-bottom: 28%;
+    margin-bottom: 23%;
     margin-left: 10%;
-    margin-top: 15%;
+    margin-top: 13%;
     color: lightslategray;
+  }
+
+  .bookModalBody {
+    margin-left: 13%;
+  }
+
+  .addBookImage {
+    margin-bottom: 5%;
+    margin-left: 14%;
   }
 
   .noBooks {
@@ -364,17 +433,17 @@
 
 /* TABLET */
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 732px) {
   .welcomeJumbotron h1 {
     padding-bottom: 5%;
     margin-left: 3%;
   }
   .signUp {
     border: lightgray 1px solid;
-    margin-top: 2%;
+    margin-top: 3%;
     width: 100%;
     margin-left: 0%;
-    height: 89vh;
+    height: 87vh;
   }
   .signUp h3 {
     margin-bottom: 13%;
@@ -386,9 +455,17 @@
     margin-top: 2%;
     width: 100%;
     margin-left: 0%;
-    height: 83vh;
+    height: 88vh;
     border: lightgray 1px solid;
   }
+  .addBookImage {
+    margin-bottom: 5%;
+    margin-left: 20%;
+  }
+  .bookModalBody { 
+    margin-left: 20%;
+  }
+
   .logIn h3 {
     margin-bottom: 17%;
     margin-left: 10%;
@@ -434,6 +511,15 @@
     margin-bottom: 5%;
     font-size: 20px;
   }
+  .modal-header .close {
+    margin-top: -3% !important;
+}
+.adminList {
+  float: left;
+  margin-left: 30%;
+  margin-top: 7%;
+  margin-bottom: 7%;
+}
 }
 
 /* LAPTOP */
@@ -442,6 +528,7 @@
   .bookList {
     display: flex;
     overflow-x: scroll;
+    margin-left: -1%;
   }
   .bookCard {
     display: inline;
@@ -494,7 +581,7 @@
 
   .logIn {
     border: lightgray 1px solid;
-    margin-top: 10%;
+    margin-top: 2%;
     width: 50%;
     margin-left: 25%;
   }
@@ -513,13 +600,13 @@
   }
 
   .logIn button {
-    margin-left: 43%;
+    margin-left: 35%;
     margin-bottom: 15%;
   }
 
   .signUp {
     border: lightgray 1px solid;
-    margin-top: 6%;
+    margin-top: 2%;
     width: 50%;
     margin-left: 25%;
   }
@@ -537,7 +624,7 @@
   }
 
   .signUp button {
-    margin-left: 42%;
+    margin-left: 35%;
     margin-bottom: 15%;
   }
 
@@ -616,7 +703,7 @@
   }
 
   .noBooks {
-    margin-left: 42%;
+    margin-left: 40%;
     margin-top: 5%;
     margin-bottom: 5%;
   }
@@ -632,4 +719,66 @@
     margin-top: -3%;
     margin-right: 5%;
   }
+
+  .bookCardImg {
+    height: 450px !important;
+    width: 340px !important;
+  }
+  .bookCardFrame {
+    width: 341px !important;
+  }
+  .modal-header .close {
+    margin-top: -2% !important;
+  }
+  .adminCard svg {
+    margin-left: 10%;
+    margin-top: 2%;
+  }
+  .adminCard .btn {
+    width: 100%;
+    margin-bottom: 0%;
+    margin-top: 9%;
+  }
+  .adminList {
+    margin-bottom: 1%;
+  }
+  .addBookImage {
+    margin-left: 33%;
+  }
+  .readingHistoryTitle {
+    color: black;
+    margin-top: 10px;
+    margin-left: 28px;
+    font-size: 25px;
+    padding-bottom: 0% !important;
+    margin-bottom: 7% !important;
+}
+.sortBy {
+  float: right;
+  margin-top: -9%;
+  margin-right: 5%;
+}
+.readingHistoryBooks {
+  display: flex !important;
+  overflow-x: scroll !important;
+  margin-left: 0%;
+  list-style-type: none !important;
+  margin-bottom: -9% !important;
+}
+.month p {
+  margin-top: 12%;
+  font-size: 130%;
+  color: black;
+  margin-left: 5%;
+}
+.week p {
+  margin-top: 10%;
+  font-size: 100%;
+  color: black;
+  margin-left: 5%;
+}
+.expandedList{
+  display: flex;
+  flex-wrap: wrap;
+}
 }

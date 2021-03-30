@@ -18,14 +18,6 @@ function BooksReducer(state, action) {
         allBooks: books,
       };
     }
-
-    case "IssueBook": {
-      const books = action.payload;
-
-      return {
-        allBooks: books,
-      };
-    }
   }
 }
 

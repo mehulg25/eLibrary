@@ -1,5 +1,5 @@
 import { Jumbotron, Button } from "react-bootstrap";
-import { useHistory } from "react-router-dom"; //new hook
+import { useHistory } from "react-router-dom"; //new hook for route
 
 function HomePage() {
   const history = useHistory();
@@ -19,3 +19,7 @@ function HomePage() {
 }
 
 export default HomePage;
+
+// react router is a library used for client side routing
+// react apps are single page apps. Content is changed dynamically.
+//useHostiry is a hook to access search bar of browser.

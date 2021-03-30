@@ -14,10 +14,10 @@ import LibraryAlerts from "./components/general/libraryAlerts";
 import { useErrorState } from "./ErrorContext";
 import ReadingHistory from "./components/readingHistory";
 import ViewUserReadingHistory from "./components/viewUserReadingHistory";
-
+import ExpandedBooklist from "./components/expandedBookList";
 function App() {
   const dispatch = useUserDispatch();
-  const { msg, variant, showAlert } = useErrorState();
+  const { msg, variant, showAlert } = useErrorState(); //destructure from global state of useErrorState
 
   const token = localStorage.getItem("token");
 
@@ -45,17 +45,20 @@ function App() {
 
   return (
     <div className="App">
+      
       <LibraryAlerts show={showAlert} msg={msg} variant={variant} />
       <Router>
         <NavigationBar />
         <Route exact path="/" component={HomePage} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/signUp" component={SignUpForm} />
+        <Route path="/signUp" component={SignUpForm} /> 
         <Route path="/logIn" component={LogIn} />
         <Route path="/manageAdmins" component={ManageAdmins} />
         <Route path="/manageReaders" component={ManageReaders} />
         <Route exact path="/readingHistory" component={ReadingHistory} />
         <Route path="/readingHistory/:userId" component={ViewUserReadingHistory} />
+        <Route path="/expandedView/:expandedBooklistType" component={ExpandedBooklist} />
+
       </Router>
     </div>
   );

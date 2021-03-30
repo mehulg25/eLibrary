@@ -6,6 +6,8 @@ header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, x-auth-token");
 
 require 'db_connection.php'; // type of import
+
+//the below three lines is to remove CORS error
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     return 0;
 }

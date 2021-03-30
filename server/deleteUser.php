@@ -20,13 +20,11 @@ if (isset($data->id) && is_numeric($data->id)) {
     $delID = $data->id;
     $getUserCurrentBookId = mysqli_query($conn, "SELECT `currently_issued_bookid` FROM `users` WHERE `id`='$delID'");
     $book_arr = mysqli_fetch_all($getUserCurrentBookId, MYSQLI_ASSOC);
-    print_r($book_arr) ;
-    print_r($getUserCurrentBookId) ;
+   
     $temp = $book_arr[0]['currently_issued_bookid'];
-    if($temp != NULL){
-        
-        $updateBookCount = mysqli_query($conn,"UPDATE books SET `available_count`=`available_count`+1 WHERE `id`='$temp'");
-        if($updateBookCount) {
+    if ($temp != null) {
+        $updateBookCount = mysqli_query($conn, "UPDATE books SET `available_count`=`available_count`+1 WHERE `id`='$temp'");
+        if ($updateBookCount) {
             $deleteUser = mysqli_query($conn, "DELETE FROM `users` WHERE `id`='$delID'");
     
             if ($deleteUser) {
@@ -36,14 +34,22 @@ if (isset($data->id) && is_numeric($data->id)) {
                 header("HTTP/1.1 500 NOT DELETED");
                 echo json_encode(["msg"=>"User Not Deleted!"]);
             }
-            
-        }
-        else {
+        } else {
             header("HTTP/1.1 401 RESOURCE NOT FOUND");
             echo json_encode(["msg"=>"Update Failed!"]);
         }
     }
+    else {
+        $deleteUser = mysqli_query($conn, "DELETE FROM `users` WHERE `id`='$delID'");
     
+        if ($deleteUser) {
+            header("HTTP/1.1 200 OK");
+            echo json_encode(["msg"=>"User Deleted"]);
+        } else {
+            header("HTTP/1.1 500 NOT DELETED");
+            echo json_encode(["msg"=>"User Not Deleted!"]);
+        }
+    }
 } else {
     header("HTTP/1.1 401 RESOURCE NOT FOUND");
     echo json_encode(["msg"=>"User Not Found!"]);

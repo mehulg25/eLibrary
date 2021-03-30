@@ -15,7 +15,8 @@ class AddBook extends Component {
   };
 
   toggle = () => {
-    this.setState({ modal: !this.state.modal, alert: false });
+    this.setState({ modal: !this.state.modal, alert: false , bookImage: ""});
+    
   };
   onChange = (e) => {
     // e is short for event. on___ are events. onchange pe event mil rha hai -> where change what change
@@ -125,9 +126,10 @@ class AddBook extends Component {
               {/* onSubmit call function addBook instead of onClick */}
               {this.state.bookImage !== "" ? (
                 <img
-                  width="400"
-                  height="400"
+                  width="270"
+                  height="380"
                   src={`../${this.state.bookImage}`}
+                  className="addBookImage"
                 />
               ) : (
                 <ImageUploader
@@ -155,7 +157,7 @@ class AddBook extends Component {
                   type="text"
                   placeholder="Enter Author name(s)"
                 />
-              <Form.Group controlId="formBasicSynopsis">
+              <Form.Group controlId="formBasicSynopsis" className="synopsisField">
                 <Form.Label>Synopsis</Form.Label>
                 <Form.Control
                   name="bookSynopsis"

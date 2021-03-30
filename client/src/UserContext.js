@@ -1,14 +1,13 @@
 import React from "react";
-const UserStateContext = React.createContext(); //declaring context
+const UserStateContext = React.createContext(); 
 
 const UserDispatchContext = React.createContext();
 
 function UserReducer(state, action) {
   switch (action.type) {
     case "login": {
-      console.log(action.payload);
       const user = action.payload;
-      localStorage.setItem("token", user.jwt);
+      localStorage.setItem("token", user.jwt); //browser me har domain ki kuch browser memory hoti hai something like 15mb or something
       return {
         isAuthenticated: true,
         user: user,
@@ -31,7 +30,7 @@ function UserReducer(state, action) {
         isAuthenticated: false,
       };
     }
-    case "updateUserData": {
+    case "updateUserData": { // for currently issued book id
       const user = action.payload;
       return {
         ...state,

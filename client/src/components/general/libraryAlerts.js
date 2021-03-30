@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Alert } from "react-bootstrap";
 import { useErrorState, hideAlert, useErrorDispatch } from "../../ErrorContext";
 
+//these are prop variables via destructuring
 function LibraryAlerts({ msg, variant, show }) {
   const { showAlert } = useErrorState();
   const errorDispatch = useErrorDispatch();
@@ -17,7 +18,7 @@ function LibraryAlerts({ msg, variant, show }) {
   return (
     <div>
       <Alert show={show} variant={variant}>
-        {msg}{" "}
+        {msg}
       </Alert>
     </div>
   );

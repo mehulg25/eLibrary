@@ -17,8 +17,6 @@ function AddAdmin({ handleAddAdmin }) {
     e.preventDefault();
     if (email == "" || password == "" || confirmPassword == "") {
       displayError(errorDispatch, "Please Fill All The Fields.");
-      // if (response.status === 200) {
-      //   displaySuccess(errorDispatch, response.data.msg);
 
       return;
     }
@@ -32,15 +30,16 @@ function AddAdmin({ handleAddAdmin }) {
       password,
       role: "ADMIN",
     };
-    Axios.post("/signUp.php", userObj).then((response) => {
-      // if (response.status === 200) {
-      //   displaySuccess(errorDispatch, response.data.msg);
-      
-      userObj.id = response.data.id;
-      userObj.currently_issued_bookid = null;
-      setModal(false);
-      handleAddAdmin(userObj);
-      }
+    Axios.post("/signUp.php", userObj).then(
+      (response) => {
+        if (response.status === 200) {
+          displaySuccess(errorDispatch, "User Created!");
+
+        userObj.id = response.data.id;
+        userObj.currently_issued_bookid = null;
+        setModal(false);
+        handleAddAdmin(userObj);
+      } }
       // else if (response.status == 500) {
       //   displayError(errorDispatch, response.data.msg);
     );
@@ -90,7 +89,11 @@ function AddAdmin({ handleAddAdmin }) {
               />
             </Form.Group>
 
-            <Button variant="primary" type="submit" className ="addAdminFormButton">
+            <Button
+              variant="primary"
+              type="submit"
+              className="addAdminFormButton"
+            >
               Add Admin
             </Button>
           </Form>

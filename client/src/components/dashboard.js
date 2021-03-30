@@ -2,60 +2,63 @@ import React, { useState, useEffect } from "react";
 import BookList from "./bookList";
 import AddBook from "./addBook";
 import Axios from "axios";
-import { useUserState, useUserDispatch, updateUserData } from "../UserContext";
+import { useUserState } from "../UserContext";
 import {
   loadAllBooks,
   updateAllBooks,
   useBooksDispatch,
   useBooksState,
 } from "../BooksContext";
+
 function Dashboard() {
   const { allBooks } = useBooksState();
   const booksDispatch = useBooksDispatch();
 
   const { isAuthenticated, user } = useUserState();
-  const dispatch = useUserDispatch();
   const [allBooksSet, setAllBooksSet] = useState(false);
 
+  // whatever is written inside useEffect will only happen after the first render of the component
+  // booklist mount hua fir database se books lau
   useEffect(() => {
     if (isAuthenticated) {
       Axios.get("/allBooks.php")
         .then((response) => {
-          if (response.data.books != undefined) {
+          if (response.status === 200) {
             response.data.books.map((book) => {
-              book.book_id = book.id;
+              // . karke jo likha voh new property ban jaegi object me
+              book.book_id = book.id; // book id from database
               book.isBookIssued = false;
               book.isBookBookmarked = false;
               book.isBookRead = false;
             });
-            loadAllBooks(booksDispatch, response);
-            setAllBooksSet(true);
+            loadAllBooks(booksDispatch, response); //updated books with these three properties.
+            setAllBooksSet(true); // just to tell that books are set are not
           }
         })
         .catch((err) => console.log(err));
-      // setCurrentlyIssuedBookId(user.currently_issued_bookid);
     }
-  }, [user]);
+  }, [user]); // this is a dependency array. as in whenever this variable changes, useeffect will be called again. Whenever user is NULL dont show books jese hi user update useffect will be called again
 
   useEffect(() => {
     if (!allBooksSet || allBooks.length == 0) return;
 
-    if (isAuthenticated && allBooks !== undefined) {
+    if (isAuthenticated) {
       const config = {
+        // object with a field headers which we are sending with axios. content-type is to tell that whatever data is in JSON
         headers: {
           "Content-Type": "application/json",
           "x-auth-token": localStorage.getItem("token"),
+          // x-auth-token is to get token from local storage
         },
       };
 
       Axios.get("/user-books.php", config)
         .then((response) => {
-          if (
-            response.data.books != undefined &&
-            response.data.books.length !== 0
-          ) {
+          if (response.status === 200) {
             response.data.books.map((book) => {
+              //find is a js function
               let foundBook = allBooks.find(function (b) {
+                // finding a particular book from all books in global state
                 return b.book_id == book.book_id;
               });
               if (book.action_type === "ISSUED") {
@@ -83,7 +86,6 @@ function Dashboard() {
 
   return (
     <div>
-      {console.log(allBooks)}
       <BookList
         books={allBooks.filter((b) => b.isBookIssued)}
         title="My Shelf"
@@ -96,10 +98,10 @@ function Dashboard() {
         books={allBooks.filter((b) => b.isBookBookmarked)}
         title="Saved For Later"
       />
-      <BookList books={allBooks} title="All Books" />{" "}
+      <BookList books={allBooks} title="All Books" />
       {isAuthenticated && user.role === "ADMIN" ? (
         <AddBook handleAddBook={handleAddBook} />
-      ) : null}{" "}
+      ) : null}
     </div>
   );
 }

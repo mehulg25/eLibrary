@@ -40,6 +40,7 @@ function BookCard({
 
   const toggle = () => {
     setModal(!modal);
+    setEdit(false)
   };
 
   const onDrop = (picture) => {
@@ -351,11 +352,21 @@ function BookCard({
                 /></>):(bookName)}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="bookModalBody">
           <Container fluid>
             <Row>
               <Col>
-                <Row>
+              <Row>
+                  <img src={`../${editBookImage}`} height="380" width="270" />
+                  {edit?<ImageUploader
+                  withIcon={false}
+                  buttonText="Change Cover Image"
+                  onChange={onDrop} //function call whenever image upload
+                  imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
+                  maxFileSize={5242880}
+                />:null}
+                </Row>
+                <Row style={{marginTop: "5%"}}>
                   {edit?(<><Form.Label>Author(s)</Form.Label><Form.Control
                   name="bookAuthor"
                   onChange={(e)=>setBookAuthor(e.target.value)} 
@@ -375,6 +386,12 @@ function BookCard({
                 /></>):(<p>
                     <b>Synopsis </b> <br></br> {bookSynopsis}
                   </p>)}
+                </Row>
+                <Row>
+                <p>
+                    <b>Available Copies : </b>
+                    {availableCount}/{totalCount}
+                  </p>
                 </Row>
                 <div className="bookCardButtons">
                   {isIssued ? null : (
@@ -409,8 +426,8 @@ function BookCard({
                   <div className="adminButtons">
                     {isAuthenticated && user.role === "ADMIN" && (
                       <>
-                        {edit?(<Button onClick={editBook}>Done</Button>):(<Button variant="primary" onClick={()=>setEdit(!edit)}>Edit</Button>)}
-                        <Button variant="primary" onClick={deleteBook}>
+                        {edit?(<Button onClick={editBook}>Done</Button>):(<Button variant="primary" onClick={()=>setEdit(!edit)} style={{borderColor: "orange", backgroundColor: "orange" }}>Edit</Button>)}
+                        <Button variant="primary" onClick={deleteBook} style={{borderColor: "red", backgroundColor: "red" }}>
                           Delete
                         </Button>
                       </>
@@ -419,22 +436,8 @@ function BookCard({
                 </div>
               </Col>
               <Col className="bookCardRight">
-                <Row>
-                  <img src={`../${editBookImage}`} height="500" width="350" />
-                  {edit?<ImageUploader
-                  withIcon={false}
-                  buttonText="Change Cover Image"
-                  onChange={onDrop} //function call whenever image upload
-                  imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
-                  maxFileSize={5242880}
-                />:null}
-                </Row>
-                <Row>
-                <p>
-                    <b>Available Copies : </b>
-                    {availableCount}/{totalCount}
-                  </p>
-                </Row>
+                
+                
               </Col>
             </Row>
           </Container>

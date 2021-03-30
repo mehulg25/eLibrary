@@ -31,9 +31,9 @@ if (
     && !empty(trim($data->role))
     //this is backend validation
 ) {
-    $email = mysqli_real_escape_string($conn, trim($data->email));
+    $email = mysqli_real_escape_string($conn, trim($data->email)); 
     $password = mysqli_real_escape_string($conn, trim($data->password));
-    $password_hash = password_hash($password, PASSWORD_BCRYPT);
+    $password_hash = password_hash($password, PASSWORD_BCRYPT); //inbuilt php function to encode the password
     $role = mysqli_real_escape_string($conn, trim($data->role));
     //data object se humne php me variables me shift karlia hai and checking if there are any special or encoded characters or not.
     $insertUser = mysqli_query($conn, "INSERT INTO `users`(`email`,`password`,`role`) VALUES('$email','$password_hash','$role')");
@@ -78,4 +78,8 @@ if (
         header("HTTP/1.1 500 Some Error Occured");
         echo json_encode(["msg"=>"User Not Created"]); // will go on response
     }
+}
+else {
+    header("HTTP/1.1 500 Some Error Occured");
+        echo json_encode(["msg"=>"Please Fill All The Required Fields!"]);
 }

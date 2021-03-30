@@ -1,13 +1,14 @@
 import React, { Component } from "react";
 import { Nav } from "react-bootstrap";
 import BookCard from "./bookCard";
+import {NavLink} from 'react-router-dom';
 
 class BookList extends Component {
   render() {
     if (this.props.books !== undefined && this.props.books.length === 0) {
       return (
         <div>
-          <Nav.Link href="#home" className="listTitle">
+          <Nav.Link href="#" className="listTitle">
             {this.props.title}
           </Nav.Link>
           <p className="noBooks">You Do Not Have Any Books Yet</p>
@@ -16,10 +17,10 @@ class BookList extends Component {
     } else {
       return (
         <div>
-          <Nav.Link href="#home" className="listTitle">
+          {this.props.title !== 'My Shelf' ? (this.props.title && <NavLink to={'/expandedView/' + this.props.title.replace(/ +/g, "")} className="listTitle">
             {this.props.title}
-          </Nav.Link>
-          <ul className="bookList">
+          </NavLink>) : <Nav.Link href="#" className="listTitle">{this.props.title}</Nav.Link>}
+          <ul className={this.props.styleClass ? this.props.styleClass : 'bookList'}>
             {this.props.books !== undefined &&
               this.props.books.map((
                 {

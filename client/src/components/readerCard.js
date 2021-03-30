@@ -52,7 +52,7 @@ function ReaderCard({ email, id, deleteReader }) {
                   <Button>Manage Password</Button>
                 </Row>
                 <Row>
-                  <Button onClick={() => deleteReader(id)}>
+                  <Button onClick={() => deleteReader(id)} style={{borderColor: "red", backgroundColor: "red" }}>
                     Delete Reader
                   </Button>
                 </Row>

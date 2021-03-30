@@ -49,7 +49,7 @@ function AdminCard({ email, id, deleteAdmin }) {
                   <Button>Manage Password</Button>
                 </Row>
                 <Row>
-                  <Button onClick={() => deleteAdmin(id)}>Delete Admin</Button>
+                  <Button onClick={() => deleteAdmin(id)} style={{borderColor: "red", backgroundColor: "red" }}>Delete Admin</Button>
                 </Row>
               </Col>
             </Row>

@@ -354,8 +354,8 @@ function BookCard({
         </Modal.Header>
         <Modal.Body className="bookModalBody">
           <Container fluid>
-            <Row>
-              <Col>
+            {/* <Row> */}
+              <Col className="bookModalBodyCol">
               <Row>
                   <img src={`../${editBookImage}`} height="380" width="270" />
                   {edit?<ImageUploader
@@ -435,11 +435,8 @@ function BookCard({
                   </div>
                 </div>
               </Col>
-              <Col className="bookCardRight">
-                
-                
-              </Col>
-            </Row>
+ 
+            {/* </Row> */}
           </Container>
         </Modal.Body>
       </Modal>

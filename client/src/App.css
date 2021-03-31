@@ -97,9 +97,10 @@
 .listTitle {
   color: black;
   margin-top: 10px;
-  margin-left: -4px;
+  margin-left: 15px;
   font-size: 22px;
   padding-bottom: 0% !important;
+  padding: 0% !important;
 }
 
 .noBooks {
@@ -123,9 +124,9 @@
   height: 7vh !important;
 }
 
-.bookCardButton {
-  height: 35% !important;
-  width: 34%;
+.bookCardButtons {
+  margin-left: -6% !important;
+  margin-right: -6% !important;
 }
 .bookList {
   display: flex;
@@ -162,6 +163,9 @@
   margin-top: 5%;
 }
 
+.bookModalBody {
+  margin-right: -10%;
+}
 .adminList {
   float: left;
   margin-left: 5%;
@@ -209,7 +213,7 @@
   width: 31%;
   margin-right: 2%;
   margin-bottom: 2%;
-  font-size: 15px;
+  font-size: 11px;
 }
 
 .adminButtons {
@@ -274,9 +278,13 @@
 .modal-header .close {
   margin-top: -4% !important;
 }
-.expandedList{
+.expandedList {
   display: flex;
   flex-wrap: wrap;
+  margin-left: -14%;
+}
+.bookModalBodyCol {
+  margin-left: -5% !important;
 }
 /* MOBILE M */
 
@@ -337,9 +345,12 @@
   .listTitle {
     color: black;
     margin-top: 10px;
-    margin-left: 5px;
+    margin-left: 32px;
     font-size: 22px;
     padding-bottom: 0% !important;
+  }
+  .expandedList {
+    margin-left: -4%;
   }
 
   .addBookImage {
@@ -360,6 +371,20 @@
     margin-left: 11%;
     margin-top: 7%;
     margin-bottom: 7%;
+  }
+
+  .readingHistoryTitle {
+    margin-left: 13px;
+  }
+  .readingHistoryBooks {
+    margin-left: -5%;
+  }
+  .bookModalBody p {
+    margin-left: -9% !important;
+  }
+  .bookCardButtons {
+    margin-left: -13% !important;
+    margin-right: -6% !important;
   }
 }
 
@@ -429,6 +454,17 @@
     margin-left: -8%;
     margin-top: -2%;
   }
+
+  .expandedList {
+    margin-left: 2%;
+  }
+  .bookModalBody p {
+    margin-left: -17% !important;
+  }
+  .bookCardButtons {
+    margin-left: -23% !important;
+    margin-right: -6% !important;
+  }
 }
 
 /* TABLET */
@@ -462,7 +498,7 @@
     margin-bottom: 5%;
     margin-left: 20%;
   }
-  .bookModalBody { 
+  .bookModalBody {
     margin-left: 20%;
   }
 
@@ -513,13 +549,34 @@
   }
   .modal-header .close {
     margin-top: -3% !important;
-}
-.adminList {
-  float: left;
-  margin-left: 30%;
-  margin-top: 7%;
-  margin-bottom: 7%;
-}
+  }
+  .adminList {
+    float: left;
+    margin-left: 30%;
+    margin-top: 7%;
+    margin-bottom: 7%;
+  }
+  .sortBy {
+    float: right;
+    margin-top: -12%;
+    margin-right: 4%;
+  }
+  .readingHistoryBooks {
+    margin-left: -3%;
+  }
+  .bookModalBody p {
+    margin-left: -25% !important;
+  }
+  .bookCardButtons .btn {
+    width: 31%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    font-size: 16px;
+  }
+  .bookCardButtons {
+    margin-left: -32% !important;
+    margin-right: -6% !important;
+  }
 }
 
 /* LAPTOP */
@@ -683,23 +740,19 @@
     width: 100%;
   }
 
+  .bookCardButtons {
+    margin-left: 17% !important;
+    margin-right: -9% !important;
+  }
   .bookCardButtons .btn {
     width: 25%;
-    margin-top: 4%;
-    margin-left: 8%;
+    margin-right: 2%;
+    margin-bottom: 2%;
+    font-size: 21px;
   }
-
   .adminButtons {
-    margin-left: 18% !important;
-    margin-top: 3%;
-  }
-
-  .adminButtons .btn {
-    width: 30%;
-  }
-
-  .bookCardRight {
-    margin-left: 10%;
+    margin-left: 13%;
+    width: 100%;
   }
 
   .noBooks {
@@ -752,33 +805,57 @@
     font-size: 25px;
     padding-bottom: 0% !important;
     margin-bottom: 7% !important;
-}
-.sortBy {
-  float: right;
-  margin-top: -9%;
-  margin-right: 5%;
-}
-.readingHistoryBooks {
-  display: flex !important;
-  overflow-x: scroll !important;
-  margin-left: 0%;
-  list-style-type: none !important;
-  margin-bottom: -9% !important;
-}
-.month p {
-  margin-top: 12%;
-  font-size: 130%;
-  color: black;
-  margin-left: 5%;
-}
-.week p {
-  margin-top: 10%;
-  font-size: 100%;
-  color: black;
-  margin-left: 5%;
-}
-.expandedList{
-  display: flex;
-  flex-wrap: wrap;
-}
+  }
+  .sortBy {
+    float: right;
+    margin-top: -9%;
+    margin-right: 5%;
+  }
+  .readingHistoryBooks {
+    display: flex !important;
+    overflow-x: scroll !important;
+    margin-left: 0%;
+    list-style-type: none !important;
+    margin-bottom: -9% !important;
+  }
+  .month p {
+    margin-top: 12%;
+    font-size: 130%;
+    color: black;
+    margin-left: 5%;
+  }
+  .week p {
+    margin-top: 10%;
+    font-size: 100%;
+    color: black;
+    margin-left: 5%;
+  }
+  .expandedList {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 9%;
+    margin-top: 2%;
+  }
+  .synopsisField {
+    margin-top: 2%;
+  }
+  .bookModalBody img {
+    width: 450px;
+    height: 600px;
+    margin-left: 20%;
+  }
+  .synopsis p {
+    width: 100%;
+    font-size: 25px;
+  }
+  .bookModalBody p {
+    font-size: 25px;
+  }
+  .bookModalBody .container-fluid {
+    width: 115%;
+    margin-left: -22%;
+  }
+  .bookModalBody p {
+    margin-left: 3% !important;
+  }
 }

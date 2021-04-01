@@ -141,7 +141,7 @@ class AddBook extends Component {
                 />
               )}
               <Form.Group controlId="formBasicBookName">
-                <Form.Label>Enter Book Name</Form.Label>
+                <Form.Label>Enter Book Name <sup>*</sup></Form.Label>
                 <Form.Control // form control is nothing but an input box
                   name="bookName" // attribute for internal function denoting what the input box is for. same as state variables.
                   onChange={this.onChange} // function call saves value at every key press.
@@ -150,7 +150,7 @@ class AddBook extends Component {
                 />
               </Form.Group>
               <Form.Group controlId="bookAuthor">
-                <Form.Label>Author(s)</Form.Label>
+                <Form.Label>Author(s) <sup>*</sup></Form.Label>
                 <Form.Control
                   name="bookAuthor"
                   onChange={this.onChange}
@@ -158,7 +158,7 @@ class AddBook extends Component {
                   placeholder="Enter Author name(s)"
                 />
               <Form.Group controlId="formBasicSynopsis" className="synopsisField">
-                <Form.Label>Synopsis</Form.Label>
+                <Form.Label>Synopsis <sup>*</sup></Form.Label>
                 <Form.Control
                   name="bookSynopsis"
                   onChange={this.onChange}
@@ -169,7 +169,7 @@ class AddBook extends Component {
 
               </Form.Group>
               <Form.Group controlId="totalCount">
-                <Form.Label>Count</Form.Label>
+                <Form.Label>Count <sup>*</sup></Form.Label>
                 <Form.Control
                   name="totalCount"
                   onChange={this.onChange}
@@ -179,6 +179,7 @@ class AddBook extends Component {
                   min={1}
                 />
               </Form.Group>
+              <p style={{color: "red",marginTop:"5%", marginBottom:"-2%"}}>Required Fields <sup>*</sup></p>
               <Alert
                 show={this.state.alert}
                 className="failAlert"

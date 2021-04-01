@@ -11,7 +11,7 @@ class BookList extends Component {
           <Nav.Link href="#" className="listTitle">
             {this.props.title}
           </Nav.Link>
-          <p className="noBooks">You Do Not Have Any Books Yet</p>
+          <p className="noBooks">You Do Not Have Any Books Yet.</p>
         </div>
       );
     } else {

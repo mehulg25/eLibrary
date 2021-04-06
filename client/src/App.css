@@ -304,6 +304,9 @@
 .bookModalBodyCol {
   margin-left: -5% !important;
 }
+.sup {
+  color: red !important;
+}
 /* MOBILE M */
 
 @media only screen and (min-width: 375px) {
@@ -409,6 +412,9 @@
   .bookCardButtons {
     margin-left: -13% !important;
     margin-right: -6% !important;
+  }
+  .searchBar {
+    float: right;
   }
 }
 
@@ -928,5 +934,14 @@
   }
   .bookModalBody p {
     margin-left: 3% !important;
+  }
+  .sortBy{
+    display: flex;
+  }
+  .sortByLabel {
+    
+      margin-right: 15px;
+      margin-top: 7px;
+  
   }
 }

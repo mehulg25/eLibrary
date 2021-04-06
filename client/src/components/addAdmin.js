@@ -64,7 +64,7 @@ function AddAdmin({ handleAddAdmin }) {
         <Modal.Body>
           <Form onSubmit={addAdmin} className="addAdmin">
             <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email address <sup>*</sup></Form.Label>
+              <Form.Label>Email address <sup className="sup">*</sup></Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Enter email"
@@ -73,7 +73,7 @@ function AddAdmin({ handleAddAdmin }) {
             </Form.Group>
 
             <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password <sup>*</sup></Form.Label>
+              <Form.Label>Password <sup className="sup">*</sup></Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Password"
@@ -81,14 +81,14 @@ function AddAdmin({ handleAddAdmin }) {
               />
             </Form.Group>
             <Form.Group controlId="formBasicPassword">
-              <Form.Label>Confirm Password <sup>*</sup></Form.Label>
+              <Form.Label>Confirm Password <sup className="sup">*</sup></Form.Label>
               <Form.Control
                 type="password"
                 placeholder="Confirm Password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </Form.Group>
-            <p style={{color: "red",marginTop:"5%", marginBottom:"-2%"}}>Required Fields <sup>*</sup></p>
+            <p style={{color: "red",marginTop:"5%", marginBottom:"-2%"}}><sup>*</sup> Required Fields </p>
             <Button
               variant="primary"
               type="submit"

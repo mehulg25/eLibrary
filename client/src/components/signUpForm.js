@@ -50,7 +50,7 @@ function SignUpForm() {
       <Form onSubmit={signUp} className="signUp">
         <h3>Sign Up</h3>
         <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address <sup>*</sup></Form.Label>
+          <Form.Label>Email address <sup className="sup">*</sup></Form.Label>
           <Form.Control
             type="email"
             placeholder="Enter email"
@@ -59,7 +59,7 @@ function SignUpForm() {
         </Form.Group>
 
         <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password <sup>*</sup></Form.Label>
+          <Form.Label>Password <sup className="sup">*</sup></Form.Label>
           <Form.Control
             type="password"
             placeholder="Password"
@@ -67,14 +67,14 @@ function SignUpForm() {
           />
         </Form.Group>
         <Form.Group controlId="formBasicPassword">
-          <Form.Label>Confirm Password <sup>*</sup></Form.Label>
+          <Form.Label>Confirm Password <sup className="sup">*</sup></Form.Label>
           <Form.Control
             type="password"
             placeholder="Confirm Password"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
         </Form.Group>
-        <p style={{color: "red",marginTop:"5%", marginBottom:"-2%", marginLeft:"7%"}}>Required Fields <sup>*</sup></p>
+        <p style={{color: "red",marginTop:"5%", marginBottom:"-2%", marginLeft:"7%"}}><sup>*</sup> Required Fields </p>
         <Button variant="primary" type="submit">
           Sign Up
         </Button>

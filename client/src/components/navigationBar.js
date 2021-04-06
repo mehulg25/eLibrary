@@ -35,7 +35,9 @@ function NavigationBar() {
         {isAuthenticated && (
           <Nav>
             <Nav.Link href="/readingHistory">Reading History</Nav.Link>
+            
           </Nav>
+          
         )}
         {isAuthenticated && user.role === "ADMIN" && (
           <Nav className="mr-auto">
@@ -49,14 +51,14 @@ function NavigationBar() {
             <Form inline>
               <div className="row">
                 <div className="col">
-                  {/* <FormControl
+                  <FormControl
                     type="text"
                     placeholder="Search"
                     className="sm-1"
-                  /> */}
+                  />
                 </div>
               </div>
-              {/* <Button variant="outline-info">Search</Button> */}
+              <Button variant="outline-info">Search</Button>
               <NavDropdown
                 title={
                   <Icon path={mdiAccount} size={0.5} className=" avatar" />

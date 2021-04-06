@@ -182,7 +182,7 @@ function ReadingHistory() {
             Reading History
           </Nav>
           <div className="sortBy">
-      <Form.Label>Sort By</Form.Label>
+      <Form.Label className="sortByLabel">Sort By</Form.Label>
       <Dropdown>
         <Dropdown.Toggle variant="primary" id="dropdown-basic">
           {sortBy}{" "}

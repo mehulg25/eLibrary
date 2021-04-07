@@ -1,3 +1,4 @@
+import React,{useState} from 'react';
 import {
   Nav,
   Navbar,
@@ -23,6 +24,12 @@ function NavigationBar() {
   const { user, isAuthenticated } = useUserState();
   const dispatch = useUserDispatch();
   const errorDispatch = useErrorDispatch();
+  const [searchText,setSearchText] = useState('');
+
+  const onSearchSubmit = () =>{
+    console.log(searchText);
+    history.push(`/search/${searchText}`)
+  }
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -55,10 +62,12 @@ function NavigationBar() {
                     type="text"
                     placeholder="Search"
                     className="sm-1"
+                    value={searchText}
+                    onChange={(e)=>setSearchText(e.target.value)}
                   />
                 </div>
               </div>
-              <Button variant="outline-info">Search</Button>
+              <Button variant="outline-info" onClick={onSearchSubmit}>Search</Button>
               <NavDropdown
                 title={
                   <Icon path={mdiAccount} size={0.5} className=" avatar" />

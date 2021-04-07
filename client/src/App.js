@@ -15,6 +15,7 @@ import { useErrorState } from "./ErrorContext";
 import ReadingHistory from "./components/readingHistory";
 import ViewUserReadingHistory from "./components/viewUserReadingHistory";
 import ExpandedBooklist from "./components/expandedBookList";
+import SearchBooks from './components/searchPage'
 function App() {
   const dispatch = useUserDispatch();
   const { msg, variant, showAlert } = useErrorState(); //destructure from global state of useErrorState
@@ -58,6 +59,7 @@ function App() {
         <Route exact path="/readingHistory" component={ReadingHistory} />
         <Route path="/readingHistory/:userId" component={ViewUserReadingHistory} />
         <Route path="/expandedView/:expandedBooklistType" component={ExpandedBooklist} />
+        <Route exact path="/search/:searchText" component={SearchBooks} />
 
       </Router>
     </div>

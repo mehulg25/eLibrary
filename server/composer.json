@@ -1,6 +1,7 @@
 {
-    "require": {
-        "php": ">=5.3.2",
-        "firebase/php-jwt": "^5.2"
-    }
+  "require": {
+    "php": ">=5.3.2",
+    "firebase/php-jwt": "^5.2",
+    "phpmailer/phpmailer": "^6.4"
+  }
 }

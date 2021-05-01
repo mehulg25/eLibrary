@@ -9,12 +9,11 @@ function ReaderCard({ email, id, deleteReader }) {
   const [modal, setModal] = useState(false);
 
   const history = useHistory();
-  
+
   const viewReadingHistory = (userId) => {
-    console.log(userId)
-    history.push("/readingHistory/"+userId)
-    
-  }
+    console.log(userId);
+    history.push("/readingHistory/" + userId);
+  };
   return (
     <div className="adminList">
       <Card style={{ width: "18rem" }}>
@@ -46,13 +45,18 @@ function ReaderCard({ email, id, deleteReader }) {
               </Col>
               <Col>
                 <Row>
-                  <Button onClick ={()=> viewReadingHistory(id)}>View Reading History</Button>
+                  <Button onClick={() => viewReadingHistory(id)}>
+                    View Reading History
+                  </Button>
                 </Row>
                 <Row>
                   <Button>Manage Password</Button>
                 </Row>
                 <Row>
-                  <Button onClick={() => deleteReader(id)} style={{borderColor: "red", backgroundColor: "red" }}>
+                  <Button
+                    onClick={() => deleteReader(id)}
+                    style={{ borderColor: "red", backgroundColor: "red" }}
+                  >
                     Delete Reader
                   </Button>
                 </Row>

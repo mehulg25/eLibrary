@@ -15,8 +15,7 @@ class AddBook extends Component {
   };
 
   toggle = () => {
-    this.setState({ modal: !this.state.modal, alert: false , bookImage: ""});
-    
+    this.setState({ modal: !this.state.modal, alert: false, bookImage: "" });
   };
   onChange = (e) => {
     // e is short for event. on___ are events. onchange pe event mil rha hai -> where change what change
@@ -67,7 +66,7 @@ class AddBook extends Component {
       bookImage,
       bookAuthor,
       totalCount,
-      bookId:0
+      bookId: 0,
     };
 
     Axios.post("/addBook.php", addBookObj) //POST request passing object
@@ -141,7 +140,9 @@ class AddBook extends Component {
                 />
               )}
               <Form.Group controlId="formBasicBookName">
-                <Form.Label>Enter Book Name <sup className="sup">*</sup></Form.Label>
+                <Form.Label>
+                  Enter Book Name <sup>*</sup>
+                </Form.Label>
                 <Form.Control // form control is nothing but an input box
                   name="bookName" // attribute for internal function denoting what the input box is for. same as state variables.
                   onChange={this.onChange} // function call saves value at every key press.
@@ -150,26 +151,34 @@ class AddBook extends Component {
                 />
               </Form.Group>
               <Form.Group controlId="bookAuthor">
-                <Form.Label>Author(s) <sup className="sup">*</sup></Form.Label>
+                <Form.Label>
+                  Author(s) <sup>*</sup>
+                </Form.Label>
                 <Form.Control
                   name="bookAuthor"
                   onChange={this.onChange}
                   type="text"
                   placeholder="Enter Author name(s)"
                 />
-              <Form.Group controlId="formBasicSynopsis" className="synopsisField">
-                <Form.Label>Synopsis <sup className="sup">*</sup></Form.Label>
-                <Form.Control
-                  name="bookSynopsis"
-                  onChange={this.onChange}
-                  type="text"
-                  placeholder="Enter Synopsis"
-                />
-              </Form.Group>
-
+                <Form.Group
+                  controlId="formBasicSynopsis"
+                  className="synopsisField"
+                >
+                  <Form.Label>
+                    Synopsis <sup>*</sup>
+                  </Form.Label>
+                  <Form.Control
+                    name="bookSynopsis"
+                    onChange={this.onChange}
+                    type="text"
+                    placeholder="Enter Synopsis"
+                  />
+                </Form.Group>
               </Form.Group>
               <Form.Group controlId="totalCount">
-                <Form.Label>Count <sup className="sup">*</sup></Form.Label>
+                <Form.Label>
+                  Count <sup>*</sup>
+                </Form.Label>
                 <Form.Control
                   name="totalCount"
                   onChange={this.onChange}
@@ -179,7 +188,9 @@ class AddBook extends Component {
                   min={1}
                 />
               </Form.Group>
-              <p style={{color: "red",marginTop:"5%", marginBottom:"-2%"}}><sup>*</sup> Required Fields </p>
+              <p style={{ color: "red", marginTop: "5%", marginBottom: "-2%" }}>
+                Required Fields <sup>*</sup>
+              </p>
               <Alert
                 show={this.state.alert}
                 className="failAlert"
@@ -187,7 +198,11 @@ class AddBook extends Component {
               >
                 Please check Fields!
               </Alert>
-              <Button variant="primary" type="submit" className="addBookFormButton">
+              <Button
+                variant="primary"
+                type="submit"
+                className="addBookFormButton"
+              >
                 {" "}
                 {/* no need for onclick as button is inside form and there is a default behaviour on Submit */}
                 Add Book

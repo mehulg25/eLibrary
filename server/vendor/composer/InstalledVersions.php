@@ -20,6 +20,8 @@ use Composer\Semver\VersionParser;
 
 
 
+
+
 class InstalledVersions
 {
 private static $installed = array (
@@ -30,7 +32,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => '65c7c3a8ff06bf235b13d45c7b2b4a1db10c60ab',
+    'reference' => 'fd91c8c4a0a2ce197f79bc38a584f72c8af8117c',
     'name' => '__root__',
   ),
   'versions' => 
@@ -42,7 +44,7 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => '65c7c3a8ff06bf235b13d45c7b2b4a1db10c60ab',
+      'reference' => 'fd91c8c4a0a2ce197f79bc38a584f72c8af8117c',
     ),
     'firebase/php-jwt' => 
     array (
@@ -52,6 +54,15 @@ private static $installed = array (
       array (
       ),
       'reference' => 'f42c9110abe98dd6cfe9053c49bc86acc70b2d23',
+    ),
+    'phpmailer/phpmailer' => 
+    array (
+      'pretty_version' => 'v6.4.0',
+      'version' => '6.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '050d430203105c27c30efd1dce7aa421ad882d01',
     ),
   ),
 );
@@ -70,7 +81,6 @@ $packages = array();
 foreach (self::getInstalled() as $installed) {
 $packages[] = array_keys($installed['versions']);
 }
-
 
 if (1 === \count($packages)) {
 return $packages[0];
@@ -263,6 +273,7 @@ public static function reload($data)
 self::$installed = $data;
 self::$installedByVendor = array();
 }
+
 
 
 

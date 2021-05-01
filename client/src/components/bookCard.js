@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Card, Button, Modal, Row, Col, Container, Form } from "react-bootstrap";
+import {
+  Card,
+  Button,
+  Modal,
+  Row,
+  Col,
+  Container,
+  Form,
+} from "react-bootstrap";
 import Axios from "axios";
 import { useUserState, useUserDispatch, updateUserData } from "../UserContext";
 import {
@@ -32,28 +40,31 @@ function BookCard({
   const booksDispatch = useBooksDispatch();
   const errorDispatch = useErrorDispatch();
   const [modal, setModal] = useState();
-  const [edit,setEdit] = useState(false);
-  const [editBookName,setBookName] = useState(bookName);
-  const [editBookSynopsis,setBookSynopsis] = useState(bookSynopsis);
-  const [editBookAuthor,setBookAuthor] = useState(bookAuthor);
-  const [editBookImage,setBookImage] = useState(bookImage);
+  const [edit, setEdit] = useState(false);
+  const [editBookName, setBookName] = useState(bookName);
+  const [editBookSynopsis, setBookSynopsis] = useState(bookSynopsis);
+  const [editBookAuthor, setBookAuthor] = useState(bookAuthor);
+  const [editBookImage, setBookImage] = useState(bookImage);
 
   const toggle = () => {
     setModal(!modal);
-    setEdit(false)
+    setEdit(false);
   };
 
   const onDrop = (picture) => {
-    console.log((picture));
-  
-    setBookImage(picture[0].name)
-    picture.splice(0,1);
+    console.log(picture);
 
+    setBookImage(picture[0].name);
+    picture.splice(0, 1);
   };
 
-  const editBook = () =>{
-    if(editBookName === '' || editBookAuthor === '' ||editBookSynopsis === ''){
-      displayError(errorDispatch,'Fields cannot be empty');
+  const editBook = () => {
+    if (
+      editBookName === "" ||
+      editBookAuthor === "" ||
+      editBookSynopsis === ""
+    ) {
+      displayError(errorDispatch, "Fields cannot be empty");
       return;
     }
 
@@ -65,31 +76,31 @@ function BookCard({
     };
     const obj = {
       bookId,
-      bookName:editBookName,
-      bookSynopsis:editBookSynopsis,
-      bookImage:editBookImage,
-      bookAuthor:editBookAuthor,
-      totalCount
-    }
-    Axios.post('/addBook.php',obj).then(response=>{
+      bookName: editBookName,
+      bookSynopsis: editBookSynopsis,
+      bookImage: editBookImage,
+      bookAuthor: editBookAuthor,
+      totalCount,
+    };
+    Axios.post("/addBook.php", obj).then((response) => {
       console.log(response);
-      if(response.status == 200){
-        displaySuccess(errorDispatch,response.data.msg);
-        let foundBook = allBooks.find(b=>b.book_id === bookId)
+      if (response.status == 200) {
+        displaySuccess(errorDispatch, response.data.msg);
+        let foundBook = allBooks.find((b) => b.book_id === bookId);
         console.log(foundBook);
-        foundBook.name=editBookName
-        foundBook.synopsis=editBookSynopsis
-        foundBook.author_name=editBookAuthor
-        foundBook.image_url=editBookImage
-        updateAllBooks(booksDispatch,allBooks);
-      }else{
-        displayError(errorDispatch,response.data.msg)
+        foundBook.name = editBookName;
+        foundBook.synopsis = editBookSynopsis;
+        foundBook.author_name = editBookAuthor;
+        foundBook.image_url = editBookImage;
+        updateAllBooks(booksDispatch, allBooks);
+      } else {
+        displayError(errorDispatch, response.data.msg);
       }
-      
-      setEdit(false)
-    })
-  }
-  
+
+      setEdit(false);
+    });
+  };
+
   const unsaveBook = () => {
     const config = {
       headers: {
@@ -327,7 +338,9 @@ function BookCard({
           className="bookCardImg"
         />
         <Card.Body>
-          <Card.Title style={{ height: "10vh" }} className="bookName">{bookName}</Card.Title>
+          <Card.Title style={{ height: "10vh" }} className="bookName">
+            {bookName}
+          </Card.Title>
           <Button variant="primary" onClick={toggle} className="bookCardButton">
             View
           </Button>
@@ -342,100 +355,143 @@ function BookCard({
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-vcenter">
-            {edit?(<><Form.Label>Enter Book Name</Form.Label>
-            <Form.Control 
-                  name="bookName" 
-                  onChange={(e)=>setBookName(e.target.value)} 
+            {edit ? (
+              <>
+                <Form.Label>Enter Book Name</Form.Label>
+                <Form.Control
+                  name="bookName"
+                  onChange={(e) => setBookName(e.target.value)}
                   type="text"
                   value={editBookName}
                   placeholder="Enter Book Name"
-                /></>):(bookName)}
+                />
+              </>
+            ) : (
+              bookName
+            )}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body className="bookModalBody">
           <Container fluid>
             {/* <Row> */}
-              <Col className="bookModalBodyCol">
+            <Col className="bookModalBodyCol">
               <Row>
-                  <img src={`../${editBookImage}`} height="380" width="270" />
-                  {edit?<ImageUploader
-                  withIcon={false}
-                  buttonText="Change Cover Image"
-                  onChange={onDrop} //function call whenever image upload
-                  imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
-                  maxFileSize={5242880}
-                />:null}
-                </Row>
-                <Row style={{marginTop: "5%"}}>
-                  {edit?(<><Form.Label>Author(s)</Form.Label><Form.Control
-                  name="bookAuthor"
-                  onChange={(e)=>setBookAuthor(e.target.value)} 
-                  type="text"
-                  value={editBookAuthor}
-                  placeholder="Enter Author name(s)"
-                /></>):(<p> <b>Author : </b> {bookAuthor}</p>)}
-                </Row>
-                <Row className="synopsis">
-                  {edit?(<><Form.Label>Synopsis</Form.Label><Form.Control
-                  name="bookSynopsis"
-                  onChange={(e)=>setBookSynopsis(e.target.value)} 
-                  type="text"
-                  as="textarea" rows={10}
-                  value={editBookSynopsis}
-                  placeholder="Enter Synopsis"
-                /></>):(<p>
-                    <b>Synopsis </b> <br></br> {bookSynopsis}
-                  </p>)}
-                </Row>
-                <Row>
-                <p>
-                    <b>Available Copies : </b>
-                    {availableCount}/{totalCount}
+                <img src={`../${editBookImage}`} height="380" width="270" />
+                {edit ? (
+                  <ImageUploader
+                    withIcon={false}
+                    buttonText="Change Cover Image"
+                    onChange={onDrop} //function call whenever image upload
+                    imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
+                    maxFileSize={5242880}
+                  />
+                ) : null}
+              </Row>
+              <Row style={{ marginTop: "5%" }}>
+                {edit ? (
+                  <>
+                    <Form.Label>Author(s)</Form.Label>
+                    <Form.Control
+                      name="bookAuthor"
+                      onChange={(e) => setBookAuthor(e.target.value)}
+                      type="text"
+                      value={editBookAuthor}
+                      placeholder="Enter Author name(s)"
+                    />
+                  </>
+                ) : (
+                  <p>
+                    {" "}
+                    <b>Author : </b> {bookAuthor}
                   </p>
-                </Row>
-                <div className="bookCardButtons">
-                  {isIssued ? null : (
-                    <Button variant="primary" onClick={issueBook}>
-                      Issue
-                    </Button>
-                  )}
-                  {isIssued && (
-                    <Button variant="primary" onClick={returnBook}>
-                      Return
-                    </Button>
-                  )}
-                  {isBookmarked ? (
-                    <Button variant="primary" onClick={unsaveBook}>
-                      Unsave
-                    </Button>
-                  ) : (
-                    <Button variant="primary" onClick={saveBookForLater}>
-                      Save
-                    </Button>
-                  )}
+                )}
+              </Row>
+              <Row className="synopsis">
+                {edit ? (
+                  <>
+                    <Form.Label>Synopsis</Form.Label>
+                    <Form.Control
+                      name="bookSynopsis"
+                      onChange={(e) => setBookSynopsis(e.target.value)}
+                      type="text"
+                      as="textarea"
+                      rows={10}
+                      value={editBookSynopsis}
+                      placeholder="Enter Synopsis"
+                    />
+                  </>
+                ) : (
+                  <p>
+                    <b>Synopsis </b> <br></br> {bookSynopsis}
+                  </p>
+                )}
+              </Row>
+              <Row>
+                <p>
+                  <b>Available Copies : </b>
+                  {availableCount}/{totalCount}
+                </p>
+              </Row>
+              <div className="bookCardButtons">
+                {isIssued ? null : (
+                  <Button variant="primary" onClick={issueBook}>
+                    Issue
+                  </Button>
+                )}
+                {isIssued && (
+                  <Button variant="primary" onClick={returnBook}>
+                    Return
+                  </Button>
+                )}
+                {isBookmarked ? (
+                  <Button variant="primary" onClick={unsaveBook}>
+                    Unsave
+                  </Button>
+                ) : (
+                  <Button variant="primary" onClick={saveBookForLater}>
+                    Save
+                  </Button>
+                )}
 
-                  {isRead ? (
-                    <Button variant="primary" onClick={markBookAsUnRead}>
-                      Unread
-                    </Button>
-                  ) : (
-                    <Button variant="primary" onClick={markBookAsRead}>
-                      Read
-                    </Button>
-                  )}
-                  <div className="adminButtons">
-                    {isAuthenticated && user.role === "ADMIN" && (
-                      <>
-                        {edit?(<Button onClick={editBook}>Done</Button>):(<Button variant="primary" onClick={()=>setEdit(!edit)} style={{borderColor: "orange", backgroundColor: "orange" }}>Edit</Button>)}
-                        <Button variant="primary" onClick={deleteBook} style={{borderColor: "red", backgroundColor: "red" }}>
-                          Delete
+                {isRead ? (
+                  <Button variant="primary" onClick={markBookAsUnRead}>
+                    Unread
+                  </Button>
+                ) : (
+                  <Button variant="primary" onClick={markBookAsRead}>
+                    Read
+                  </Button>
+                )}
+                <div className="adminButtons">
+                  {isAuthenticated && user.role === "ADMIN" && (
+                    <>
+                      {edit ? (
+                        <Button onClick={editBook}>Done</Button>
+                      ) : (
+                        <Button
+                          variant="primary"
+                          onClick={() => setEdit(!edit)}
+                          style={{
+                            borderColor: "orange",
+                            backgroundColor: "orange",
+                          }}
+                        >
+                          Edit
                         </Button>
-                      </>
-                    )}
-                  </div>
+                      )}
+                      <Button
+                        variant="primary"
+                        onClick={deleteBook}
+                        style={{ borderColor: "red", backgroundColor: "red" }}
+                      >
+                        Delete
+                      </Button>
+                    </>
+                  )}
                 </div>
-              </Col>
- 
+              </div>
+            </Col>
+
             {/* </Row> */}
           </Container>
         </Modal.Body>

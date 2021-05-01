@@ -8,7 +8,7 @@ import {
   displayError,
   displaySuccess,
   useErrorDispatch,
-} from "../ErrorContext"; 
+} from "../ErrorContext";
 
 function ManageReaders() {
   const [readers, setReaders] = useState([]);
@@ -26,11 +26,10 @@ function ManageReaders() {
     Axios.post("/deleteUser.php", delObj).then((response) => {
       console.log(response);
       let filterReaders = readers.filter((a) => a.id !== id);
-      if(response.status === 200) {
-        displaySuccess(errorDispatch,response.data.msg)
-      }
-      else {
-        displayError(errorDispatch,response.data.msg)
+      if (response.status === 200) {
+        displaySuccess(errorDispatch, response.data.msg);
+      } else {
+        displayError(errorDispatch, response.data.msg);
       }
       setReaders(filterReaders);
     });

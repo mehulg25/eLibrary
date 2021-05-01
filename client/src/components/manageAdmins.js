@@ -7,7 +7,7 @@ import {
   displayError,
   displaySuccess,
   useErrorDispatch,
-} from "../ErrorContext"; 
+} from "../ErrorContext";
 
 function ManageAdmins() {
   const [admins, setAdmins] = useState([]);
@@ -25,11 +25,10 @@ function ManageAdmins() {
     Axios.post("/deleteUser.php", delObj).then((response) => {
       console.log(response);
       let filteredAdmins = admins.filter((a) => a.id !== id);
-      if(response.status === 200) {
-        displaySuccess(errorDispatch,response.data.msg)
-      }
-      else {
-        displayError(errorDispatch,response.data.msg)
+      if (response.status === 200) {
+        displaySuccess(errorDispatch, response.data.msg);
+      } else {
+        displayError(errorDispatch, response.data.msg);
       }
       setAdmins(filteredAdmins);
     });

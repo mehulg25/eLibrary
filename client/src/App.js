@@ -15,7 +15,10 @@ import { useErrorState } from "./ErrorContext";
 import ReadingHistory from "./components/readingHistory";
 import ViewUserReadingHistory from "./components/viewUserReadingHistory";
 import ExpandedBooklist from "./components/expandedBookList";
-import SearchBooks from './components/searchPage'
+import SearchBooks from "./components/searchPage";
+import ForgotPassword from "./components/forgotPassword";
+import { Container } from "react-bootstrap";
+import RedirectActivateAccount from "./components/redirectActivateAccount";
 function App() {
   const dispatch = useUserDispatch();
   const { msg, variant, showAlert } = useErrorState(); //destructure from global state of useErrorState
@@ -33,7 +36,6 @@ function App() {
 
       Axios.get("/getUser.php", config)
         .then((response) => {
-          console.log(response);
           if (response.data !== undefined && response.status === 200) {
             getUser(dispatch, response.data.user[0]);
           }
@@ -46,21 +48,38 @@ function App() {
 
   return (
     <div className="App">
-      
       <LibraryAlerts show={showAlert} msg={msg} variant={variant} />
       <Router>
         <NavigationBar />
         <Route exact path="/" component={HomePage} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/signUp" component={SignUpForm} /> 
+        <Route path="/signUp" component={SignUpForm} />
         <Route path="/logIn" component={LogIn} />
         <Route path="/manageAdmins" component={ManageAdmins} />
         <Route path="/manageReaders" component={ManageReaders} />
         <Route exact path="/readingHistory" component={ReadingHistory} />
-        <Route path="/readingHistory/:userId" component={ViewUserReadingHistory} />
-        <Route path="/expandedView/:expandedBooklistType" component={ExpandedBooklist} />
+        <Route
+          path="/readingHistory/:userId"
+          component={ViewUserReadingHistory}
+        />
+        <Route
+          path="/expandedView/:expandedBooklistType"
+          component={ExpandedBooklist}
+        />
         <Route exact path="/search/:searchText" component={SearchBooks} />
-
+        <Route path="/forgotPassword" component={ForgotPassword} />
+        <Route path="/activateAccountMsg">
+          <Container>
+            <h3>
+              Please activate the account with the link sent on your mail,to
+              start using E-Library!!
+            </h3>
+          </Container>
+        </Route>
+        <Route
+          path="/redirectActivateAccount/:email/:code"
+          component={RedirectActivateAccount}
+        />
       </Router>
     </div>
   );

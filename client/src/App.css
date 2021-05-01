@@ -304,9 +304,6 @@
 .bookModalBodyCol {
   margin-left: -5% !important;
 }
-.sup {
-  color: red !important;
-}
 /* MOBILE M */
 
 @media only screen and (min-width: 375px) {
@@ -388,7 +385,7 @@
     margin-top: 5% !important;
     margin-bottom: 5% !important;
     font-size: 12px !important;
-}
+  }
   .adminCard svg {
     margin-left: 13%;
   }
@@ -412,9 +409,6 @@
   .bookCardButtons {
     margin-left: -13% !important;
     margin-right: -6% !important;
-  }
-  .searchBar {
-    float: right;
   }
 }
 
@@ -471,7 +465,7 @@
     margin-top: 5% !important;
     margin-bottom: 5% !important;
     font-size: 15px !important;
-}
+  }
 
   .adminList {
     float: left;
@@ -588,14 +582,14 @@
     margin-top: 5% !important;
     margin-bottom: 5% !important;
     font-size: 22px !important;
-}
-.weekMonth {
-  margin-top: 15%;
-  font-size: 130%;
-  color: black;
-  margin-left: 2%;
-  margin-bottom: 10%;
-}
+  }
+  .weekMonth {
+    margin-top: 15%;
+    font-size: 130%;
+    color: black;
+    margin-left: 2%;
+    margin-bottom: 10%;
+  }
   .modal-header .close {
     margin-top: -3% !important;
   }
@@ -876,31 +870,29 @@
     color: black;
     margin-left: 5%;
     margin-bottom: 5%;
-    
   }
   .weekContainer {
     margin-top: -5%;
     margin-left: 3% !important;
   }
   .weekMonth {
-    
     font-size: 135%;
     color: black;
     margin-left: 2%;
     margin-bottom: 10%;
-}
-.noBooksWeek {
-  margin-left: 45% !important;
-  margin-top: 5% !important;
-  margin-bottom: 5% !important;
-  font-size: 25px !important;
-}
-.week {
-  margin-top: 15%;
-  font-size: 125%;
-  color: black;
-  margin-left: 5%;
-}
+  }
+  .noBooksWeek {
+    margin-left: 45% !important;
+    margin-top: 5% !important;
+    margin-bottom: 5% !important;
+    font-size: 25px !important;
+  }
+  .week {
+    margin-top: 15%;
+    font-size: 125%;
+    color: black;
+    margin-left: 5%;
+  }
   .week p {
     margin-top: 10% !important;
     font-size: 100% !important;
@@ -934,14 +926,5 @@
   }
   .bookModalBody p {
     margin-left: 3% !important;
-  }
-  .sortBy{
-    display: flex;
-  }
-  .sortByLabel {
-    
-      margin-right: 15px;
-      margin-top: 7px;
-  
   }
 }

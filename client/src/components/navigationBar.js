@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from "react";
 import {
   Nav,
   Navbar,
@@ -8,6 +8,7 @@ import {
   NavDropdown,
   Row,
   Col,
+  InputGroup,
 } from "react-bootstrap";
 import { useUserState, useUserDispatch, logMeOut } from "../UserContext.js";
 import { useHistory } from "react-router-dom"; // new hook
@@ -21,30 +22,34 @@ import {
 
 function NavigationBar() {
   const history = useHistory();
-  const { user, isAuthenticated } = useUserState();
+  const { user, isAuthenticated, isActivated } = useUserState();
   const dispatch = useUserDispatch();
   const errorDispatch = useErrorDispatch();
-  const [searchText,setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
-  const onSearchSubmit = () =>{
-    console.log(searchText);
-    history.push(`/search/${searchText}`)
-  }
+  const clearSearchFilter = () => {
+    history.push(`/search/${searchText}`);
+    setSearchText("");
+  };
+
+  const onSearchSubmit = () => {
+    history.push(`/expandedView/AllBooks?search=${searchText}`);
+  };
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand href={isAuthenticated ? "/dashboard" : "/"}>
         eLibrary
       </Navbar.Brand>
-      {isAuthenticated && <Navbar.Toggle aria-controls="responsive-navbar-nav" />}
-      
+      {isAuthenticated && (
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+      )}
+
       <Navbar.Collapse id="responsive-navbar-nav">
-        {isAuthenticated && (
+        {isAuthenticated && isActivated != "0" && (
           <Nav>
             <Nav.Link href="/readingHistory">Reading History</Nav.Link>
-            
           </Nav>
-          
         )}
         {isAuthenticated && user.role === "ADMIN" && (
           <Nav className="mr-auto">
@@ -53,21 +58,33 @@ function NavigationBar() {
           </Nav>
         )}
         <Nav className="mr-auto"></Nav>
-        {isAuthenticated ? (
+        {isAuthenticated && isActivated != "0" ? (
           <div>
             <Form inline>
               <div className="row">
                 <div className="col">
-                  <FormControl
-                    type="text"
-                    placeholder="Search"
-                    className="sm-1"
-                    value={searchText}
-                    onChange={(e)=>setSearchText(e.target.value)}
-                  />
+                  <InputGroup>
+                    <FormControl
+                      type="text"
+                      placeholder="Search"
+                      className="sm-1"
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                    />
+                    <InputGroup.Append>
+                      <Button
+                        variant="outline-light"
+                        onClick={clearSearchFilter}
+                      >
+                        &times;
+                      </Button>
+                    </InputGroup.Append>
+                  </InputGroup>
                 </div>
               </div>
-              <Button variant="outline-info" onClick={onSearchSubmit}>Search</Button>
+              <Button variant="outline-info" onClick={onSearchSubmit}>
+                Search
+              </Button>
               <NavDropdown
                 title={
                   <Icon path={mdiAccount} size={0.5} className=" avatar" />
@@ -90,12 +107,13 @@ function NavigationBar() {
               </NavDropdown>
             </Form>
           </div>
-        ) : null }
+        ) : null}
       </Navbar.Collapse>
-      { !isAuthenticated && (      <Button variant="outline-info" onClick={() => history.push("/logIn")}>
-            Log In
-          </Button>) }
-
+      {(!isAuthenticated || (isAuthenticated && isActivated == "0")) && (
+        <Button variant="outline-info" onClick={() => history.push("/logIn")}>
+          Log In
+        </Button>
+      )}
     </Navbar>
   );
 }

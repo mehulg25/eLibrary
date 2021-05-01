@@ -2,7 +2,7 @@ import React, { useState } from "react"; // useState is a hook of react where we
 import { Container, Button, Form } from "react-bootstrap";
 import { useUserDispatch, logMeIn } from "../UserContext.js";
 import Axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import {
   displayError,
   displaySuccess,
@@ -31,7 +31,7 @@ function LogIn() {
       .then((response) => {
         console.log(response);
         if (response.status === 200) {
-          displaySuccess(errorDispatch, "Login Successful");
+          displaySuccess(errorDispatch, response.data.msg);
           logMeIn(dispatch, response); //responsible for putting data in User context
           history.push("/dashboard");
         }
@@ -71,6 +71,7 @@ function LogIn() {
         <Button variant="primary" type="submit">
           Log In
         </Button>
+        <Link to="/forgotPassword">Forgot Password?</Link>
       </Form>
     </Container>
   );

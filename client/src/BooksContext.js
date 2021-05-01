@@ -6,9 +6,15 @@ const BooksDispatchContext = React.createContext();
 function BooksReducer(state, action) {
   switch (action.type) {
     case "loadAllBooks": {
-      const books = action.payload.books;
+      const allBooks = action.payload.books;
+      const savedBooks = allBooks.filter((b) => b.isBookBookmarked);
+      const readBooks = allBooks.filter((b) => b.isBookRead);
+      const shelf = allBooks.filter((b) => b.isBookIssued);
       return {
-        allBooks: books,
+        allBooks,
+        savedBooks,
+        readBooks,
+        shelf,
       };
     }
 
@@ -24,6 +30,9 @@ function BooksReducer(state, action) {
 function BooksProvider({ children }) {
   const [state, dispatch] = React.useReducer(BooksReducer, {
     allBooks: [],
+    readBooks: [],
+    savedBooks: [],
+    shelf: [],
   });
   return (
     <BooksStateContext.Provider value={state}>

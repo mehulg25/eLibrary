@@ -23,7 +23,7 @@ function ErrorReducer(state, action) {
         msg,
       };
     }
-    
+
     case "hide": {
       return {
         showAlert: false,
@@ -34,7 +34,7 @@ function ErrorReducer(state, action) {
 
 function ErrorProvider({ children }) {
   // children right now is app.js kind of. Provider ka kaam hai apne children component ko access dena.
-  // to sum up provider gives access of context 
+  // to sum up provider gives access of context
   // [state,dispatch] is distructuring of array using square brackets
   // React.useReducer ke 0 index ki value will go to state and index 1 ki value will go on dispatch
   // reducer is responsible for implementing a dispatched event
@@ -46,7 +46,7 @@ function ErrorProvider({ children }) {
   });
   return (
     // provider is global state ka malik jo access dega global state ka
-    <ErrorStateContext.Provider value={state}> 
+    <ErrorStateContext.Provider value={state}>
       <ErrorDispatchContext.Provider value={dispatch}>
         {children}
       </ErrorDispatchContext.Provider>

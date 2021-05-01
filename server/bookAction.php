@@ -71,7 +71,7 @@ if (
         $availableCount = $temp2[0]->available_count;
 
         if ($availableCount <=0) {
-            header("HTTP/1.1 401 Cannot Update"); //**************** 
+            header("HTTP/1.1 401 Cannot Update"); //****************
             echo json_encode(["msg" => "No Copies Available at the moment"]);
             return;
         }

@@ -8,10 +8,9 @@ function AdminCard({ email, id, deleteAdmin }) {
   const [modal, setModal] = useState(false);
   const history = useHistory();
   const viewReadingHistory = (userId) => {
-    console.log(userId)
-    history.push("/readingHistory/"+userId)
-    
-  }
+    console.log(userId);
+    history.push("/readingHistory/" + userId);
+  };
   return (
     <div className="adminList">
       <Card style={{ width: "18rem" }}>
@@ -43,13 +42,20 @@ function AdminCard({ email, id, deleteAdmin }) {
               </Col>
               <Col>
                 <Row>
-                  <Button onClick={()=> viewReadingHistory(id)}>View Reading History</Button>
+                  <Button onClick={() => viewReadingHistory(id)}>
+                    View Reading History
+                  </Button>
                 </Row>
                 <Row>
                   <Button>Manage Password</Button>
                 </Row>
                 <Row>
-                  <Button onClick={() => deleteAdmin(id)} style={{borderColor: "red", backgroundColor: "red" }}>Delete Admin</Button>
+                  <Button
+                    onClick={() => deleteAdmin(id)}
+                    style={{ borderColor: "red", backgroundColor: "red" }}
+                  >
+                    Delete Admin
+                  </Button>
                 </Row>
               </Col>
             </Row>

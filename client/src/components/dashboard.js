@@ -3,6 +3,7 @@ import BookList from "./bookList";
 import AddBook from "./addBook";
 import Axios from "axios";
 import { useUserState } from "../UserContext";
+import { Container } from "react-bootstrap";
 import {
   loadAllBooks,
   updateAllBooks,
@@ -14,7 +15,7 @@ function Dashboard() {
   const { allBooks } = useBooksState();
   const booksDispatch = useBooksDispatch();
 
-  const { isAuthenticated, user } = useUserState();
+  const { isAuthenticated, user, isActivated } = useUserState();
   const [allBooksSet, setAllBooksSet] = useState(false);
 
   // whatever is written inside useEffect will only happen after the first render of the component
@@ -54,6 +55,7 @@ function Dashboard() {
 
       Axios.get("/user-books.php", config)
         .then((response) => {
+          console.log(response);
           if (response.status === 200) {
             response.data.books.map((book) => {
               //find is a js function
@@ -81,6 +83,17 @@ function Dashboard() {
   const handleAddBook = (book) => {
     updateAllBooks(booksDispatch, [book, ...allBooks]);
   };
+
+  if (isAuthenticated && isActivated == "0") {
+    return (
+      <Container>
+        <h3>
+          Please activate the account with the link sent on your mail,to start
+          using E-Library!!
+        </h3>
+      </Container>
+    );
+  }
 
   if (!isAuthenticated) return <p>Please Login to Continue!</p>;
 

@@ -5,7 +5,7 @@ import BookCard from "./bookCard";
 import { useParams, useHistory } from "react-router";
 
 const fetchUserReadBooks = (id) => {
-    console.log(id)
+  console.log(id);
   const config = {
     headers: {
       "Content-Type": "application/json",
@@ -13,7 +13,7 @@ const fetchUserReadBooks = (id) => {
     },
   };
 
-  return Axios.get("/readingHistory.php?userId="+id, config)
+  return Axios.get("/readingHistory.php?userId=" + id, config)
     .then((response) => {
       console.log(response);
       if (response != null) {
@@ -46,7 +46,7 @@ const monthNameMap = {
 
 function ViewUserReadingHistory() {
   const { userId } = useParams();
-  console.log(userId)
+  console.log(userId);
 
   const [readBooks, setReadBooks] = useState([]);
   const [byMonthMap, setByMonthMap] = useState({});
@@ -78,84 +78,84 @@ function ViewUserReadingHistory() {
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         2: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         3: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         4: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         5: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         6: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         7: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         8: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         9: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         10: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         11: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
         12: {
           1: [],
           2: [],
           3: [],
           4: [],
-          5: []
+          5: [],
         },
       };
       userReadBooks &&
@@ -178,7 +178,7 @@ function ViewUserReadingHistory() {
     <div>
       <Nav className="readingHistoryTitle">Reading History</Nav>
       <div className="sortBy">
-        <Form.Label className="sortByLabel">Sort By</Form.Label>
+        <Form.Label>Sort By</Form.Label>
         <Dropdown>
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
             {sortBy}{" "}
@@ -235,65 +235,78 @@ function ViewUserReadingHistory() {
                       </li>
                     ))}{" "}
                 </ul>
-              ) : <p className="noBooks">You Do Not Have Any Books Yet.</p>}{" "}
+              ) : (
+                <p className="noBooks">You Do Not Have Any Books Yet.</p>
+              )}{" "}
             </div>
           ))}{" "}
         </div>
       )}
-      {
-            sortBy === 'WEEK' && (
-                <Container className="weekContainer"> {
-                    Object.keys(monthNameMap).map(monthNumber => (
-
-                        <div key={monthNumber}>
-                            <p className="weekMonth">{
-                                monthNameMap[monthNumber]
-                            }</p>
-                            {(byWeekMap[monthNumber][1].length === 0 && byWeekMap[monthNumber][2].length === 0 && byWeekMap[monthNumber][3].length === 0 && byWeekMap[monthNumber][4].length === 0 && byWeekMap[monthNumber][5].length === 0 && byWeekMap[monthNumber][5].length === 0 )?(<p className="noBooksWeek">You Do Not Have Any Books Yet.</p>):(  byMonthMap[monthNumber] && Object.keys(byWeekMap[monthNumber]).map(week => (
-                                <>
-                                    <p className="week">Week {week}</p>
-                                    {byWeekMap[monthNumber][week].length === 0 ?(<p className="noBooksWeek">You Do Not Have Any Books Yet.</p>):( <ul className="bookList">
-                                        {
-                                        byWeekMap[monthNumber] && byWeekMap[monthNumber][week].map(({
-                                            name,
-                                            synopsis,
-                                            image_url,
-                                            author_name,
-                                            total_count,
-                                            available_count,
-                                            book_id,
-                                            isBookIssued,
-                                            isBookBookmarked,
-                                            isBookRead
-                                        } // arguments from database.
-                                        ) => (
-                                            <li key={book_id}
-                                                className="bookCard">
-                                                <BookCard bookName={name}
-                                                    //javascript variable after destructuring above as arguments.
-                                                    bookImage={image_url}
-                                                    //passing props PtC
-                                                    bookSynopsis={synopsis}
-                                                    bookAuthor={author_name}
-                                                    totalCount={total_count}
-                                                    bookId={book_id}
-                                                    availableCount={available_count}
-                                                    isIssued={isBookIssued}
-                                                    isRead={isBookRead}
-                                                    isBookmarked={isBookBookmarked}/>
-                                            </li>
-                                        ))
-                                    } </ul>)}
-                                </>
-                            )))
-                          
-                        } </div>
-
-
-                    ))
-                } </Container>
-            )
-        }
+      {sortBy === "WEEK" && (
+        <Container className="weekContainer">
+          {" "}
+          {Object.keys(monthNameMap).map((monthNumber) => (
+            <div key={monthNumber}>
+              <p className="weekMonth">{monthNameMap[monthNumber]}</p>
+              {byWeekMap[monthNumber][1].length === 0 &&
+              byWeekMap[monthNumber][2].length === 0 &&
+              byWeekMap[monthNumber][3].length === 0 &&
+              byWeekMap[monthNumber][4].length === 0 &&
+              byWeekMap[monthNumber][5].length === 0 &&
+              byWeekMap[monthNumber][5].length === 0 ? (
+                <p className="noBooksWeek">You Do Not Have Any Books Yet.</p>
+              ) : (
+                byMonthMap[monthNumber] &&
+                Object.keys(byWeekMap[monthNumber]).map((week) => (
+                  <>
+                    <p className="week">Week {week}</p>
+                    {byWeekMap[monthNumber][week].length === 0 ? (
+                      <p className="noBooksWeek">
+                        You Do Not Have Any Books Yet.
+                      </p>
+                    ) : (
+                      <ul className="bookList">
+                        {byWeekMap[monthNumber] &&
+                          byWeekMap[monthNumber][week].map((
+                            {
+                              name,
+                              synopsis,
+                              image_url,
+                              author_name,
+                              total_count,
+                              available_count,
+                              book_id,
+                              isBookIssued,
+                              isBookBookmarked,
+                              isBookRead,
+                            } // arguments from database.
+                          ) => (
+                            <li key={book_id} className="bookCard">
+                              <BookCard
+                                bookName={name}
+                                //javascript variable after destructuring above as arguments.
+                                bookImage={image_url}
+                                //passing props PtC
+                                bookSynopsis={synopsis}
+                                bookAuthor={author_name}
+                                totalCount={total_count}
+                                bookId={book_id}
+                                availableCount={available_count}
+                                isIssued={isBookIssued}
+                                isRead={isBookRead}
+                                isBookmarked={isBookBookmarked}
+                              />
+                            </li>
+                          ))}{" "}
+                      </ul>
+                    )}
+                  </>
+                ))
+              )}{" "}
+            </div>
+          ))}{" "}
+        </Container>
+      )}
     </div>
   );
 }

@@ -22,7 +22,7 @@ $data = json_decode(file_get_contents("php://input"));
 $email = $data->email;
 $password = $data->password;
 
-$getUser = mysqli_query($conn, "SELECT `id`,`email`,`password`,`role`,`currently_issued_bookid` FROM `users` WHERE `email` = '$email'");
+$getUser = mysqli_query($conn, "SELECT `id`,`email`,`password`,`role`,`currently_issued_bookid`,`isActivated` FROM `users` WHERE `email` = '$email'");
 
 if (mysqli_num_rows($getUser) > 0) {
     $get_user = mysqli_fetch_all($getUser, MYSQLI_ASSOC);
@@ -30,6 +30,8 @@ if (mysqli_num_rows($getUser) > 0) {
     $id = $get_user[0]['id'];
     $role = $get_user[0]['role'];
     $currently_issued_bookid = $get_user[0]['currently_issued_bookid'];
+    // print_r ($get_user[0]);
+    $isActivated = $get_user[0]['isActivated'];
 
     if (password_verify($password, $password_fromDB)) { //Inbuilt function to check password and hashed pwd equality!
         $secret_key = "YOUR_SECRET_KEY";
@@ -52,15 +54,21 @@ if (mysqli_num_rows($getUser) > 0) {
         http_response_code(200);
     
         $jwt = JWT::encode($token, $secret_key);
+        if ($isActivated == "0") {
+            $successMsg = "Please Activate Your Account.";
+        } else {
+            $successMsg = "Login Successful!";
+        }
         echo json_encode(
             array(
-                    "msg" => "Successful login.",
+                    "msg" => $successMsg,
                     "jwt" => $jwt,
                     "email" => $email,
                     "expireAt" => $expire_claim,
                     "role" => $role,
                     "id" => $id,
-                    "currently_issued_bookid" => $currently_issued_bookid
+                    "currently_issued_bookid" => $currently_issued_bookid,
+                    "isActivated"=> $isActivated
                 )
         );
         return;

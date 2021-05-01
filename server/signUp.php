@@ -1,9 +1,6 @@
 <?php
 //we are getting email,pass and role from client
-error_reporting(-1); // reports all errors
-ini_set("display_errors", "1"); // shows all errors
-ini_set("log_errors", 1);
-ini_set("error_log", "/tmp/php-error.log");
+
 // above 4 lines are for error reporting from stackoverflow as we are using vanilla php so our compiler is checking only for the compilation issue and not the run time error but through this we catch errors
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: access");
@@ -11,8 +8,11 @@ header("Access-Control-Allow-Methods: POST,OPTIONS");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,origin");
 // above 6 lines to avoid cors issue. localhost3000 se 8080 pe data transfer chal rha hai
-require 'db_connection.php';
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 
+require 'db_connection.php';
+require 'conf.php';
 require  "./vendor/autoload.php";
 
 use \Firebase\JWT\JWT;
@@ -31,7 +31,7 @@ if (
     && !empty(trim($data->role))
     //this is backend validation
 ) {
-    $email = mysqli_real_escape_string($conn, trim($data->email)); 
+    $email = mysqli_real_escape_string($conn, trim($data->email));
     $password = mysqli_real_escape_string($conn, trim($data->password));
     $password_hash = password_hash($password, PASSWORD_BCRYPT); //inbuilt php function to encode the password
     $role = mysqli_real_escape_string($conn, trim($data->role));
@@ -71,15 +71,37 @@ if (
             "expireAt" => $expire_claim, // can remove this line in future.
             "role" =>$get_user[0]['role'],
             "id" => $last_id,
-            "currently_issued_bookid" => NULL
+            "currently_issued_bookid" => null,
+            "isActivated" => 0
         ));
+
+        //Send Activation Mail
+        $mail = new PHPMailer;
+        //smtp settings
+    $mail->isSMTP(); // send as HTML
+    $mail->Host = "smtp.gmail.com"; // SMTP servers
+    $mail->SMTPAuth   = true;
+        $mail->Username = $mailer_username; // Your mail
+    $mail->Password = $mailer_password; // Your password mail
+    $mail->Port = 587; //specify SMTP Port
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        ;
+        $mail->setFrom('requiem.muj@gmail.com','eLibrary Admin'); // WHY USE ID HERE ???????????????????????
+        $mail->addAddress($email); // Your mail
+        // $mail->addReplyTo($_POST['email'], $_POST['name']);
+        // $mail->isHTML(true);
+        $mail->Subject='E-Library | Account Activation';
+        $code= time();
+        $message="Your activation link is : ".$client_url."redirectActivateAccount/".$email."/".$code;
+        $mail->Body = $message;
+        $mail->send();
+
         return;
     } else {
-        header("HTTP/1.1 500 Some Error Occured");
-        echo json_encode(["msg"=>"User Not Created"]); // will go on response
+        header("HTTP/1.1 401 Some Error Occured");
+        echo json_encode(["msg"=>"User Already Exists"]); // will go on response
     }
-}
-else {
+} else {
     header("HTTP/1.1 500 Some Error Occured");
-        echo json_encode(["msg"=>"Please Fill All The Required Fields!"]);
+    echo json_encode(["msg"=>"Please Fill All The Required Fields!"]);
 }

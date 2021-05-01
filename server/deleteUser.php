@@ -38,8 +38,7 @@ if (isset($data->id) && is_numeric($data->id)) {
             header("HTTP/1.1 401 RESOURCE NOT FOUND");
             echo json_encode(["msg"=>"Update Failed!"]);
         }
-    }
-    else {
+    } else {
         $deleteUser = mysqli_query($conn, "DELETE FROM `users` WHERE `id`='$delID'");
     
         if ($deleteUser) {

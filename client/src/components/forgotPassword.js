@@ -94,7 +94,7 @@ function ForgotPassword() {
   const sendOtpEmail = (e) => {
     e.preventDefault();
     if (email === "") {
-      displayError(errorDispatch, "Please Enter a registered E=Mail.");
+      displayError(errorDispatch, "Please Enter a registered email address.");
       return;
     }
 
@@ -104,7 +104,7 @@ function ForgotPassword() {
     Axios.post("/forgotPassword.php", JSON.stringify(userObj))
       .then((response) => {
         if (response.status === 200) {
-          displaySuccess(errorDispatch, "Sent OTP on registered E-mail ID");
+          displaySuccess(errorDispatch, "Sent an OTP on the registered email address.");
           setOtpSent(true);
           setOtpInMail(response.data.otp);
         }
@@ -115,15 +115,15 @@ function ForgotPassword() {
   };
   return (
     <Container>
-      <Form onSubmit={sendOtpEmail} className="signUp">
+      <Form onSubmit={sendOtpEmail} className="resetPassword">
         <h3>Reset Password</h3>
         <Form.Group controlId="formBasicEmail">
           <Form.Label>
-            Registered Email Address <sup>*</sup>
+            Registered email address <sup>*</sup>
           </Form.Label>
           <Form.Control
             type="email"
-            placeholder="Enter registered E-mail"
+            placeholder="Enter registered email"
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
@@ -133,14 +133,15 @@ function ForgotPassword() {
           style={{
             color: "red",
             marginTop: "5%",
-            marginBottom: "-2%",
+            marginBottom: "2%",
             marginLeft: "7%",
+            fontSize: "15px"
           }}
         >
           Required Fields <sup>*</sup>
         </p>
         {otpSent ? (
-          <Button variant="primary" onClick={resetPassword}>
+          <Button className="resetOTPButton" variant="primary" onClick={resetPassword}>
             Reset Password
           </Button>
         ) : (

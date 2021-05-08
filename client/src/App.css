@@ -20,16 +20,17 @@
   margin-top: 12%;
   width: 100%;
   margin-left: 0%;
-  height: 80vh;
+  height: 83vh;
 }
+
 .signUp .form-group {
   width: 66%;
   margin-left: 17%;
-  padding-bottom: 0%;
+  padding-bottom: 4%;
 }
 
 .signUp h3 {
-  margin-bottom: 30%;
+  margin-bottom: 20%;
   margin-left: 10%;
   margin-top: 20%;
   color: lightslategray;
@@ -50,7 +51,7 @@
 .logIn .form-group {
   width: 66%;
   margin-left: 17%;
-  padding-bottom: 0%;
+  padding-bottom: 5%;
 }
 .logIn button {
   margin-left: 35%;
@@ -62,6 +63,51 @@
   margin-left: 10%;
   margin-top: 20%;
   color: lightslategray;
+}
+.forgotPassword {
+  font-size: 13px;
+  margin-left: 31%;
+}
+.activateAccount h3 {
+  margin-top: 85% !important;
+  font-size: 20px !important;
+}
+.resetOTPButton {
+  width: 50%;
+    margin-left: 25%;
+}
+
+.resetPassword {
+  border: lightgray 1px solid;
+  margin-top: 12%;
+  width: 100%;
+  margin-left: 0%;
+  height: 83vh;
+}
+.resetPassword h3 {
+  margin-bottom: 15%;
+  margin-left: 7%;
+  margin-top: 15%;
+  color: lightslategray;
+}
+.resetPassword .form-group {
+  width: 70%;
+  margin-left: 15%;
+  
+}
+.pagination {
+  margin-left: 33% !important;
+}
+.sortByAllBooks {
+  float: right;
+    margin-top: -19%;
+    margin-right: 6%;
+    margin-bottom: -10px;
+}
+.resetPassword button {
+  margin-left: 32%;
+  margin-top: 12%;
+  width: 38%;
 }
 .profileContainer {
   margin-left: 42% !important;
@@ -235,8 +281,8 @@
 
 .readingHistoryTitle {
   color: black;
-  margin-top: 10px;
-  margin-left: 7px;
+  margin-top: 20px;
+  margin-left: 15px;
   font-size: 22px;
   padding-bottom: 0% !important;
   margin-bottom: 7% !important;
@@ -321,7 +367,15 @@
     margin-top: 13%;
     color: lightslategray;
   }
-
+  .resetPassword button {
+    margin-left: 29%;
+    margin-top: 5%;
+    width: 42%;
+}
+.forgotPassword {
+  font-size: 13px;
+  margin-left: 34%;
+}
   .signUp {
     border: lightgray 1px solid;
     margin-top: 5%;
@@ -844,12 +898,12 @@
   }
   .readingHistoryTitle {
     color: black;
-    margin-top: 10px;
+    margin-top: 27px;
     margin-left: 28px;
     font-size: 25px;
     padding-bottom: 0% !important;
     margin-bottom: 7% !important;
-  }
+}
   .sortBy {
     float: right;
     margin-top: -9%;
@@ -927,4 +981,38 @@
   .bookModalBody p {
     margin-left: 3% !important;
   }
+  .activateAccount h3 {
+    margin-top: 35% !important;
+    font-size: 20px !important;
+    margin-left: 3%;
+}
+.forgotPassword {
+  font-size: 13px;
+  margin-left: 38%;
+}
+.resetPassword {
+  border: lightgray 1px solid;
+  margin-top: 3%;
+  width: 100%;
+  margin-left: 0%;
+  height: 85vh;
+}
+.resetPassword h3 {
+  margin-bottom: 5%;
+  margin-left: 7%;
+  margin-top: 6%;
+  color: lightslategray;
+}
+.sortByAllBooks {
+  float: right;
+  margin-top: -9%;
+  margin-right: 6%;
+  margin-bottom: -10px;
+}
+.pagination {
+  margin-left: 47% !important;
+  margin-top: 4%;
+}
+
+
 }

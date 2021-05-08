@@ -179,7 +179,7 @@ function ReadingHistory() {
   }, []);
 
   if (!isAuthenticated) {
-    return <div>Fuck Off</div>;
+    return <div>Please Log In!</div>
   }
 
   return (

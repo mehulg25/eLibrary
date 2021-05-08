@@ -69,10 +69,10 @@ function App() {
         <Route exact path="/search/:searchText" component={SearchBooks} />
         <Route path="/forgotPassword" component={ForgotPassword} />
         <Route path="/activateAccountMsg">
-          <Container>
+          <Container className ="activateAccount">
             <h3>
-              Please activate the account with the link sent on your mail,to
-              start using E-Library!!
+              Please activate the account with the link sent to the registered email address in order to
+              start using E-Library!
             </h3>
           </Container>
         </Route>

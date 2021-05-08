@@ -9,7 +9,7 @@ import {
 import BookList from "./bookList";
 import Axios from "axios";
 import { useUserState } from "../UserContext";
-import { Pagination, Dropdown, Form } from "react-bootstrap";
+import { Pagination, Dropdown, Form, Nav } from "react-bootstrap";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -130,6 +130,8 @@ function ExpandedBookList() {
   if (expandedBooklistType === "AllBooks") {
     return (
       <div>
+         <Nav className="readingHistoryTitle">All Books</Nav>
+         <div  className="sortByAllBooks">
         <Form.Label>Sort By</Form.Label>
         <Dropdown>
           <Dropdown.Toggle variant="primary" id="dropdown-basic">
@@ -145,6 +147,7 @@ function ExpandedBookList() {
             </Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+        </div>
         <BookList books={allBooks} styleClass="expandedList" />{" "}
         {paginationBasic}
       </div>

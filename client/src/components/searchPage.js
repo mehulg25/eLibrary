@@ -10,7 +10,7 @@ import BookList from "./bookList";
 import Axios from "axios";
 import { useUserState } from "../UserContext";
 import { useHistory } from "react-router-dom";
-import { Pagination, Dropdown, Form } from "react-bootstrap";
+import { Pagination, Dropdown, Form, Nav } from "react-bootstrap";
 
 function SearchBooks() {
   const handlePaginationClick = (e) => {
@@ -84,10 +84,11 @@ function SearchBooks() {
 
   return (
     <div>
-      <h2>
-        <label>Search Results For :</label>
-        {searchText}
-      </h2>
+      
+      <Nav className="readingHistoryTitle">Search Results For : {searchText} </Nav>
+        
+      
+      {/* <div className="sortByAllBooks"> 
       <Form.Label>Sort By</Form.Label>
       <Dropdown>
         <Dropdown.Toggle variant="primary" id="dropdown-basic">
@@ -103,7 +104,7 @@ function SearchBooks() {
           </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-
+      </div> */}
       <BookList books={allBooks} styleClass="expandedList" />
       {paginationBasic}
     </div>

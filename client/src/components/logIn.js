@@ -67,11 +67,11 @@ function LogIn() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </Form.Group>
-
+        <Link className="forgotPassword" to="/forgotPassword">Forgot Password?</Link>
         <Button variant="primary" type="submit">
           Log In
         </Button>
-        <Link to="/forgotPassword">Forgot Password?</Link>
+        
       </Form>
     </Container>
   );

@@ -88,8 +88,8 @@ function Dashboard() {
     return (
       <Container>
         <h3>
-          Please activate the account with the link sent on your mail,to start
-          using E-Library!!
+          Please activate the account with the link sent to your mail to start
+          using E-Library!
         </h3>
       </Container>
     );

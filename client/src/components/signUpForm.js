@@ -37,7 +37,7 @@ function SignUpForm() {
         // logMeIn(dispatch, response);
         displaySuccess(
           errorDispatch,
-          "Successfully Registered !Please activate your account!"
+          "Successfully Registered! Please activate your account!"
         );
         history.push("/activateAccountMsg");
       })
@@ -84,8 +84,9 @@ function SignUpForm() {
           style={{
             color: "red",
             marginTop: "5%",
-            marginBottom: "-2%",
+            marginBottom: "2%",
             marginLeft: "7%",
+            fontSize: "15px"
           }}
         >
           Required Fields <sup>*</sup>

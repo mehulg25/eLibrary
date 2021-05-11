@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React,{useState} from 'react';
 import {
   Nav,
   Navbar,
@@ -22,34 +22,34 @@ import {
 
 function NavigationBar() {
   const history = useHistory();
-  const { user, isAuthenticated, isActivated } = useUserState();
+  const { user, isAuthenticated,isActivated } = useUserState();
   const dispatch = useUserDispatch();
   const errorDispatch = useErrorDispatch();
-  const [searchText, setSearchText] = useState("");
+  const [searchText,setSearchText] = useState('');
 
-  const clearSearchFilter = () => {
-    history.push(`/search/${searchText}`);
+  const clearSearchFilter = ()=>{
+    history.push('/dashboard')
     setSearchText("");
-  };
+  }
 
-  const onSearchSubmit = () => {
-    history.push(`/expandedView/AllBooks?search=${searchText}`);
-  };
+  const onSearchSubmit = () =>{
+    history.push(`/expandedView/AllBooks?search=${searchText}`)
+  }
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Navbar.Brand href={isAuthenticated ? "/dashboard" : "/"}>
         eLibrary
       </Navbar.Brand>
-      {isAuthenticated && (
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-      )}
-
+      {isAuthenticated && <Navbar.Toggle aria-controls="responsive-navbar-nav" />}
+      
       <Navbar.Collapse id="responsive-navbar-nav">
-        {isAuthenticated && isActivated != "0" && (
+        {(isAuthenticated && isActivated != "0") && (
           <Nav>
             <Nav.Link href="/readingHistory">Reading History</Nav.Link>
+            
           </Nav>
+          
         )}
         {isAuthenticated && user.role === "ADMIN" && (
           <Nav className="mr-auto">
@@ -58,33 +58,27 @@ function NavigationBar() {
           </Nav>
         )}
         <Nav className="mr-auto"></Nav>
-        {isAuthenticated && isActivated != "0" ? (
+        {(isAuthenticated && isActivated != "0") ? (
           <div>
             <Form inline>
               <div className="row">
                 <div className="col">
                   <InputGroup>
-                    <FormControl
-                      type="text"
-                      placeholder="Search"
-                      className="sm-1"
-                      value={searchText}
-                      onChange={(e) => setSearchText(e.target.value)}
-                    />
-                    <InputGroup.Append>
-                      <Button
-                        variant="outline-light"
-                        onClick={clearSearchFilter}
-                      >
-                        &times;
-                      </Button>
-                    </InputGroup.Append>
+                  <FormControl
+                    type="text"
+                    placeholder="Search"
+                    className="sm-1"
+                    value={searchText}
+                    onChange={(e)=>setSearchText(e.target.value)}
+                  />
+                  <InputGroup.Append>
+                    <Button variant="outline-light" onClick={clearSearchFilter}>&times;</Button>
+                  </InputGroup.Append>
                   </InputGroup>
+                
                 </div>
               </div>
-              <Button variant="outline-info" onClick={onSearchSubmit}>
-                Search
-              </Button>
+              <Button variant="outline-info" onClick={onSearchSubmit}>Search</Button>
               <NavDropdown
                 title={
                   <Icon path={mdiAccount} size={0.5} className=" avatar" />
@@ -107,13 +101,12 @@ function NavigationBar() {
               </NavDropdown>
             </Form>
           </div>
-        ) : null}
+        ) : null }
       </Navbar.Collapse>
-      {(!isAuthenticated || (isAuthenticated && isActivated == "0")) && (
-        <Button variant="outline-info" onClick={() => history.push("/logIn")}>
-          Log In
-        </Button>
-      )}
+      { (!isAuthenticated || (isAuthenticated && isActivated == "0")) && (      <Button variant="outline-info" onClick={() => history.push("/logIn")}>
+            Log In
+          </Button>) }
+
     </Navbar>
   );
 }

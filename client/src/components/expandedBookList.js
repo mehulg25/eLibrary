@@ -119,7 +119,7 @@ function ExpandedBookList() {
                 }
               }
             });
-
+            console.log(allBooks);
             updateAllBooks(booksDispatch, allBooks);
           }
         })

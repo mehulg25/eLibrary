@@ -51,7 +51,7 @@ function ReadingHistory() {
       "x-auth-token": localStorage.getItem("token"),
     },
   };
-  Axios.get("/readingHistory.php").then((response) => console.log(response));
+  // Axios.get("/readingHistory.php").then((response) => console.log(response));
   const [readBooks, setReadBooks] = useState([]);
   const [byMonthMap, setByMonthMap] = useState({});
   const [byWeekMap, setByWeekMap] = useState({});
@@ -59,6 +59,7 @@ function ReadingHistory() {
 
   useEffect(() => {
     fetchUserReadBooks().then((userReadBooks) => {
+      console.log(userReadBooks);
       setReadBooks(userReadBooks);
 
       const byMonth = {
@@ -239,6 +240,7 @@ function ReadingHistory() {
                           isIssued={isBookIssued}
                           isRead={isBookRead}
                           isBookmarked={isBookBookmarked}
+                          allowOpenCard={true}
                         />
                       </li>
                     ))}{" "}
